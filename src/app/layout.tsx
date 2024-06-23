@@ -17,12 +17,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SessionWrapper>
-      <html lang="en">
+    <html lang="en">
+      <SessionWrapper>
         <SessionProvider>
           <body className={inter.className}>{children}</body>
         </SessionProvider>
-      </html>
-    </SessionWrapper>
+      </SessionWrapper>
+    </html>
   );
 }

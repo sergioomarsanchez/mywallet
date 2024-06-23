@@ -1,4 +1,3 @@
-// auth.ts
 import prisma from "./prisma";
 import { session } from "./session";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -53,16 +52,45 @@ export const authOption: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async signIn({ user, account, profile }) {
+      if (!profile?.email) {
+        throw new Error("No profile");
+      }
+
+      try {
+        await prisma.user.upsert({
+          where: { email: profile.email },
+          create: {
+            email: profile.email,
+            firstName: profile.given_name || profile.name.split(" ")[0] || "",
+            lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+          },
+          update: {
+            firstName: profile.given_name || profile.name.split(" ")[0] || "",
+            lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+          },
+        });
+      } catch (error) {
+        console.error("Error creating/updating user:", error);
+        return false;
+      }
+      return true;
+    },
+    async jwt({ token, user, profile }) {
       if (user) {
         token.id = user.id;
       }
       return token;
     },
-    session,
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id;
+      }
+      return session;
+    },
   },
   pages: {
-    signIn: "/home",
+    signIn: "/auth/signin",
     error: "/auth/error",
     newUser: "/welcome",
   },
