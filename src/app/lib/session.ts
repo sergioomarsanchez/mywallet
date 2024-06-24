@@ -5,6 +5,8 @@ import { authOption } from "./auth";
 export const session = async ({ session, token }: any) => {
   session.user.id = token.id;
   session.user.role = token.role;
+  session.user.image = token.avatar;
+  session.user.name = token.firstName + " " + token.lastName;
   return session;
 };
 

@@ -1,5 +1,4 @@
 import prisma from "./prisma";
-import { session } from "./session";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
@@ -31,7 +30,6 @@ export const authOption: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
-
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
@@ -40,7 +38,10 @@ export const authOption: NextAuthOptions = {
           throw new Error("User not found");
         }
 
-        const isValidPassword = bcrypt.compareSync(credentials.password, user.password);
+        const isValidPassword = bcrypt.compareSync(
+          credentials.password,
+          user.password
+        );
         if (user && isValidPassword) {
           return user;
         } else {
@@ -58,9 +59,8 @@ export const authOption: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }) {
-      if (account.provider === 'credentials') {
-        // Para el flujo de credenciales, no necesitamos verificar profile
+    async signIn({ user, account, profile }: any) {
+      if (account.provider === "credentials") {
         return true;
       }
 
@@ -69,21 +69,23 @@ export const authOption: NextAuthOptions = {
       }
 
       try {
-        const avatarUrl = profile.picture || profile.avatar_url; // Obteniendo la URL del avatar
+        const avatarUrl = profile.picture || profile.avatar_url;
 
         await prisma.user.upsert({
           where: { email: profile.email },
           create: {
             email: profile.email,
             firstName: profile.given_name || profile.name.split(" ")[0] || "",
-            lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
-            avatar: avatarUrl, // Guardando la URL del avatar
-            password: "", // No password for OAuth users
+            lastName:
+              profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+            avatar: avatarUrl,
+            password: "",
           },
           update: {
             firstName: profile.given_name || profile.name.split(" ")[0] || "",
-            lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
-            avatar: avatarUrl, // Actualizando la URL del avatar si existe
+            lastName:
+              profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+            avatar: avatarUrl,
           },
         });
       } catch (error) {
@@ -92,15 +94,35 @@ export const authOption: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }) {
-      if (user) {
+    async jwt({ token, user, profile }: any) {
+      if (profile) {
+        const dbUser = await prisma.user.findUnique({
+          where: {
+            email: profile.email,
+          },
+        });
+        if (dbUser) {
+          token.id = dbUser.id;
+          token.role = dbUser.role;
+          token.avatar = dbUser.avatar;
+          token.lastName = dbUser.lastName;
+          token.firstName = dbUser.firstName;
+        }
+      } else if (user) {
         token.id = user.id;
+        token.role = user.role;
+        token.avatar = user.avatar;
+        token.lastName = user.lastName;
+        token.firstName = user.firstName;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id;
+        session.user.role = token.role;
+        session.user.image = token.avatar;
+        session.user.name = token.firstName + " " + token.lastName;
       }
       return session;
     },
