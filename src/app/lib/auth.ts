@@ -31,13 +31,23 @@ export const authOption: NextAuthOptions = {
           throw new Error("Missing credentials");
         }
 
+        console.log('Credentials:', credentials);
+
         const user = await prisma.user.findUnique({
           where: { email: credentials.email },
         });
 
-        if (user && bcrypt.compareSync(credentials.password, user.password)) {
+        if (!user) {
+          console.error('User not found:', credentials.email);
+          throw new Error("User not found");
+        }
+
+        const isValidPassword = bcrypt.compareSync(credentials.password, user.password);
+        if (user && isValidPassword) {
+          console.log('User authenticated:', user.email);
           return user;
         } else {
+          console.error('Invalid email or password:', credentials.email);
           throw new Error("Invalid email or password");
         }
       },
@@ -53,21 +63,31 @@ export const authOption: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile }) {
+      if (account.provider === 'credentials') {
+        // Para el flujo de credenciales, no necesitamos verificar profile
+        return true;
+      }
+
       if (!profile?.email) {
         throw new Error("No profile");
       }
 
       try {
+        const avatarUrl = profile.picture || profile.avatar_url; // Obteniendo la URL del avatar
+
         await prisma.user.upsert({
           where: { email: profile.email },
           create: {
             email: profile.email,
             firstName: profile.given_name || profile.name.split(" ")[0] || "",
             lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+            avatar: avatarUrl, // Guardando la URL del avatar
+            password: "", // No password for OAuth users
           },
           update: {
             firstName: profile.given_name || profile.name.split(" ")[0] || "",
             lastName: profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
+            avatar: avatarUrl, // Actualizando la URL del avatar si existe
           },
         });
       } catch (error) {
@@ -76,7 +96,7 @@ export const authOption: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user, profile }) {
+    async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
       }
@@ -90,7 +110,6 @@ export const authOption: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/auth/signin",
     error: "/auth/error",
     newUser: "/welcome",
   },

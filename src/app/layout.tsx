@@ -3,6 +3,7 @@ import SessionWrapper from "session-wrapper";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "./context/SessionContext";
+import WebNavBar from "./components/nav/webNavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default function RootLayout({
     <html lang="en">
       <SessionWrapper>
         <SessionProvider>
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <WebNavBar />
+            {children}
+          </body>
         </SessionProvider>
       </SessionWrapper>
     </html>
