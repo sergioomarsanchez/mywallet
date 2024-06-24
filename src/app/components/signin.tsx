@@ -36,7 +36,6 @@ export default function SignIn({
         email,
         password,
       });
-      console.log(res, "res in form");
 
       if (res?.error) {
         setError("Invalid email or password");
