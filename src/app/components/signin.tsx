@@ -67,7 +67,7 @@ export default function SignIn({
     <>
       <button
         onClick={() => setOpenSigninModal(true)}
-        className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-2 lg:dark:bg-zinc-800/30 hover:scale-105 transition-all duration-100"
+        className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-1 lg:dark:bg-zinc-800/30 hover:scale-[103%] active:scale-[100%] transition-all duration-100 min-w-24"
       >
         Sign in
       </button>
@@ -138,7 +138,7 @@ export default function SignIn({
               </div>
               <button
                 type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-24"
+                className="rounded-md flex justify-center items-center hover:bg-blue-500/70 bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-24 transition-colors duration-200"
               >
                {isLoading? <Loader /> :"Sign In"}
               </button>

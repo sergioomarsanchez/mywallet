@@ -11,7 +11,7 @@ const WebNavBar = () => {
   const { data: session } = useSession();
 
   return (
-    <nav className="fixed top-0 right-0 px-4 py-2 flex justify-end items-center">
+    <nav className="fixed top-0 right-0 p-4 flex justify-end items-center">
       <ul className="flex justify-end items-center gap-5">
         <li className="hover:scale-105 active:scale-100">
           <Link href={"/"} passHref>
@@ -20,13 +20,13 @@ const WebNavBar = () => {
         </li>
         {!session ? (
           <>
-            <li className="hover:scale-105 active:scale-100">
+            <li className="active:scale-100">
               <SignIn
                 setOpenSigninModal={setOpenSigninModal}
                 openSigninModal={openSigninModal}
               />
             </li>
-            <li className="hover:scale-105 active:scale-100">
+            <li className="active:scale-100">
               <SignUp
                 setOpenSignupModal={setOpenSignupModal}
                 openSignupModal={openSignupModal}
