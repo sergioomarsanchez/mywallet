@@ -18,11 +18,6 @@ const WebNavBar = () => {
             Home
           </Link>
         </li>
-        <li>
-          <Link href={"/welcome"} passHref>
-            Profile
-          </Link>
-        </li>
         {!session ? (
           <>
             <li>
@@ -39,9 +34,18 @@ const WebNavBar = () => {
             </li>
           </>
         ) : (
-          <button onClick={() => signOut({ callbackUrl: "/" })}>
-            Sign Out
-          </button>
+          <>
+            <li>
+              <Link href={"/welcome"} passHref>
+                Profile
+              </Link>
+            </li>
+            <li>
+              <button onClick={() => signOut({ callbackUrl: "/" })}>
+                Sign Out
+              </button>
+            </li>
+          </>
         )}
       </ul>
     </nav>
