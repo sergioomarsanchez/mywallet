@@ -17,6 +17,7 @@ import { signUpSchema, SignUpData } from "../types/front";
 import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
 import { signUpUser } from "../lib/actions";
+import Loader from "./loader";
 
 type SignUpProps = {
   openSignupModal: boolean;
@@ -37,9 +38,11 @@ export default function Signup({
     resolver: zodResolver(signUpSchema),
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const onSubmit = async (data: SignUpData) => {
+    setIsLoading(true);
     try {
       const user = await signUpUser(
         data.email,
@@ -67,6 +70,8 @@ export default function Signup({
       }
     } catch (err) {
       setError("Failed to sign up. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -197,9 +202,9 @@ export default function Signup({
               </div>
               <button
                 type="submit"
-                className="rounded-md bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
+                className="rounded-md flex justify-center items-center bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-24"
               >
-                Sign Up
+                {isLoading ? <Loader /> : "Sign Up"}
               </button>
             </form>
             <div className="flex justify-center items-center gap-2 my-5">

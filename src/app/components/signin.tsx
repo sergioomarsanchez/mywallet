@@ -16,6 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SignInData, signInSchema } from "../types/front";
 import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
+import Loader from "./loader";
 
 type SignInProps = {
   openSigninModal: boolean;
@@ -36,9 +37,11 @@ export default function SignIn({
     resolver: zodResolver(signInSchema),
   });
 
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
 
   const onSubmit = async (data: SignInData) => {
+    setIsLoading(true)
     try {
       const res = await signIn("credentials", {
         redirect: false,
@@ -55,6 +58,8 @@ export default function SignIn({
       }
     } catch (err) {
       setError("Failed to sign in. Please try again.");
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -133,9 +138,9 @@ export default function SignIn({
               </div>
               <button
                 type="submit"
-                className="rounded-md bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"
+                className="rounded-md flex justify-center items-center bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-24"
               >
-                Sign In
+               {isLoading? <Loader /> :"Sign In"}
               </button>
             </form>
             <div className="flex justify-center items-center gap-2 my-5">
