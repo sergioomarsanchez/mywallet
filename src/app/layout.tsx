@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import SessionWrapper from "session-wrapper";
+import SessionWrapper from "../../session-wrapper"
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "./context/SessionContext";
 import WebNavBar from "./components/nav/webNavBar";
+import React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
