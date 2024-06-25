@@ -1,3 +1,5 @@
+import React from "react";
+
 const GitHubIcon = ({ className }: { className: string }) => (
   <svg
     className={className}
