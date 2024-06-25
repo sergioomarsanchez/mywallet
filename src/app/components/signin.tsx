@@ -51,7 +51,7 @@ export default function SignIn({
       } else {
         router.push("/welcome");
         setOpenSigninModal(false);
-        reset()
+        reset();
       }
     } catch (err) {
       setError("Failed to sign in. Please try again.");
@@ -163,7 +163,10 @@ export default function SignIn({
             </div>
             <div className="flex gap-4 justify-end">
               <button
-                onClick={() => setOpenSigninModal(false)}
+                onClick={() => {
+                  setOpenSigninModal(false);
+                  reset();
+                }}
                 className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 Cancel
