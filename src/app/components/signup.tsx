@@ -11,6 +11,9 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema, SignUpData } from "../types/front";
 import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
 import { signUpUser } from "../lib/actions";
@@ -25,24 +28,33 @@ export default function Signup({
   setOpenSignupModal,
 }: SignUpProps) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SignUpData>({
+    resolver: zodResolver(signUpSchema),
+  });
+
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const onSubmit = async (data: SignUpData) => {
     try {
-      const user = await signUpUser(email, password, firstName, lastName);
+      const user = await signUpUser(
+        data.email,
+        data.password,
+        data.firstName,
+        data.lastName
+      );
 
       if (!user) {
         setError("Failed to sign up. Please try again.");
       } else {
         const res = await signIn("credentials", {
           redirect: false,
-          email,
-          password,
+          email: data.email,
+          password: data.password,
         });
 
         if (res?.error) {
@@ -50,6 +62,7 @@ export default function Signup({
         } else {
           router.push("/welcome");
           setOpenSignupModal(false);
+          reset();
         }
       }
     } catch (err) {
@@ -83,78 +96,104 @@ export default function Signup({
             </Description>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
               <div className="py-5 border-y-[1px] border-y-blue-400/30 grid grid-cols-2 gap-2">
-                <Field className={"text-left"}>
-                  <Label className="text-sm/6 font-medium text-white">
-                    First Name:
-                  </Label>
-                  <Input
-                    name="firstName"
-                    type="firstName"
-                    placeholder="First Name"
-                    value={firstName}
-                    onChange={(e) => setFirstName(e.target.value)}
-                    required
-                    className={clsx(
-                      "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
-                      "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium text-white">
+                      First Name:
+                    </Label>
+                    <Input
+                      {...register("firstName")}
+                      placeholder="First Name"
+                      required
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                    />
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.firstName && (
+                      <p className="text-red-500 text-xs">
+                        {errors.firstName.message}
+                      </p>
                     )}
-                  />
-                </Field>
-                <Field className={"text-left"}>
-                  <Label className="text-sm/6 font-medium text-white">
-                    Last Name:
-                  </Label>
-                  <Input
-                    name="lastName"
-                    type="lastName"
-                    placeholder="Last Name"
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
-                    required
-                    className={clsx(
-                      "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
-                      "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium text-white">
+                      Last Name:
+                    </Label>
+                    <Input
+                      {...register("lastName")}
+                      placeholder="Last Name"
+                      required
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                    />
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.lastName && (
+                      <p className="text-red-500 text-xs">
+                        {errors.lastName.message}
+                      </p>
                     )}
-                  />
-                </Field>
-                <Field className={"text-left"}>
-                  <Label className="text-sm/6 font-medium text-white">
-                    Email:
-                  </Label>
-                  <Input
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className={clsx(
-                      "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
-                      "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium text-white">
+                      Email:
+                    </Label>
+                    <Input
+                      {...register("email")}
+                      type="email"
+                      placeholder="Email"
+                      required
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                    />
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.email && (
+                      <p className="text-red-500 text-xs">
+                        {errors.email.message}
+                      </p>
                     )}
-                  />
-                </Field>
-                <Field className={"text-left"}>
-                  <Label className="text-sm/6 font-medium text-white">
-                    Password:
-                  </Label>
-                  <Input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                    className={clsx(
-                      "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
-                      "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium text-white">
+                      Password:
+                    </Label>
+                    <Input
+                      {...register("password")}
+                      type="password"
+                      placeholder="Password"
+                      required
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                    />
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.password && (
+                      <p className="text-red-500 text-xs max-w-[180px]">
+                        {errors.password.message}
+                      </p>
                     )}
-                  />
-                </Field>
+                  </div>
+                </div>
               </div>
               <button
                 type="submit"

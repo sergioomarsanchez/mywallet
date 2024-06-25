@@ -11,6 +11,9 @@ import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import clsx from "clsx";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { SignInData, signInSchema } from "../types/front";
 import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
 
@@ -24,17 +27,23 @@ export default function SignIn({
   setOpenSigninModal,
 }: SignInProps) {
   const router = useRouter();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<SignInData>({
+    resolver: zodResolver(signInSchema),
+  });
+
   const [error, setError] = useState("");
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();    
+  const onSubmit = async (data: SignInData) => {
     try {
       const res = await signIn("credentials", {
         redirect: false,
-        email,
-        password,
+        email: data.email,
+        password: data.password,
       });
 
       if (res?.error) {
@@ -42,10 +51,11 @@ export default function SignIn({
       } else {
         router.push("/welcome");
         setOpenSigninModal(false);
+        reset()
       }
     } catch (err) {
       setError("Failed to sign in. Please try again.");
-    } 
+    }
   };
 
   return (
@@ -74,7 +84,7 @@ export default function SignIn({
             </Description>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form
-              onSubmit={handleSubmit}
+              onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
               <Field className={"text-left"}>
@@ -82,35 +92,45 @@ export default function SignIn({
                   Email:
                 </Label>
                 <Input
-                  name="email"
+                  {...register("email")}
                   type="email"
                   placeholder="Email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
                   required
                   className={clsx(
-                    "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                    "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />
               </Field>
+              <div className="h-4 mb-2">
+                {errors?.email && (
+                  <p className="text-red-500 text-xs">
+                    {errors?.email?.message}
+                  </p>
+                )}
+              </div>
               <Field className={"text-left"}>
                 <Label className="text-sm/6 font-medium text-white">
                   Password:
                 </Label>
                 <Input
-                  name="password"
+                  {...register("password")}
                   type="password"
                   placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   className={clsx(
-                    "mb-3 block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
+                    "block w-full rounded-lg border-none bg-white/5 py-1.5 px-3 text-sm/6 text-white",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />
               </Field>
+              <div className="h-4 mb-2">
+                {errors.password && (
+                  <p className="text-red-500 text-xs">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
               <button
                 type="submit"
                 className="rounded-md bg-blue-500/20 py-2 px-4 text-sm font-medium text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white"

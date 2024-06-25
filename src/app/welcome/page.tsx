@@ -1,8 +1,8 @@
-"use client";
-import { useSession, signOut } from "next-auth/react";
+import { getServerSession } from "next-auth";
+import { authOption } from "../lib/auth";
 
-const WelcomePage = () => {
-  const { data: session } = useSession();
+const WelcomePage = async () => {
+  const session = await getServerSession(authOption);
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
