@@ -18,6 +18,7 @@ import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
 import Loader from "./loader";
 import React from "react";
+import { useToast } from "../context/ToastContext";
 
 type SignInProps = {
   openSigninModal: boolean;
@@ -37,9 +38,8 @@ export default function SignIn({
   } = useForm<SignInData>({
     resolver: zodResolver(signInSchema),
   });
-
+  const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);
@@ -51,14 +51,15 @@ export default function SignIn({
       });
 
       if (res?.error) {
-        setError("Invalid email or password");
+        addToast("Invalid email or password, try again.", "warning");
       } else {
+        addToast("Signed in successfully, Welcome back!", "success");
         router.push("/welcome");
         setOpenSigninModal(false);
         reset();
       }
     } catch (err) {
-      setError("Failed to sign in. Please try again.");
+      addToast("Failed to sign in. Please try again.", "error");
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +69,7 @@ export default function SignIn({
     <>
       <button
         onClick={() => setOpenSigninModal(true)}
-        className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-1 lg:dark:bg-zinc-800/30 hover:scale-[103%] active:scale-100 min-w-20 transition-all duration-100"
+        className="flex justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:from-inherit static w-auto text-sm lg:text-base rounded-xl border bg-gray-200 p-1 dark:bg-[#3C754F]/30 hover:dark:bg-[#3C754F]/70 hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100"
       >
         Sign in
       </button>
@@ -88,12 +89,11 @@ export default function SignIn({
             <Description className="mt-2 text-sm/6 text-gray-600 dark:text-white/50">
               Welcome back, please sign in to your account
             </Description>
-            {error && <p style={{ color: "red" }}>{error}</p>}
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
-              <div className="py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-2 w-[90%]">
+              <div className="py-2 md:py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-2 w-[90%]">
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">
@@ -153,18 +153,18 @@ export default function SignIn({
             <div className="flex justify-center items-center gap-2 my-5">
               <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
               <span className="text-sm/6 text-gray-600 dark:text-white/50">
-                Or Sing in with
+                Or sing in with
               </span>
               <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
             </div>
-            <div className="mt-2 flex flex-col gap-2 justify-center items-center">
+            <div className="mt-2 flex gap-2 justify-center items-center mb-5">
               <button
                 type="button"
                 onClick={() => signIn("google")}
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 <GoogleIcon className="size-4" />
-                Sign in with Google
+                Google
               </button>
               <button
                 type="button"
@@ -172,7 +172,7 @@ export default function SignIn({
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 <GitHubIcon className="size-5" />
-                Sign in with GitHub
+                GitHub
               </button>
             </div>
             <div className="flex gap-4 justify-end">

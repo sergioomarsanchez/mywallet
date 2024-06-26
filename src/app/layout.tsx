@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import SessionWrapper from "../../session-wrapper"
+import SessionWrapper from "../../session-wrapper";
 import { Inter } from "next/font/google";
+import { ToastProvider } from "./context/ToastContext";
+import ToastContainer from "./components/toastContainer";
 import "./globals.css";
 import { SessionProvider } from "./context/SessionContext";
 import WebNavBar from "./components/nav/webNavBar";
@@ -22,10 +24,13 @@ export default function RootLayout({
     <html lang="en">
       <SessionWrapper>
         <SessionProvider>
-          <body className={inter.className}>
-            <WebNavBar />
-            {children}
-          </body>
+          <ToastProvider>
+            <body className={inter.className}>
+              <WebNavBar />
+              {children}
+              <ToastContainer />
+            </body>
+          </ToastProvider>
         </SessionProvider>
       </SessionWrapper>
     </html>
