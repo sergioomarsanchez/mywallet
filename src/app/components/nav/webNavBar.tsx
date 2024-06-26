@@ -4,6 +4,7 @@ import SignIn from "../signin";
 import SignUp from "../signup";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
+import ProfileDropdown from "../profileDropDown";
 
 const WebNavBar = () => {
   const [openSigninModal, setOpenSigninModal] = useState(false);
@@ -35,7 +36,7 @@ const WebNavBar = () => {
           </>
         ) : (
           <>
-            <li className="hover:scale-105 active:scale-100">
+            {/* <li className="hover:scale-105 active:scale-100">
               <Link href={"/welcome"} passHref>
                 Profile
               </Link>
@@ -44,6 +45,9 @@ const WebNavBar = () => {
               <button onClick={() => signOut({ callbackUrl: "/" })}>
                 Sign Out
               </button>
+            </li> */}
+            <li>
+              <ProfileDropdown align="right" />
             </li>
           </>
         )}
