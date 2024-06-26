@@ -91,7 +91,7 @@ export default function ProfileDropdown({
                     href="#0"
                     onClick={() => {
                       close();
-                      signOut();
+                      signOut({ callbackUrl: "/" });
                     }}
                     className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-[#B9D1A7]`}
                   >
