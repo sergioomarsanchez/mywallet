@@ -23,7 +23,6 @@ export default function ProfileDropdown({
   if (loading) {
     return <Loader />;
   }
-  const firstName = session?.user?.name?.split(" ")[0];
 
   return (
     <Menu as="div" className="relative inline-flex">
@@ -79,7 +78,7 @@ export default function ProfileDropdown({
                 {({ close }) => (
                   <Link
                     className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-[#B9D1A7]`}
-                    href="/welcome"
+                    href="/profile"
                     onClick={() => close()}
                   >
                     Profile

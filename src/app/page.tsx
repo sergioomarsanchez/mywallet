@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { getServerSession } from "next-auth";
 import { authOption } from "./lib/auth";
+import React from "react";
 
 export default async function Home() {
   const session = await getServerSession(authOption);

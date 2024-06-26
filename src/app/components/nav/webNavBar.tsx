@@ -36,16 +36,6 @@ const WebNavBar = () => {
           </>
         ) : (
           <>
-            {/* <li className="hover:scale-105 active:scale-100">
-              <Link href={"/welcome"} passHref>
-                Profile
-              </Link>
-            </li>
-            <li className="hover:scale-105 active:scale-100">
-              <button onClick={() => signOut({ callbackUrl: "/" })}>
-                Sign Out
-              </button>
-            </li> */}
             <li>
               <ProfileDropdown align="right" />
             </li>
