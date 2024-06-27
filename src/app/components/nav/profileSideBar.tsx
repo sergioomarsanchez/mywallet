@@ -74,9 +74,9 @@ const ProfileSidebar = ({ role }) => {
                   <div className={`flex items-center`}>
                     {pathname === href ? (
                       <IconFilled
-                        className="h-6 w-6 mr-2 drop-shadow"
+                        className="h-6 w-6 mr-2 drop-shadow fill-current text-[#198671]"
                         style={{
-                          filter: "drop-shadow(0px 0px 8px #198671)",
+                          filter: "drop-shadow(0px 0px 6px #198671)",
                         }}
                       />
                     ) : (
@@ -85,7 +85,8 @@ const ProfileSidebar = ({ role }) => {
                     <span
                       style={{
                         textShadow:
-                          pathname === href ? "0px 0px 8px #198671" : "",
+                          pathname === href ? "0px 0px 6px #198671" : "",
+                        color: pathname === href ? "#198671" : "",
                       }}
                     >
                       {label}

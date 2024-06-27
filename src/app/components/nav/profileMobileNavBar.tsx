@@ -23,7 +23,7 @@ const ProfileMobileNavbar = ({ role }) => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 w-screen bg-black/20 dark:bg-white/5 backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around">
+    <nav className="fixed bottom-0 w-screen bg-black/20 dark:bg-white/5 backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around rounded-t-3xl">
       {[
         {
           href: "/profile",
@@ -66,12 +66,12 @@ const ProfileMobileNavbar = ({ role }) => {
         ({ href, icon: Icon, iconFilled: IconFilled, label, adminOnly }) =>
           (!adminOnly || role === "Admin") && (
             <Link href={href} key={href}>
-              <div className="flex flex-col items-center py-1 px-0.5 text-[8px]">
+              <div className="flex flex-col items-center py-2 px-0.5 text-[8px]">
                 {pathname === href ? (
                   <IconFilled
-                    className="h-4 w-4 drop-shadow-lg"
+                    className="h-4 w-4 drop-shadow-lg fill-current text-[#198671]"
                     style={{
-                      filter: "drop-shadow(0px 0px 8px #198671)",
+                      filter: "drop-shadow(0px 0px 6px #198671)",
                     }}
                   />
                 ) : (
@@ -79,7 +79,8 @@ const ProfileMobileNavbar = ({ role }) => {
                 )}
                 <span
                   style={{
-                    textShadow: pathname === href ? "0px 0px 8px #198671" : "",
+                    textShadow: pathname === href ? "0px 0px 6px #198671" : "",
+                    color: pathname === href ? "#198671" : "",
                   }}
                 >
                   {label}
