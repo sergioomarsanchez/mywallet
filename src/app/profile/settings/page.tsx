@@ -6,7 +6,7 @@ const ProfilePage = async () => {
   const session = await getServerSession(authOption);
 
   return (
-    <main className="flex justify-center p-2 md:p-5 xl:p-24">
+    <main className="flex flex-col justify-center p-2 md:p-5 lg:ml-10">
       <div className="flex">
         <h1>Hello, {session?.user?.name} Profile settings!</h1>
       </div>

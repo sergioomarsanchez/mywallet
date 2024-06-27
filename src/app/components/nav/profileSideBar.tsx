@@ -23,7 +23,7 @@ const ProfileSidebar = ({ role }) => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-fit h-fit ml-2 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700">
+    <aside className="w-fit h-fit ml-2 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-24">
       <ul className="space-y-4">
         {[
           {
