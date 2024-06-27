@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import {
   Menu,
   MenuButton,
@@ -16,8 +16,16 @@ import Loader from "./loader";
 
 export default function ProfileDropdown({
   align,
+  name,
+  role,
+  image,
+  email,
 }: {
   align?: "left" | "right";
+  name?: string | null | undefined;
+  role?: string | null | undefined;
+  image?: string | null | undefined;
+  email?: string | null | undefined;
 }) {
   const { session, loading } = useSessionContext();
   if (loading) {
@@ -27,10 +35,10 @@ export default function ProfileDropdown({
   return (
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group">
-        {session?.user?.image ? (
+        {image ? (
           <img
             className="w-8 h-8 rounded-full"
-            src={session?.user?.image}
+            src={image}
             width={32}
             height={32}
             alt="User"
@@ -40,7 +48,7 @@ export default function ProfileDropdown({
         )}
         <div className="flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">
-            {session?.user?.name}
+            {name}
           </span>
           <svg
             className="w-3 h-3 shrink-0 ml-1 fill-current text-slate-400"
@@ -67,10 +75,10 @@ export default function ProfileDropdown({
           <div>
             <div className="pt-0.5 pb-2 px-3 mb-1 border-b border-slate-200 dark:border-slate-700">
               <div className="font-medium text-slate-800 dark:text-slate-100">
-                {session?.user?.email}
+                {email}
               </div>
               <div className="text-xs text-slate-500 dark:text-slate-400 italic">
-                {session?.user?.role}
+                {role}
               </div>
             </div>
             <MenuItems as="ul" className="focus:outline-none">

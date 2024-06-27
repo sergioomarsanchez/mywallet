@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  HomeIcon,
+  ComputerDesktopIcon,
   CreditCardIcon,
   ListBulletIcon,
   Cog6ToothIcon,
@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import {
-  HomeIcon as HomeIconFilled,
+  ComputerDesktopIcon as ComputerDesktopIconFilled,
   CreditCardIcon as CreditCardIconFilled,
   ListBulletIcon as ListBulletIconFilled,
   Cog6ToothIcon as Cog6ToothIconFilled,
@@ -19,71 +19,75 @@ import {
   UserIcon as UserIconFilled,
 } from "@heroicons/react/24/solid";
 
-const ProfileMobileNavbar = () => {
+const ProfileMobileNavbar = ({ role }) => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 w-full bg-gray-800 text-white flex justify-around">
-      <Link href="/profile">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile" ? (
-            <UserIconFilled className="h-6 w-6" />
-          ) : (
-            <UserIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Profile</span>
-        </div>
-      </Link>
-      <Link href="/profile/accounts">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile/accounts" ? (
-            <BanknotesIconFilled className="h-6 w-6" />
-          ) : (
-            <BanknotesIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Accounts</span>
-        </div>
-      </Link>
-      <Link href="/profile/categories">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile/categories" ? (
-            <ListBulletIconFilled className="h-6 w-6" />
-          ) : (
-            <ListBulletIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Categories</span>
-        </div>
-      </Link>
-      <Link href="/profile/payment-methods">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile/payment-methods" ? (
-            <CreditCardIconFilled className="h-6 w-6" />
-          ) : (
-            <CreditCardIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Payment Methods</span>
-        </div>
-      </Link>
-      <Link href="/profile/settings">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile/settings" ? (
-            <Cog6ToothIconFilled className="h-6 w-6" />
-          ) : (
-            <Cog6ToothIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Settings</span>
-        </div>
-      </Link>
-      <Link href="/profile/dashboard">
-        <div className="flex flex-col items-center p-2">
-          {pathname === "/profile/dashboard" ? (
-            <HomeIconFilled className="h-6 w-6" />
-          ) : (
-            <HomeIcon className="h-6 w-6" />
-          )}
-          <span className="text-xs">Dashboard</span>
-        </div>
-      </Link>
+    <nav className="fixed bottom-0 w-screen bg-black/20 dark:bg-white/5 backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around">
+      {[
+        {
+          href: "/profile",
+          icon: UserIcon,
+          iconFilled: UserIconFilled,
+          label: "Profile",
+        },
+        {
+          href: "/profile/accounts",
+          icon: BanknotesIcon,
+          iconFilled: BanknotesIconFilled,
+          label: "Accounts",
+        },
+        {
+          href: "/profile/categories",
+          icon: ListBulletIcon,
+          iconFilled: ListBulletIconFilled,
+          label: "Categories",
+        },
+        {
+          href: "/profile/methods",
+          icon: CreditCardIcon,
+          iconFilled: CreditCardIconFilled,
+          label: "Payment Methods",
+        },
+        {
+          href: "/profile/settings",
+          icon: Cog6ToothIcon,
+          iconFilled: Cog6ToothIconFilled,
+          label: "Settings",
+        },
+        {
+          href: "/profile/dashboard",
+          icon: ComputerDesktopIcon,
+          iconFilled: ComputerDesktopIconFilled,
+          label: "Dashboard",
+          adminOnly: true,
+        },
+      ].map(
+        ({ href, icon: Icon, iconFilled: IconFilled, label, adminOnly }) =>
+          (!adminOnly || role === "Admin") && (
+            <Link href={href} key={href}>
+              <div className="flex flex-col items-center py-1 px-0.5 text-[8px]">
+                {pathname === href ? (
+                  <IconFilled
+                    className="h-4 w-4 drop-shadow-lg"
+                    style={{
+                      filter: "drop-shadow(0px 0px 8px #198671)",
+                    }}
+                  />
+                ) : (
+                  <Icon className="h-4 w-4" />
+                )}
+                <span
+                  style={{
+                    textShadow: pathname === href ? "0px 0px 8px #198671" : "",
+                  }}
+                >
+                  {label}
+                </span>
+              </div>
+            </Link>
+          )
+      )}
     </nav>
   );
 };

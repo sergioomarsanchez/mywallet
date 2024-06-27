@@ -3,7 +3,7 @@ import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
-  HomeIcon,
+  ComputerDesktopIcon,
   CreditCardIcon,
   ListBulletIcon,
   Cog6ToothIcon,
@@ -11,7 +11,7 @@ import {
   UserIcon,
 } from "@heroicons/react/24/outline";
 import {
-  HomeIcon as HomeIconFilled,
+  ComputerDesktopIcon as ComputerDesktopIconFilled,
   CreditCardIcon as CreditCardIconFilled,
   ListBulletIcon as ListBulletIconFilled,
   Cog6ToothIcon as Cog6ToothIconFilled,
@@ -19,84 +19,82 @@ import {
   UserIcon as UserIconFilled,
 } from "@heroicons/react/24/solid";
 
-const ProfileSidebar = () => {
+const ProfileSidebar = ({ role }) => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-64 h-fit rounded-2xl bg-gray-800 text-white flex flex-col justify-center overflow-clip">
+    <aside className="w-fit h-fit ml-2 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700">
       <ul className="space-y-4">
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile">
-            <div className="flex items-center">
-              {pathname === "/profile" ? (
-                <UserIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <UserIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Profile</span>
-            </div>
-          </Link>
-        </li>
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile/accounts">
-            <div className="flex items-center">
-              {pathname === "/profile/accounts" ? (
-                <BanknotesIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <BanknotesIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Accounts</span>
-            </div>
-          </Link>
-        </li>
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile/categories">
-            <div className="flex items-center">
-              {pathname === "/profile/categories" ? (
-                <ListBulletIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <ListBulletIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Categories</span>
-            </div>
-          </Link>
-        </li>
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile/payment-methods">
-            <div className="flex items-center">
-              {pathname === "/profile/payment-methods" ? (
-                <CreditCardIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <CreditCardIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Payment Methods</span>
-            </div>
-          </Link>
-        </li>
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile/settings">
-            <div className="flex items-center">
-              {pathname === "/profile/settings" ? (
-                <Cog6ToothIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <Cog6ToothIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Settings</span>
-            </div>
-          </Link>
-        </li>
-        <li className="hover:bg-gray-700 p-4 flex items-center">
-          <Link href="/profile/dashboard">
-            <div className="flex items-center">
-              {pathname === "/profile/dashboard" ? (
-                <HomeIconFilled className="h-6 w-6 mr-2" />
-              ) : (
-                <HomeIcon className="h-6 w-6 mr-2" />
-              )}
-              <span>Dashboard</span>
-            </div>
-          </Link>
-        </li>
+        {[
+          {
+            href: "/profile",
+            icon: UserIcon,
+            iconFilled: UserIconFilled,
+            label: "Profile",
+          },
+          {
+            href: "/profile/accounts",
+            icon: BanknotesIcon,
+            iconFilled: BanknotesIconFilled,
+            label: "Accounts",
+          },
+          {
+            href: "/profile/categories",
+            icon: ListBulletIcon,
+            iconFilled: ListBulletIconFilled,
+            label: "Categories",
+          },
+          {
+            href: "/profile/methods",
+            icon: CreditCardIcon,
+            iconFilled: CreditCardIconFilled,
+            label: "Payment Methods",
+          },
+          {
+            href: "/profile/settings",
+            icon: Cog6ToothIcon,
+            iconFilled: Cog6ToothIconFilled,
+            label: "Settings",
+          },
+          {
+            href: "/profile/dashboard",
+            icon: ComputerDesktopIcon,
+            iconFilled: ComputerDesktopIconFilled,
+            label: "Dashboard",
+            adminOnly: true,
+          },
+        ].map(
+          ({ href, icon: Icon, iconFilled: IconFilled, label, adminOnly }) =>
+            (!adminOnly || role === "Admin") && (
+              <li
+                key={href}
+                className="hover:bg-gray-400 dark:hover:bg-gray-700 px-2 py-1 flex items-center"
+              >
+                <Link href={href}>
+                  <div className={`flex items-center`}>
+                    {pathname === href ? (
+                      <IconFilled
+                        className="h-6 w-6 mr-2 drop-shadow"
+                        style={{
+                          filter: "drop-shadow(0px 0px 8px #198671)",
+                        }}
+                      />
+                    ) : (
+                      <Icon className="h-6 w-6 mr-2" />
+                    )}
+                    <span
+                      style={{
+                        textShadow:
+                          pathname === href ? "0px 0px 8px #198671" : "",
+                      }}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            )
+        )}
       </ul>
     </aside>
   );

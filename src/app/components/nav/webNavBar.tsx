@@ -12,7 +12,7 @@ const WebNavBar = () => {
   const { data: session } = useSession();
 
   return (
-    <nav className="fixed top-0 right-0 p-4 flex justify-end items-center">
+    <nav className="fixed top-0 right-0 p-4 flex justify-end items-center z-10">
       <ul className="flex justify-end items-center gap-5">
         <li className="hover:scale-105 active:scale-100">
           <Link href={"/"} passHref>
@@ -37,7 +37,13 @@ const WebNavBar = () => {
         ) : (
           <>
             <li>
-              <ProfileDropdown align="right" />
+              <ProfileDropdown
+                align="right"
+                name={session?.user?.name}
+                role={session?.user?.role ?? "User"}
+                image={session?.user?.image}
+                email={session?.user?.email}
+              />
             </li>
           </>
         )}

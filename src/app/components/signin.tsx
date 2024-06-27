@@ -54,7 +54,7 @@ export default function SignIn({
         addToast("Invalid email or password, try again.", "warning");
       } else {
         addToast("Signed in successfully, Welcome back!", "success");
-        router.push("/welcome");
+        router.push("/profile");
         setOpenSigninModal(false);
         reset();
       }
