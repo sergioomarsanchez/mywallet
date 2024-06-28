@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import SignIn from "../signin";
 import SignUp from "../signup";
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import ProfileDropdown from "../profileDropDown";
 

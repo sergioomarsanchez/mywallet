@@ -1,9 +1,10 @@
 import React from "react";
 import type { User } from "../../types/back";
+import UserDashboardRow from "./userDashboardRow";
 
 function UsersDashboard({ users }: { users: User[] }) {
   return (
-    <div className="bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative">
+    <div className="shadow-lg rounded-sm border border-slate-200 dark:border-slate-700 relative">
       <header className="flex justify-between items-center px-5 py-2">
         <h2 className="font-semibold text-slate-800 dark:text-slate-100">
           All Users{" "}
@@ -15,7 +16,7 @@ function UsersDashboard({ users }: { users: User[] }) {
           {/* Add Project Modal */}
           <div className="m-1.5">
             <button
-              className="flex justify-center items-center bg-indigo-500 hover:bg-indigo-600 text-gray-200 p-1  lg:pr-3"
+              className="flex justify-center items-center border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:from-inherit text-sm lg:text-base rounded-sm border bg-gray-200 dark:bg-[#3C754F]/30 hover:dark:bg-[#3C754F]/90 hover:scale-[101%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 p-1 lg:pr-3"
               //   onClick={() => setAddProject(!addProject)}
             >
               <svg
@@ -39,14 +40,11 @@ function UsersDashboard({ users }: { users: User[] }) {
       </header>
       <div>
         {/* Table */}
-        <div className="overflow-x-auto pb-20">
-          <table className="table-auto w-full dark:text-slate-300 divide-y divide-slate-200 dark:divide-slate-700">
+        <div className="overflow-x-auto">
+          <table className="table-auto lg:w-full dark:text-slate-300 divide-y divide-slate-200 dark:divide-slate-700">
             {/* Table header */}
             <thead className="text-xs uppercase text-slate-500 dark:text-slate-400 bg-slate-50 dark:bg-slate-900/20 border-t border-slate-200 dark:border-slate-700">
               <tr>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div className="font-semibold text-left">Avatar</div>
-                </th>
                 <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
                   <div className="font-semibold text-left">Name</div>
                 </th>
@@ -69,8 +67,7 @@ function UsersDashboard({ users }: { users: User[] }) {
             </thead>
             {/* Table body */}
             {users?.map((user) => (
-              <span key={user.id}>{user.firstName + " " + user.lastName}</span>
-              // <ProjectsTableItem key={project.id} project={project} />
+              <UserDashboardRow user={user} key={user.id} />
             ))}
           </table>
         </div>

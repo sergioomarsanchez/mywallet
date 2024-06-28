@@ -25,7 +25,7 @@ export default function RootLayout({
       <SessionWrapper>
         <SessionProvider>
           <ToastProvider>
-            <body className={inter.className + "container m-auto"}>
+            <body className={inter.className}>
               <WebNavBar />
               {children}
               <ToastContainer />

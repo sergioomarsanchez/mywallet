@@ -128,6 +128,7 @@ export const authOption: NextAuthOptions = {
     },
   },
   pages: {
+    signIn:"/profile",
     error: "/auth/error",
     newUser: "/welcome",
   },

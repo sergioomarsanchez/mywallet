@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
 
@@ -45,6 +46,38 @@ export async function getUsers() {
   } catch (error) {
     console.error("Failed to fetch users", error);
     return [];
+  }
+}
+
+export async function deleteUser(userId: string) {
+  try {
+    // Delete transactions
+    await prisma.transaction.deleteMany({
+      where: {
+        account: {
+          userId: userId,
+        },
+      },
+    });
+    // Delete accounts
+    await prisma.account.deleteMany({
+      where: {
+        userId: userId,
+      },
+    });
+    // Delete user
+    const deleteUser = await prisma.user.delete({
+      where: {
+        id: userId,
+      },
+    });
+    // Reload users list
+    if (deleteUser) {
+      revalidatePath("/profile/dashboard");
+    }
+  } catch (error) {
+    console.error("Failed to delete user", error);
+    throw new Error("Failed to delete user");
   }
 }
 

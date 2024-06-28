@@ -64,7 +64,7 @@ export default function Signup({
         if (res?.error) {
           addToast("Invalid email or password", "warning");
         } else {
-          addToast("Signed up successfully, Welcome to My Wallet!", "success")
+          addToast("Signed up successfully, Welcome to My Wallet!", "success");
           router.push("/welcome");
           setOpenSignupModal(false);
           reset();
@@ -218,7 +218,10 @@ export default function Signup({
             <div className="mt-2 flex gap-2 justify-center items-center mb-5">
               <button
                 type="button"
-                onClick={() => signIn("google")}
+                onClick={() => {
+                  signIn("google", { callbackUrl: "/profile" });
+                  addToast("Welcome back, nice to see you again.", "success");
+                }}
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 <GoogleIcon className="size-4" />
@@ -226,7 +229,10 @@ export default function Signup({
               </button>
               <button
                 type="button"
-                onClick={() => signIn("github")}
+                onClick={() => {
+                  signIn("github", { callbackUrl: "/profile" });
+                  addToast("Welcome back, nice to see you again.", "success");
+                }}
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 <GitHubIcon className="size-5" />

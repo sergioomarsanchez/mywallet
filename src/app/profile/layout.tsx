@@ -22,7 +22,7 @@ export default async function ProfilePageLayout({
       <div className="hidden md:flex">
         <ProfileSidebar role={role} />
       </div>
-      {children}
+      <div className="w-full">{children}</div>
       {/* Mobile navbar for smaller screens */}
       <div className="md:hidden w-full">
         <ProfileMobileNavBar role={role} />
