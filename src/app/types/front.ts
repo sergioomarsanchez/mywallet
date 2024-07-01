@@ -20,6 +20,8 @@ export const signInSchema = z.object({
   password: passwordSchema,
 });
 
+export type SignInData = z.infer<typeof signInSchema>;
+
 export const signUpSchema = z.object({
   firstName: z.string().min(1, { message: "First name is required" }),
   lastName: z.string().min(1, { message: "Last name is required" }),
@@ -27,5 +29,14 @@ export const signUpSchema = z.object({
   password: passwordSchema,
 });
 
-export type SignInData = z.infer<typeof signInSchema>;
 export type SignUpData = z.infer<typeof signUpSchema>;
+
+export const accountSchema = z.object({
+  accountType: z.enum(["Checking", "Savings", "CreditCard"]),
+  balance: z.number().nonnegative(),
+  entityName: z.string().min(1),
+  logo: z.string().url().optional(),
+  currency: z.enum(["USD", "ARS", "EUR", "NZD"]),
+});
+
+export type AccountData = z.infer<typeof accountSchema>;

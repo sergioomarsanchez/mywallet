@@ -32,6 +32,7 @@ export default function ProfileDropdown({
     return <Loader />;
   }
 
+
   return (
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group">

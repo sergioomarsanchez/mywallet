@@ -7,7 +7,7 @@ import { getUsers } from "../../lib/actions";
 import type { User as UserType } from "../../types/back";
 import UsersDashboard from "../../components/dashboard/usersDashboard";
 
-const ProfilePage = async () => {
+const DashboardPage = async () => {
   const session = await getServerSession(authOption);
   const users: UserType[] = await getUsers();
 
@@ -65,4 +65,4 @@ const ProfilePage = async () => {
   );
 };
 
-export default ProfilePage;
+export default DashboardPage;

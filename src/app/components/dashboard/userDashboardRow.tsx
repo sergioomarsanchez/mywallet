@@ -4,7 +4,7 @@ import { User } from "../../types/back";
 import Loader from "../loader";
 import ProfileIcon from "../../assets/icons/profile-icon";
 import DeleteUserWarningModal from "./deleteUserWarningModal";
-import { boolean } from "zod";
+import RoleDropdown from "./roleDropdown";
 
 const months = [
   "Jan",
@@ -63,15 +63,7 @@ export default function UserDashboardRow({ user }: { user: User }) {
             <div>{user.email}</div>
           </td>
           <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap text-left">
-            <div
-              className={`font-medium text-slate-800 dark:text-slate-100 ${
-                user.role === "Admin"
-                  ? "italic font-thin text-red-800 dark:text-red-200"
-                  : ""
-              }`}
-            >
-              {user.role}
-            </div>
+            <RoleDropdown userId={user.id} role={user.role} />
           </td>
           <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
             <div className="flex items-center gap-2 text-left font-medium">
@@ -84,13 +76,14 @@ export default function UserDashboardRow({ user }: { user: User }) {
             </div>
           </td>
           <td className="px-1 first:pl-5 last:pr-5 py-0.5 flex items-center justify-center">
-            <DeleteUserWarningModal
-              userId={user.id}
-              openWarningModal={openWarningModal}
-              setOpenWarningModal={setOpenWarningModal}
-            />
+            <div className="group-hover:flex hidden">
+              <DeleteUserWarningModal
+                userId={user.id}
+                openWarningModal={openWarningModal}
+                setOpenWarningModal={setOpenWarningModal}
+              />
+            </div>
             {/*<div className="text-left flex gap-1 justify-center items-center">
-               <div className="group-hover:flex hidden">
                 <button
                   className={`flex items-center justify-between w-full  cursor-pointer`}
                   onClick={() => setEditModalOpen(true)}
@@ -133,7 +126,7 @@ export default function UserDashboardRow({ user }: { user: User }) {
                 />
               </ModalBlank>
 
-            </div> */}
+            */}
           </td>
         </tr>
       </tbody>
