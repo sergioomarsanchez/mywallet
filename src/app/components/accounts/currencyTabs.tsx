@@ -2,6 +2,7 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import React, { useState } from "react";
 import AddAccount from "./addAccount";
+import { PlusIcon } from "@heroicons/react/24/outline";
 
 const CurrencyTabs = ({ userId }: { userId: string }) => {
   const [openAddAccountModal, setOpenAddAccountModal] = useState(false);
@@ -46,14 +47,12 @@ const CurrencyTabs = ({ userId }: { userId: string }) => {
           <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
             NZD
           </Tab>
-          <Tab className="absolute right-2 rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
-            Add account
-          </Tab>
           <button
             onClick={openModal}
-            className="absolute right-2 rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none bg-blue-500"
+            className="absolute right-2 rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none bg-blue-500/30 hover:bg-blue-500/70 transition-colors duration-200 flex items-center justify-center gap-2"
           >
-            Add account
+            <PlusIcon className="size-4" />
+            <span className="hidden md:flex mr-3">Add account</span>
           </button>
           <AddAccount
             openAddAccountModal={openAddAccountModal}
