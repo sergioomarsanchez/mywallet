@@ -85,35 +85,37 @@ export default function EntityDropdown({
             displayValue={(entity: Entity | null) => entity?.name ?? query}
             placeholder="Entity Name"
           />
-          <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-2">
+          <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-1">
             <ChevronDownIcon
-              className="h-5 w-5 text-gray-400"
+              className="size-4 font-extrabold"
               aria-hidden="true"
             />
           </ComboboxButton>
         </div>
         <ComboboxOptions className="absolute top-full z-10 w-full rounded-md bg-gray-300 dark:bg-gray-700 shadow-lg max-h-60 overflow-auto -translate-y-4">
-          <ComboboxOption
-            key={query?.charAt(0).toUpperCase() + query?.slice(1)}
-            value={{
-              name: query?.charAt(0).toUpperCase() + query?.slice(1),
-              logo: "https://imgs.search.brave.com/P5tueEaTHUBVWwyJv4sF5ISrbsRXRCBdrPaQoCrA2tc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dmVjdG9yc3RvY2su/Y29tL2kvcHJldmll/dy0xeC8zNC8wMi9p/Y29uLWJhbmstdmVj/dG9yLTc1ODM0MDIu/anBn",
-              domain: "",
-            }}
-            className="relative cursor-pointer select-none p-2"
-          >
-            {({ active }) => (
-              <div
-                className={`relative cursor-pointer select-none p-2 ${
+          {query.length ? (
+            <ComboboxOption
+              key={query?.charAt(0).toUpperCase() + query?.slice(1)}
+              value={{
+                name: query?.charAt(0).toUpperCase() + query?.slice(1),
+                logo: "https://imgs.search.brave.com/P5tueEaTHUBVWwyJv4sF5ISrbsRXRCBdrPaQoCrA2tc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9jZG4u/dmVjdG9yc3RvY2su/Y29tL2kvcHJldmll/dy0xeC8zNC8wMi9p/Y29uLWJhbmstdmVj/dG9yLTc1ODM0MDIu/anBn",
+                domain: "",
+              }}
+              className={({ active }) =>
+                `relative cursor-pointer select-none p-2 ${
                   active ? "bg-gray-400 dark:bg-gray-600" : ""
-                }`}
-              >
-                <span className="block truncate font-normal">
-                  Use "{query.charAt(0).toUpperCase() + query.slice(1)}"
-                </span>
-              </div>
-            )}
-          </ComboboxOption>
+                }`
+              }
+            >
+              {({ active }) => (
+                <div className="flex items-center gap-2">
+                  <span className="block truncate font-normal">
+                    Use "{query.charAt(0).toUpperCase() + query.slice(1)}"
+                  </span>
+                </div>
+              )}
+            </ComboboxOption>
+          ) : null}
           {entities.map((entity) => (
             <ComboboxOption
               key={entity.name}

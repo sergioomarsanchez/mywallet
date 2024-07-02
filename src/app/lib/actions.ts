@@ -138,6 +138,22 @@ export async function createAccount(data: AccountData & { userId: string }) {
     return {};
   }
 }
+//Fetch accounts
+export async function fetchAccounts(userId: string) {
+  try {
+    const accounts = await prisma.account.findMany({
+      where: {
+        userId: userId,
+      },
+    });
+    if (accounts) {
+      return accounts;
+    }
+  } catch (error) {
+    console.error("Failed to fetch accounts", error);
+    return [];
+  }
+}
 
 //Fetch entities data
 export async function fetchEntitySuggestions(query: string) {

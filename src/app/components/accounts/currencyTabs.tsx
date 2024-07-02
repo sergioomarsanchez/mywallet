@@ -13,10 +13,11 @@ const CurrencyTabs = ({ userId }: { userId: string }) => {
   const handleAccountAdded = (currency: string) => {
     const tabIndex =
       {
-        ARS: 0,
-        USD: 1,
-        EUR: 2,
-        NZD: 3,
+        All: 0,
+        ARS: 1,
+        USD: 2,
+        EUR: 3,
+        NZD: 4,
       }[currency] || 0;
 
     setActiveTab(tabIndex);
@@ -24,8 +25,15 @@ const CurrencyTabs = ({ userId }: { userId: string }) => {
   };
   return (
     <>
-      <TabGroup selectedIndex={activeTab} onChange={setActiveTab} className="w-full">
+      <TabGroup
+        selectedIndex={activeTab}
+        onChange={setActiveTab}
+        className="w-full"
+      >
         <TabList className="relative flex gap-0.5 dm:gap-4 w-full">
+          <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
+            All
+          </Tab>
           <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
             ARS
           </Tab>
@@ -55,6 +63,9 @@ const CurrencyTabs = ({ userId }: { userId: string }) => {
           />
         </TabList>
         <TabPanels className="mt-3 w-full h-full">
+          <TabPanel className="rounded-xl bg-white/5 p-3 w-full h-full">
+            All accounts
+          </TabPanel>
           <TabPanel className="rounded-xl bg-white/5 p-3 w-full h-full">
             Accounts in pesos
           </TabPanel>
