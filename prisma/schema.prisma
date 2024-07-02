@@ -37,16 +37,18 @@ model Account {
 }
 
 model Transaction {
-  id        String   @id @default(uuid())
-  accountId String
-  account   Account  @relation(fields: [accountId], references: [id])
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  amount    Float
-  type      Type     @default(Debit)
-  method    Method   @default(Debit)
-  category  Category @default(Other)
-  date      DateTime @default(now())
+  id         String   @id @default(uuid())
+  accountId  String
+  account    Account  @relation(fields: [accountId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  amount     Float
+  entityName String
+  logo       String?
+  type       Type     @default(Debit)
+  method     Method   @default(Debit)
+  category   Category @default(Other)
+  date       DateTime @default(now())
 }
 
 model Session {
@@ -61,10 +63,10 @@ model Session {
 
 model VerificationToken {
   identifier String
-  token      String    @unique
+  token      String   @unique
   expires    DateTime
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
   @@unique([identifier, token])
 }

@@ -3,6 +3,8 @@ import { authOption } from "../../lib/auth";
 import React from "react";
 import { redirect } from "next/navigation";
 import CurrencyTabs from "@/components/accounts/currencyTabs";
+import { fetchAccounts } from "@/lib/actions";
+import type { Account } from "src/app/types/back";
 
 const AccountPage = async () => {
   const session = await getServerSession(authOption);
@@ -22,6 +24,8 @@ const AccountPage = async () => {
       </main>
     );
   }
+  const accounts: Account[] | null= (await fetchAccounts(session?.user?.id)) ?? [];
+
 
   return (
     <main className="flex flex-col justify-center p-2 md:p-5 lg:ml-10">
@@ -30,7 +34,7 @@ const AccountPage = async () => {
       </h1>
       <div className="flex h-screen w-full justify-center pt-2 md:pt-5 px-4">
         <div className="w-full">
-          <CurrencyTabs userId={session?.user?.id}/>
+          <CurrencyTabs userId={session?.user?.id} accounts={accounts} />
         </div>
       </div>
     </main>

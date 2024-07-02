@@ -155,6 +155,33 @@ export async function fetchAccounts(userId: string) {
   }
 }
 
+//Delete Account
+export async function deleteAccount(accountId: string) {
+  try {
+    // Delete transactions
+    await prisma.transaction.deleteMany({
+      where: {
+        account: {
+          id: accountId,
+        },
+      },
+    });
+    // Delete account
+    const deleteAccount = await prisma.account.delete({
+      where: {
+        id: accountId,
+      },
+    });
+    // Reload account list
+    if (deleteAccount) {
+      revalidatePath("/profile/accounts");
+    }
+  } catch (error) {
+    console.error("Failed to delete account", error);
+    throw new Error("Failed to delete account");
+  }
+}
+
 //Fetch entities data
 export async function fetchEntitySuggestions(query: string) {
   try {

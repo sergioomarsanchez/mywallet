@@ -18,8 +18,9 @@ import {
   BanknotesIcon as BanknotesIconFilled,
   UserIcon as UserIconFilled,
 } from "@heroicons/react/24/solid";
+import { UserRole } from "@prisma/client";
 
-const ProfileSidebar = ({ role }) => {
+const ProfileSidebar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
 
   return (
@@ -74,7 +75,7 @@ const ProfileSidebar = ({ role }) => {
                   <div className={`flex items-center`}>
                     {pathname === href ? (
                       <IconFilled
-                        className="h-6 w-6 mr-2 drop-shadow fill-current text-[#198671]"
+                        className="h-6 w-6 mr-2 drop-shadow fill-current text-[#074237]  dark:text-[#4ae4c5]"
                         style={{
                           filter: "drop-shadow(0px 0px 6px #198671)",
                         }}
@@ -86,8 +87,12 @@ const ProfileSidebar = ({ role }) => {
                       style={{
                         textShadow:
                           pathname === href ? "0px 0px 6px #198671" : "",
-                        color: pathname === href ? "#198671" : "",
                       }}
+                      className={`${
+                        pathname === href
+                          ? "text-[#074237] dark:text-[#4ae4c5]"
+                          : ""
+                      }`}
                     >
                       {label}
                     </span>
