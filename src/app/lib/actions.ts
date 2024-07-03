@@ -139,6 +139,33 @@ export async function createAccount(data: AccountData & { userId: string }) {
     return {};
   }
 }
+
+//Edit account
+export async function updateAccount(data: AccountData & { id: string }) {
+  try {
+    const updatedAccount = await prisma.account.update({
+      where: {
+        id: data.id,
+      },
+      data: {
+        accountType: data.accountType,
+        balance: data.balance,
+        entityName: data.entityName,
+        logo: data.logo,
+        currency: data.currency,
+      },
+    });
+    if (updatedAccount) {
+      revalidatePath("/profile/accounts");
+      return updatedAccount;
+    }
+  } catch (error) {
+    console.error("Failed to update account", error);
+    return {};
+  }
+}
+
+
 //Fetch accounts
 export async function fetchAccounts(userId: string) {
   try {

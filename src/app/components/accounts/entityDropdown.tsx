@@ -19,12 +19,16 @@ type EntityDropdownProps = {
   register: any;
   setValue: any;
   errors: any;
+  defaultEntityName?: string;
+  defaultLogo?: string;
 };
 
 export default function EntityDropdown({
   register,
   setValue,
   errors,
+  defaultEntityName,
+  defaultLogo,
 }: EntityDropdownProps) {
   const [query, setQuery] = useState<string>("");
   const [entities, setEntities] = useState<Entity[]>([]);
@@ -66,15 +70,16 @@ export default function EntityDropdown({
     <div className="relative flex flex-col text-left">
       <label className="text-sm/6 font-medium dark:text-gray-200">
         Entity:{" "}
-        {selectedEntity?.logo && (
-          <img
-            src={selectedEntity?.logo}
-            alt={selectedEntity?.name}
-            width={40}
-            height={40}
-            className="inline-block size-5"
-          />
-        )}
+        {selectedEntity?.logo ||
+          defaultLogo && (
+            <img
+              src={selectedEntity?.logo || defaultLogo}
+              alt={selectedEntity?.name}
+              width={40}
+              height={40}
+              className="inline-block size-5"
+            />
+          )}
       </label>
       <Combobox value={selectedEntity} onChange={handleSelect}>
         <div className="relative">
@@ -82,7 +87,8 @@ export default function EntityDropdown({
             className="block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200 focus:outline-none"
             {...register("entityName")}
             onChange={handleQueryChange}
-            displayValue={(entity: Entity | null) => entity?.name ?? query}
+            defaultValue={defaultEntityName}
+            displayValue={(entity: Entity | null) => entity?.name ?? defaultEntityName}
             placeholder="Entity Name"
           />
           <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-1">

@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Account, Transaction } from "src/app/types/back";
 import TransactionList from "./accountDetailsComp/transactionList";
 import AddTransaction from "./accountDetailsComp/addTransaction";
-import { boolean } from "zod";
 import PlusIcon from "@heroicons/react/20/solid/PlusIcon";
 
 interface AccountDetailsProps {

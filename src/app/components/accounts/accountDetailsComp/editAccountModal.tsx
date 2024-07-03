@@ -1,31 +1,28 @@
 "use client";
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Field, Input, Label } from "@headlessui/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { transactionSchema, TransactionData } from "src/app/types/front";
+import { accountSchema, AccountData } from "src/app/types/front";
 import { useToast } from "src/app/context/ToastContext";
-import { addTransaction } from "@/lib/actions";
+import { updateAccount } from "@/lib/actions";
 import clsx from "clsx";
-import Loader from "@/components/loader";
 import EntityDropdown from "../entityDropdown";
-import { Category } from "@prisma/client";
+import Loader from "@/components/loader";
+import { Account } from "src/app/types/back";
 
-type AddTransactionProps = {
-  openAddTransactionModal: boolean;
-  setOpenAddTransactionModal: (openAddTransactionModal: boolean) => void;
-  userId: string;
-  accountId: string;
+type EditAccountProps = {
+  openEditAccountModal: boolean;
+  setOpenEditAccountModal: (openEditAccountModal: boolean) => void;
+  account: Account;
 };
 
-export default function AddTransaction({
-  openAddTransactionModal,
-  setOpenAddTransactionModal,
-  userId,
-  accountId,
-}: AddTransactionProps) {
+export default function EditAccount({
+  openEditAccountModal,
+  setOpenEditAccountModal,
+  account,
+}: EditAccountProps) {
   const { addToast } = useToast();
   const {
     register,
@@ -33,22 +30,22 @@ export default function AddTransaction({
     formState: { errors },
     reset,
     setValue,
-  } = useForm<TransactionData>({
-    resolver: zodResolver(transactionSchema),
+  } = useForm<AccountData>({
+    resolver: zodResolver(accountSchema),
   });
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const onSubmit = async (data: TransactionData) => {
+  const onSubmit = async (data: AccountData) => {
     setIsLoading(true);
     try {
-      await addTransaction(data, userId, accountId);
+      await updateAccount({ ...data, id: account.id });
 
-      addToast("Transaction added successfully!", "success");
-      setOpenAddTransactionModal(false);
+      addToast("Account updated successfully!", "success");
+      setOpenEditAccountModal(false);
       reset();
     } catch (err) {
-      addToast("Failed to add transaction. Please try again.", "error");
+      addToast("Failed to update account. Please try again.", "error");
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +54,8 @@ export default function AddTransaction({
   return (
     <>
       <Dialog
-        open={openAddTransactionModal}
-        onClose={() => setOpenAddTransactionModal(false)}
+        open={openEditAccountModal}
+        onClose={() => setOpenEditAccountModal(false)}
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
@@ -67,7 +64,7 @@ export default function AddTransaction({
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
             >
-              Add Transaction
+              Edit Account
             </DialogTitle>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -77,29 +74,25 @@ export default function AddTransaction({
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Amount:
+                      Account Type:
                     </Label>
-                    <Input
-                      type="number"
-                      step="any"
-                      {...register("amount", {
-                        required: "Amount is required",
-                        valueAsNumber: true,
-                        validate: (value) =>
-                          !isNaN(value) || "Must be a number",
-                      })}
-                      placeholder="Amount"
-                      required
+                    <select
+                      {...register("accountType")}
                       className={clsx(
                         "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
-                    />
+                      defaultValue={account.accountType}
+                    >
+                      <option value="Checking">Checking</option>
+                      <option value="Savings">Savings</option>
+                      <option value="CreditCard">Credit Card</option>
+                    </select>
                   </Field>
                   <div className="h-4 mb-2">
-                    {errors.amount && (
+                    {errors.accountType && (
                       <p className="text-red-500 text-xs">
-                        {errors.amount.message}
+                        {errors.accountType.message}
                       </p>
                     )}
                   </div>
@@ -109,6 +102,8 @@ export default function AddTransaction({
                     register={register}
                     setValue={setValue}
                     errors={errors}
+                    defaultEntityName={account.entityName}
+                    defaultLogo={account.logo ?? ""}
                   />
                   <div className="h-4 mb-2">
                     {errors.entityName && (
@@ -126,99 +121,56 @@ export default function AddTransaction({
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Type:
-                    </Label>
-                    <select
-                      {...register("type")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      <option value="Debit">Debit</option>
-                      <option value="Credit">Credit</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.type && (
-                      <p className="text-red-500 text-xs">
-                        {errors.type.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Method:
-                    </Label>
-                    <select
-                      {...register("method")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      <option value="Debit">Debit</option>
-                      <option value="Credit">Credit</option>
-                      <option value="Cash">Cash</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.method && (
-                      <p className="text-red-500 text-xs">
-                        {errors.method.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Category:
-                    </Label>
-                    <select
-                      {...register("category")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      {Object.keys(Category).map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.category && (
-                      <p className="text-red-500 text-xs">
-                        {errors.category.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Date:
+                      Balance:
                     </Label>
                     <Input
-                      type="date"
-                      {...register("date", {
-                        required: "Date is required",
+                      step="any"
+                      {...register("balance", {
+                        required: "Balance is required",
+                        valueAsNumber: true,
+                        validate: (value) =>
+                          !isNaN(value) || "Must be a number",
                       })}
+                      placeholder="Balance"
+                      required
+                      defaultValue={account.balance}
                       className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
                   </Field>
                   <div className="h-4 mb-2">
-                    {errors.date && (
+                    {errors.balance && (
                       <p className="text-red-500 text-xs">
-                        {errors.date.message}
+                        {errors.balance.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium dark:text-gray-200">
+                      Currency:
+                    </Label>
+                    <select
+                      {...register("currency")}
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                      defaultValue={account.currency}
+                    >
+                      <option value="USD">USD</option>
+                      <option value="ARS">ARS</option>
+                      <option value="EUR">EUR</option>
+                      <option value="NZD">NZD</option>
+                    </select>
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.currency && (
+                      <p className="text-red-500 text-xs">
+                        {errors.currency.message}
                       </p>
                     )}
                   </div>
@@ -226,15 +178,15 @@ export default function AddTransaction({
               </div>
               <button
                 type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-32 transition-colors duration-200"
+                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70  py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-32 transition-colors duration-200"
               >
-                {isLoading ? <Loader /> : "Add Transaction"}
+                {isLoading ? <Loader /> : "Update Account"}
               </button>
             </form>
             <div className="flex gap-4 justify-end">
               <button
                 onClick={() => {
-                  setOpenAddTransactionModal(false);
+                  setOpenEditAccountModal(false);
                   reset();
                 }}
                 type="button"
