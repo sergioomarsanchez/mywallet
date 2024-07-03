@@ -1,4 +1,4 @@
-import { UserRole } from "@prisma/client";
+import { Category, Method, Type, UserRole } from "@prisma/client";
 import { Currency } from "@prisma/client";
 import { AccountType } from "@prisma/client";
 
@@ -23,4 +23,17 @@ export type Account = {
   currency: Currency;
   createdAt: Date;
   updatedAt: Date;
+};
+
+export type Transaction = {
+  id: string;
+  accountId: string;
+  userId: string;
+  amount: number;
+  entityName: string;
+  logo?: string | null;
+  type: Type;
+  method: Method;
+  category: Category;
+  date: Date;
 };

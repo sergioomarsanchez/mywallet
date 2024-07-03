@@ -103,6 +103,18 @@ export default function AddAccount({
                   setValue={setValue}
                   errors={errors}
                 />
+                <div className="h-4 mb-2">
+                  {errors.entityName && (
+                    <p className="text-red-500 text-xs">
+                      {errors.entityName.message}
+                    </p>
+                  )}
+                  {errors.logo && (
+                    <p className="text-red-500 text-xs">
+                      {errors.logo?.message}
+                    </p>
+                  )}
+                </div>
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">

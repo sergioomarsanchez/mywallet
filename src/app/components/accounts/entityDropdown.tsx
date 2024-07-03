@@ -118,7 +118,7 @@ export default function EntityDropdown({
           ) : null}
           {entities.map((entity) => (
             <ComboboxOption
-              key={entity.name}
+              key={entity.logo}
               value={entity}
               className={({ active }) =>
                 `relative cursor-pointer select-none p-2 ${

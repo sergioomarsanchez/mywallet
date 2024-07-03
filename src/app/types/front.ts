@@ -40,3 +40,33 @@ export const accountSchema = z.object({
 });
 
 export type AccountData = z.infer<typeof accountSchema>;
+
+
+export const transactionSchema = z.object({
+  amount: z.number().positive("Amount must be positive"),
+  entityName: z.string().min(1, "Entity name is required"),
+  logo: z.string().optional(),
+  type: z.enum(["Debit", "Credit"]),
+  method: z.enum(["Debit", "Credit", "Cash"]),
+  category: z.enum([
+    "Housing",
+    "Transportation",
+    "Food",
+    "Entertainment",
+    "Utilities",
+    "Insurance",
+    "Healthcare",
+    "DebtRepayment",
+    "Savings",
+    "Investments",
+    "Taxes",
+    "Salary",
+    "FreelanceContractWork",
+    "RentalIncome",
+    "Gifts",
+    "Other",
+  ]),
+  date: z.string().refine((val) => !isNaN(Date.parse(val)), "Invalid date"),
+});
+
+export type TransactionData = z.infer<typeof transactionSchema>;

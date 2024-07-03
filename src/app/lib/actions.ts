@@ -3,7 +3,8 @@ import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
 import { UserRole } from "@prisma/client";
-import { AccountData } from "../types/front";
+import { AccountData, TransactionData } from "../types/front";
+import { Account, Transaction } from "../types/back";
 
 //---------- Users Actions ----------
 //Get users
@@ -182,6 +183,21 @@ export async function deleteAccount(accountId: string) {
   }
 }
 
+//Fetch account to show in Account detail page
+export async function fetchAccountById(
+  accountId: string
+): Promise<Account | null> {
+  try {
+    const account = await prisma.account.findUnique({
+      where: { id: accountId },
+    });
+    return account;
+  } catch (error) {
+    console.error("Failed to fetch account", error);
+    return null;
+  }
+}
+
 //Fetch entities data
 export async function fetchEntitySuggestions(query: string) {
   try {
@@ -197,5 +213,71 @@ export async function fetchEntitySuggestions(query: string) {
   } catch (error) {
     console.error("Error fetching companies", error);
     return [];
+  }
+}
+
+//---------- Transactions actions ---------
+
+export async function fetchTransactionsByAccountId(
+  accountId: string
+): Promise<Transaction[] | null> {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: { accountId },
+    });
+    return transactions;
+  } catch (error) {
+    console.error("Failed to fetch account", error);
+    return [];
+  }
+}
+
+//Add transaction
+export async function addTransaction(
+  data: TransactionData,
+  userId: string,
+  accountId: string
+) {
+  try {
+    // Comienza una transacción en la base de datos
+    const result = await prisma.$transaction(async (prisma) => {
+      // Crea la nueva transacción
+      const transaction = await prisma.transaction.create({
+        data: {
+          accountId,
+          userId,
+          amount: data.amount,
+          entityName: data.entityName,
+          logo: data.logo,
+          type: data.type,
+          method: data.method,
+          category: data.category,
+          date: new Date(data.date),
+        },
+      });
+
+      // Calcula el nuevo balance en función del tipo de transacción
+      const balanceUpdate = data.type === "Debit" ? -data.amount : data.amount;
+
+      // Actualiza el balance de la cuenta
+      await prisma.account.update({
+        where: { id: accountId },
+        data: {
+          balance: {
+            increment: balanceUpdate,
+          },
+        },
+      });
+
+      return transaction;
+    });
+
+    // Revalida el camino para actualizar los datos en la página
+    revalidatePath("profile/accounts");
+
+    return result;
+  } catch (error) {
+    console.error("Failed to add transaction", error);
+    throw new Error("Failed to add transaction");
   }
 }
