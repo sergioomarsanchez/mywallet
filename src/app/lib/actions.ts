@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
-import { UserRole } from "@prisma/client";
+import { Type, UserRole } from "@prisma/client";
 import { AccountData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
 
@@ -165,13 +165,15 @@ export async function updateAccount(data: AccountData & { id: string }) {
   }
 }
 
-
 //Fetch accounts
 export async function fetchAccounts(userId: string) {
   try {
     const accounts = await prisma.account.findMany({
       where: {
         userId: userId,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
     if (accounts) {
@@ -251,6 +253,9 @@ export async function fetchTransactionsByAccountId(
   try {
     const transactions = await prisma.transaction.findMany({
       where: { accountId },
+      orderBy: {
+        date: "desc",
+      },
     });
     return transactions;
   } catch (error) {
@@ -306,5 +311,101 @@ export async function addTransaction(
   } catch (error) {
     console.error("Failed to add transaction", error);
     throw new Error("Failed to add transaction");
+  }
+}
+
+//update transaction
+export async function updateTransaction(
+  transactionId: string,
+  accountId: string,
+  newData: TransactionData,
+  oldAmount: number,
+  oldType: Type
+) {
+  try {
+    // Convert date string to Date object
+    if (typeof newData.date === "string") {
+      newData.date = new Date(newData.date);
+    }
+
+    // Calcula el cambio en el balance
+    let balanceUpdate = 0;
+    if (newData.type === "Debit") {
+      if (oldType === "Credit") {
+        balanceUpdate = -oldAmount - newData.amount; // Cambio de crédito a débito
+      } else {
+        balanceUpdate = -oldAmount + newData.amount; // Actualización de débito
+      }
+    } else if (newData.type === "Credit") {
+      if (oldType === "Debit") {
+        balanceUpdate = oldAmount - newData.amount; // Cambio de débito a crédito
+      } else {
+        balanceUpdate = oldAmount + newData.amount; // Actualización de crédito
+      }
+    }
+
+    // Usa una transacción para asegurar atomicidad
+    await prisma.$transaction(async (prisma) => {
+      const updatedTransaction = await prisma.transaction.update({
+        where: { id: transactionId },
+        data: newData,
+      });
+
+      if (updatedTransaction) {
+        await prisma.account.update({
+          where: { id: accountId },
+          data: {
+            balance: {
+              increment: balanceUpdate,
+            },
+          },
+        });
+      }
+    });
+
+    // Revalida el camino
+    revalidatePath("/profile/accounts");
+  } catch (error) {
+    console.error("Error al actualizar la transacción", error);
+    throw new Error("Error al actualizar la transacción");
+  }
+}
+
+//Delete Transaction
+
+export async function deleteTransaction(
+  transactionId: string,
+  accountId: string,
+  amount: number,
+  type: Type
+) {
+  const balanceUpdate = type === "Debit" ? amount : -amount;
+
+  try {
+    // Use a transaction to ensure atomicity
+    await prisma.$transaction(async (prisma) => {
+      // Delete transaction
+      await prisma.transaction.delete({
+        where: {
+          id: transactionId,
+        },
+      });
+
+      // Update account balance
+      await prisma.account.update({
+        where: { id: accountId },
+        data: {
+          balance: {
+            increment: balanceUpdate,
+          },
+        },
+      });
+    });
+
+    // Revalidate the path to refresh the account list
+    revalidatePath("/profile/accounts");
+  } catch (error) {
+    console.error("Failed to delete transaction", error);
+    throw new Error("Failed to delete transaction");
   }
 }

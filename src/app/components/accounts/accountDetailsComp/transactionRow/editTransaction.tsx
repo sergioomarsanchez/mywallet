@@ -7,25 +7,26 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { transactionSchema, TransactionData } from "src/app/types/front";
 import { useToast } from "src/app/context/ToastContext";
-import { addTransaction } from "@/lib/actions";
+import { updateTransaction } from "@/lib/actions";
 import clsx from "clsx";
 import Loader from "@/components/loader";
-import EntityDropdown from "../entityDropdown";
+import EntityDropdown from "../../entityDropdown";
+import { Transaction } from "src/app/types/back";
 import { Category } from "@prisma/client";
 
-type AddTransactionProps = {
-  openAddTransactionModal: boolean;
-  setOpenAddTransactionModal: (openAddTransactionModal: boolean) => void;
-  userId: string;
+type EditTransactionProps = {
+  openEditTransactionModal: boolean;
+  setOpenEditTransactionModal: (openEditTransactionModal: boolean) => void;
+  transaction: Transaction;
   accountId: string;
 };
 
-export default function AddTransaction({
-  openAddTransactionModal,
-  setOpenAddTransactionModal,
-  userId,
+export default function EditTransaction({
+  openEditTransactionModal,
+  setOpenEditTransactionModal,
+  transaction,
   accountId,
-}: AddTransactionProps) {
+}: EditTransactionProps) {
   const { addToast } = useToast();
   const {
     register,
@@ -37,18 +38,31 @@ export default function AddTransaction({
     resolver: zodResolver(transactionSchema),
   });
 
+  const formatDate = (date: Date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const day = date.getDate().toString().padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  };
+
   const [isLoading, setIsLoading] = useState(false);
 
   const onSubmit = async (data: TransactionData) => {
     setIsLoading(true);
     try {
-      await addTransaction(data, userId, accountId);
+      await updateTransaction(
+        transaction.id,
+        accountId,
+        data,
+        transaction.amount,
+        transaction.type
+      );
 
-      addToast("Transaction added successfully!", "success");
-      setOpenAddTransactionModal(false);
+      addToast("Transaction updated successfully!", "success");
+      setOpenEditTransactionModal(false);
       reset();
     } catch (err) {
-      addToast("Failed to add transaction. Please try again.", "error");
+      addToast("Failed to update transaction. Please try again.", "error");
     } finally {
       setIsLoading(false);
     }
@@ -57,8 +71,8 @@ export default function AddTransaction({
   return (
     <>
       <Dialog
-        open={openAddTransactionModal}
-        onClose={() => setOpenAddTransactionModal(false)}
+        open={openEditTransactionModal}
+        onClose={() => setOpenEditTransactionModal(false)}
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
@@ -67,7 +81,7 @@ export default function AddTransaction({
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
             >
-              Add Transaction
+              Edit Transaction
             </DialogTitle>
             <form
               onSubmit={handleSubmit(onSubmit)}
@@ -79,6 +93,8 @@ export default function AddTransaction({
                     register={register}
                     setValue={setValue}
                     errors={errors}
+                    defaultEntityName={transaction.entityName}
+                    defaultLogo={transaction.logo ?? ""}
                   />
                   <div className="h-4 mb-2">
                     {errors.entityName && (
@@ -101,6 +117,7 @@ export default function AddTransaction({
                     <Input
                       type="number"
                       step="any"
+                      defaultValue={transaction.amount}
                       {...register("amount", {
                         required: "Amount is required",
                         valueAsNumber: true,
@@ -130,6 +147,7 @@ export default function AddTransaction({
                     </Label>
                     <select
                       {...register("type")}
+                      defaultValue={transaction.type}
                       className={clsx(
                         "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
@@ -154,6 +172,7 @@ export default function AddTransaction({
                     </Label>
                     <select
                       {...register("method")}
+                      defaultValue={transaction.method}
                       className={clsx(
                         "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
@@ -179,6 +198,7 @@ export default function AddTransaction({
                     </Label>
                     <select
                       {...register("category")}
+                      defaultValue={transaction.category}
                       className={clsx(
                         "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
@@ -206,11 +226,12 @@ export default function AddTransaction({
                     </Label>
                     <Input
                       type="date"
+                      defaultValue={formatDate(transaction.date)}
                       {...register("date", {
                         required: "Date is required",
                       })}
                       className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -224,25 +245,22 @@ export default function AddTransaction({
                   </div>
                 </div>
               </div>
-            </form>
-            <div className="flex w-full justify-center items-center gap-2 mt-4">
-              <button
-                onClick={() => {
-                  setOpenAddTransactionModal(false);
-                  reset();
-                }}
-                type="button"
-                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+              <div className="flex w-full justify-center items-center gap-2 mt-4">
+                <button
+                  type="button"
+                  className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                  onClick={() => setOpenEditTransactionModal(false)}
                 >
-                {isLoading ? <Loader /> : "Add"}
-              </button>
-            </div>
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+                >
+                  {isLoading ? <Loader /> : "Edit"}
+                </button>
+              </div>
+            </form>
           </DialogPanel>
         </div>
       </Dialog>

@@ -109,7 +109,7 @@ export default function EntityDropdown({
             />
           </ComboboxButton>
         </div>
-        <ComboboxOptions className="absolute top-full z-10 w-full rounded-md bg-gray-300 dark:bg-gray-700 shadow-lg max-h-60 overflow-auto -translate-y-4">
+        <ComboboxOptions className="absolute top-full z-10 w-full rounded-md bg-gray-300 dark:bg-gray-700 shadow-lg max-h-60 overflow-auto">
           {query.length ? (
             <ComboboxOption
               key={query?.charAt(0).toUpperCase() + query?.slice(1)}

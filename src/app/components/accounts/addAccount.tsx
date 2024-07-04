@@ -74,6 +74,25 @@ export default function AddAccount({
             >
               <div className="py-2 md:py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-1 w-[95%] md:grid-cols-2 md:gap-2">
                 <div className="flex flex-col">
+                  <EntityDropdown
+                    register={register}
+                    setValue={setValue}
+                    errors={errors}
+                  />
+                  <div className="h-4 mb-2">
+                    {errors.entityName && (
+                      <p className="text-red-500 text-xs">
+                        {errors.entityName.message}
+                      </p>
+                    )}
+                    {errors.logo && (
+                      <p className="text-red-500 text-xs">
+                        {errors.logo?.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">
                       Account Type:
@@ -98,22 +117,31 @@ export default function AddAccount({
                     )}
                   </div>
                 </div>
-                <EntityDropdown
-                  register={register}
-                  setValue={setValue}
-                  errors={errors}
-                />
-                <div className="h-4 mb-2">
-                  {errors.entityName && (
-                    <p className="text-red-500 text-xs">
-                      {errors.entityName.message}
-                    </p>
-                  )}
-                  {errors.logo && (
-                    <p className="text-red-500 text-xs">
-                      {errors.logo?.message}
-                    </p>
-                  )}
+                <div className="flex flex-col">
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium dark:text-gray-200">
+                      Currency:
+                    </Label>
+                    <select
+                      {...register("currency")}
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                    >
+                      <option value="USD">USD</option>
+                      <option value="ARS">ARS</option>
+                      <option value="EUR">EUR</option>
+                      <option value="NZD">NZD</option>
+                    </select>
+                  </Field>
+                  <div className="h-4 mb-2">
+                    {errors.currency && (
+                      <p className="text-red-500 text-xs">
+                        {errors.currency.message}
+                      </p>
+                    )}
+                  </div>
                 </div>
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
@@ -141,32 +169,6 @@ export default function AddAccount({
                     {errors.balance && (
                       <p className="text-red-500 text-xs">
                         {errors.balance.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Currency:
-                    </Label>
-                    <select
-                      {...register("currency")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      <option value="USD">USD</option>
-                      <option value="ARS">ARS</option>
-                      <option value="EUR">EUR</option>
-                      <option value="NZD">NZD</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.currency && (
-                      <p className="text-red-500 text-xs">
-                        {errors.currency.message}
                       </p>
                     )}
                   </div>

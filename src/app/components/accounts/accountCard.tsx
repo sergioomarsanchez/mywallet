@@ -24,17 +24,17 @@ function AccountCard({ account }: { account: Account }) {
   const { integerPart, decimalPart } = formatBalance(account.balance);
 
   return (
-    <Link href={`/profile/accounts/${account.id}`}>
-      <div className="card text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] hover:brightness-90 transition-all cursor-pointer group bg-gradient-to-tl from-gray-400 to-gray-300 hover:from-gray-500 hover:to-gray-300 border-gray-300 dark:from-gray-900 dark:to-gray-950 dark:hover:from-gray-800 dark:hover:to-gray-950 border-r-2 border-t-2 dark:border-gray-900 m-4 rounded-lg overflow-hidden relative">
+    <div className="card text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] hover:brightness-90 transition-all cursor-pointer group bg-gradient-to-tl from-gray-400 to-gray-300 hover:from-gray-500 hover:to-gray-300 border-gray-300 dark:from-gray-900 dark:to-gray-950 dark:hover:from-gray-800 dark:hover:to-gray-950 border-r-2 border-t-2 dark:border-gray-900 m-4 rounded-lg overflow-hidden relative">
+      <div className="w-fit h-fit absolute top-0 right-3">
+        <DeleteAccountWarningModal
+          accountId={account.id}
+          openWarningModal={openWarningModal}
+          setOpenWarningModal={setOpenWarningModal}
+        />
+      </div>
+      <Link href={`/profile/accounts/${account.id}`}>
         <div className="px-8 py-10">
           <header className="flex justify-start items-start gap-5">
-            <div className="w-fit h-fit absolute top-0 right-3">
-              <DeleteAccountWarningModal
-                accountId={account.id}
-                openWarningModal={openWarningModal}
-                setOpenWarningModal={setOpenWarningModal}
-              />
-            </div>
             {account.logo ? (
               <img
                 className="size-10 rounded-full rounded-tl-none mb-4 group-hover:-translate-y-1 group-hover:shadow-xl group-hover:shadow-gray-900 transition-all "
@@ -71,8 +71,8 @@ function AccountCard({ account }: { account: Account }) {
 
         <div className="h-2 w-full bg-gradient-to-l via-blue-500 group-hover:blur-xl blur-2xl m-auto rounded transition-all absolute bottom-0"></div>
         <div className="h-0.5 group-hover:w-full bg-gradient-to-l via-gray-500 dark:via-blue-950 group-hover:via-blue-500 w-[70%] m-auto rounded transition-all"></div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

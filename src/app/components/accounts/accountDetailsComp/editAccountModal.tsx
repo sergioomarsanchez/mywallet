@@ -72,6 +72,27 @@ export default function EditAccount({
             >
               <div className="py-2 md:py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-1 w-[95%] md:grid-cols-2 md:gap-2">
                 <div className="flex flex-col">
+                  <EntityDropdown
+                    register={register}
+                    setValue={setValue}
+                    errors={errors}
+                    defaultEntityName={account.entityName}
+                    defaultLogo={account.logo ?? ""}
+                  />
+                  <div className="h-4 mb-2">
+                    {errors.entityName && (
+                      <p className="text-red-500 text-xs">
+                        {errors.entityName.message}
+                      </p>
+                    )}
+                    {errors.logo && (
+                      <p className="text-red-500 text-xs">
+                        {errors.logo?.message}
+                      </p>
+                    )}
+                  </div>
+                </div>
+                <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium dark:text-gray-200">
                       Account Type:
@@ -98,22 +119,28 @@ export default function EditAccount({
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <EntityDropdown
-                    register={register}
-                    setValue={setValue}
-                    errors={errors}
-                    defaultEntityName={account.entityName}
-                    defaultLogo={account.logo ?? ""}
-                  />
+                  <Field className={"text-left"}>
+                    <Label className="text-sm/6 font-medium dark:text-gray-200">
+                      Currency:
+                    </Label>
+                    <select
+                      {...register("currency")}
+                      className={clsx(
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
+                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
+                      )}
+                      defaultValue={account.currency}
+                    >
+                      <option value="USD">USD</option>
+                      <option value="ARS">ARS</option>
+                      <option value="EUR">EUR</option>
+                      <option value="NZD">NZD</option>
+                    </select>
+                  </Field>
                   <div className="h-4 mb-2">
-                    {errors.entityName && (
+                    {errors.currency && (
                       <p className="text-red-500 text-xs">
-                        {errors.entityName.message}
-                      </p>
-                    )}
-                    {errors.logo && (
-                      <p className="text-red-500 text-xs">
-                        {errors.logo?.message}
+                        {errors.currency.message}
                       </p>
                     )}
                   </div>
@@ -148,42 +175,9 @@ export default function EditAccount({
                     )}
                   </div>
                 </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Currency:
-                    </Label>
-                    <select
-                      {...register("currency")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                      defaultValue={account.currency}
-                    >
-                      <option value="USD">USD</option>
-                      <option value="ARS">ARS</option>
-                      <option value="EUR">EUR</option>
-                      <option value="NZD">NZD</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.currency && (
-                      <p className="text-red-500 text-xs">
-                        {errors.currency.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
               </div>
-              <button
-                type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70  py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-32 transition-colors duration-200"
-              >
-                {isLoading ? <Loader /> : "Update Account"}
-              </button>
             </form>
-            <div className="flex gap-4 justify-end">
+            <div className="flex w-full justify-center items-center gap-2 mt-4">
               <button
                 onClick={() => {
                   setOpenEditAccountModal(false);
@@ -193,6 +187,12 @@ export default function EditAccount({
                 className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
                 Cancel
+              </button>
+              <button
+                type="submit"
+                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+              >
+                {isLoading ? <Loader /> : "Edit"}
               </button>
             </div>
           </DialogPanel>
