@@ -61,7 +61,9 @@ function MobileBalanceCard({
         className="absolute right-3 top-[5rem] hover:scale-105 w-fit h-fit z-20"
         onClick={() => setOpenEditAccount(true)}
       >
-        <PencilIcon className="font-bold size-5 text-white hover:text-blue-600" />
+        <PencilIcon className="font-bold size-5 text-white hover:text-blue-400" style={{
+                      filter: "drop-shadow(2px 2px 4px #ffffff)",
+                    }}/>
       </button>
       {openEditAccount && (
         <EditAccount

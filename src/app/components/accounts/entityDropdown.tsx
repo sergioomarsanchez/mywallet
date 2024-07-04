@@ -70,16 +70,25 @@ export default function EntityDropdown({
     <div className="relative flex flex-col text-left">
       <label className="text-sm/6 font-medium dark:text-gray-200">
         Entity:{" "}
-        {selectedEntity?.logo ||
+        {selectedEntity?.logo ? (
+          <img
+            src={selectedEntity?.logo}
+            alt={selectedEntity?.name}
+            width={40}
+            height={40}
+            className="inline-block size-5 rounded-full"
+          />
+        ) : (
           defaultLogo && (
             <img
               src={selectedEntity?.logo || defaultLogo}
               alt={selectedEntity?.name}
               width={40}
               height={40}
-              className="inline-block size-5"
+              className="inline-block size-5 rounded-full"
             />
-          )}
+          )
+        )}
       </label>
       <Combobox value={selectedEntity} onChange={handleSelect}>
         <div className="relative">
@@ -88,7 +97,9 @@ export default function EntityDropdown({
             {...register("entityName")}
             onChange={handleQueryChange}
             defaultValue={defaultEntityName}
-            displayValue={(entity: Entity | null) => entity?.name ?? defaultEntityName}
+            displayValue={(entity: Entity | null) =>
+              entity?.name ?? defaultEntityName
+            }
             placeholder="Entity Name"
           />
           <ComboboxButton className="absolute inset-y-0 right-0 flex items-center pr-1">
@@ -139,7 +150,7 @@ export default function EntityDropdown({
                     alt={entity.name}
                     width={20}
                     height={20}
-                    className="inline-block"
+                    className="inline-block rounded-full"
                   />
                   <span
                     className={`block truncate ${

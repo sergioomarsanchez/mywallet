@@ -32,7 +32,6 @@ export default function ProfileDropdown({
     return <Loader />;
   }
 
-
   return (
     <Menu as="div" className="relative inline-flex">
       <MenuButton className="inline-flex justify-center items-center group">
@@ -47,7 +46,7 @@ export default function ProfileDropdown({
         ) : (
           <ProfileIcon className="size-8 rounded-full" />
         )}
-        <div className="flex items-center truncate">
+        <div className="hidden md:flex items-center truncate">
           <span className="truncate ml-2 text-sm font-medium dark:text-slate-300 group-hover:text-slate-800 dark:group-hover:text-slate-200">
             {name}
           </span>
