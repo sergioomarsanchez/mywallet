@@ -2,7 +2,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
-import { Type, UserRole } from "@prisma/client";
+import { Type, UserRole, Currency } from "@prisma/client";
 import { AccountData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
 
@@ -227,7 +227,7 @@ export async function fetchAccountById(
   }
 }
 
-//Fetch entities data
+//Fetch entities data EntityDropdown to add entity and logo to an account or transaction
 export async function fetchEntitySuggestions(query: string) {
   try {
     const response = await fetch(
@@ -323,32 +323,29 @@ export async function updateTransaction(
   oldType: Type
 ) {
   try {
-    // Convert date string to Date object
-    if (typeof newData.date === "string") {
-      newData.date = new Date(newData.date);
-    }
+    // Convertir la fecha de cadena a objeto Date si es necesario
+    let dateToDB =
+      typeof newData.date === "string" ? new Date(newData.date) : newData.date;
 
-    // Calcula el cambio en el balance
+    // Calcular el cambio en el balance
     let balanceUpdate = 0;
     if (newData.type === "Debit") {
-      if (oldType === "Credit") {
-        balanceUpdate = -oldAmount - newData.amount; // Cambio de crédito a débito
-      } else {
-        balanceUpdate = -oldAmount + newData.amount; // Actualización de débito
-      }
+      balanceUpdate =
+        oldType === "Credit"
+          ? -oldAmount - newData.amount
+          : -oldAmount + newData.amount;
     } else if (newData.type === "Credit") {
-      if (oldType === "Debit") {
-        balanceUpdate = oldAmount - newData.amount; // Cambio de débito a crédito
-      } else {
-        balanceUpdate = oldAmount + newData.amount; // Actualización de crédito
-      }
+      balanceUpdate =
+        oldType === "Debit"
+          ? oldAmount - newData.amount
+          : newData.amount - oldAmount;
     }
 
-    // Usa una transacción para asegurar atomicidad
+    // Usar una transacción para asegurar atomicidad
     await prisma.$transaction(async (prisma) => {
       const updatedTransaction = await prisma.transaction.update({
         where: { id: transactionId },
-        data: newData,
+        data: { ...newData, date: dateToDB },
       });
 
       if (updatedTransaction) {
@@ -363,7 +360,7 @@ export async function updateTransaction(
       }
     });
 
-    // Revalida el camino
+    // Revalidar el camino
     revalidatePath("/profile/accounts");
   } catch (error) {
     console.error("Error al actualizar la transacción", error);
@@ -407,5 +404,107 @@ export async function deleteTransaction(
   } catch (error) {
     console.error("Failed to delete transaction", error);
     throw new Error("Failed to delete transaction");
+  }
+}
+
+//Get user overviwe by credit, debit, grouped by currency
+
+export async function getUserOverview(userId: string) {
+  // Obtener las cuentas del usuario junto con las transacciones y las monedas
+  const accounts = await prisma.account.findMany({
+    where: { userId },
+    include: {
+      transactions: true,
+    },
+  });
+
+  const now = new Date();
+  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+  const startOfLastMonth = new Date(
+    now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear(),
+    now.getMonth() === 0 ? 11 : now.getMonth() - 1,
+    1
+  );
+  const endOfLastMonth = new Date(startOfCurrentMonth);
+  endOfLastMonth.setDate(0); // Último día del mes anterior
+
+  // Estructurar los datos del overview
+  const overview = accounts.map((account) => {
+    const currentMonthIncome = account.transactions
+      .filter(
+        (transaction) =>
+          transaction.type === "Credit" &&
+          transaction.date >= startOfCurrentMonth
+      )
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    const currentMonthExpense = account.transactions
+      .filter(
+        (transaction) =>
+          transaction.type === "Debit" &&
+          transaction.date >= startOfCurrentMonth
+      )
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    const lastMonthIncome = account.transactions
+      .filter(
+        (transaction) =>
+          transaction.type === "Credit" &&
+          transaction.date >= startOfLastMonth &&
+          transaction.date <= endOfLastMonth
+      )
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    const lastMonthExpense = account.transactions
+      .filter(
+        (transaction) =>
+          transaction.type === "Debit" &&
+          transaction.date >= startOfLastMonth &&
+          transaction.date <= endOfLastMonth
+      )
+      .reduce((sum, transaction) => sum + transaction.amount, 0);
+
+    const balance = account.balance;
+
+    return {
+      currency: account.currency,
+      balance,
+      currentMonthIncome,
+      currentMonthExpense,
+      lastMonthIncome,
+      lastMonthExpense,
+      accountName: account.entityName,
+      accountLogo: account.logo,
+    };
+  });
+
+  return overview;
+}
+
+//get balances for each currency
+
+export async function getUserBalanceByCurrency(userId: string) {
+  try {
+    const accounts = await prisma.account.findMany({
+      where: { userId },
+      include: { transactions: true },
+    });
+
+    // Agrupar balances y cuentas por currency
+    const balanceByCurrency = accounts.reduce((acc, account) => {
+      const { currency, balance } = account;
+      if (!acc[currency]) {
+        acc[currency] = { balance: 0, accountsCount: 0, transactions: [] };
+      }
+      acc[currency].balance += balance;
+      acc[currency].accountsCount += 1;
+      acc[currency].transactions.push(...account.transactions);
+      return acc;
+    }, {} as Record<Currency, { balance: number; accountsCount: number; transactions: Transaction[] }>);
+
+    return { accounts, balanceByCurrency };
+  } catch (error) {
+    console.error("Error al obtener los balances por currency:", error);
+    throw new Error("Error al obtener los balances por currency");
   }
 }

@@ -176,25 +176,25 @@ export default function EditAccount({
                   </div>
                 </div>
               </div>
+              <div className="flex w-full justify-center items-center gap-2 mt-4">
+                <button
+                  onClick={() => {
+                    setOpenEditAccountModal(false);
+                    reset();
+                  }}
+                  type="button"
+                  className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+                >
+                  {isLoading ? <Loader /> : "Edit"}
+                </button>
+              </div>
             </form>
-            <div className="flex w-full justify-center items-center gap-2 mt-4">
-              <button
-                onClick={() => {
-                  setOpenEditAccountModal(false);
-                  reset();
-                }}
-                type="button"
-                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
-              >
-                {isLoading ? <Loader /> : "Edit"}
-              </button>
-            </div>
           </DialogPanel>
         </div>
       </Dialog>

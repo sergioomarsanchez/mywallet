@@ -70,3 +70,14 @@ export const transactionSchema = z.object({
 });
 
 export type TransactionData = z.infer<typeof transactionSchema>;
+
+export interface OverviewData {
+  currency: string;
+  balance: number;
+  currentMonthIncome: number;
+  currentMonthExpense: number;
+  lastMonthIncome: number;
+  lastMonthExpense: number;
+  accountName: string;
+  accountLogo?: string | null;
+}

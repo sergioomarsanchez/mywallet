@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Field, Input, Label } from "@headlessui/react";
 import { useForm } from "react-hook-form";
@@ -33,12 +33,12 @@ export default function AddTransaction({
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm<TransactionData>({
     resolver: zodResolver(transactionSchema),
   });
 
   const [isLoading, setIsLoading] = useState(false);
-
   const onSubmit = async (data: TransactionData) => {
     setIsLoading(true);
     try {
@@ -53,6 +53,7 @@ export default function AddTransaction({
       setIsLoading(false);
     }
   };
+  console.log(errors, "errors");
 
   return (
     <>
@@ -224,25 +225,25 @@ export default function AddTransaction({
                   </div>
                 </div>
               </div>
-            </form>
-            <div className="flex w-full justify-center items-center gap-2 mt-4">
-              <button
-                onClick={() => {
-                  setOpenAddTransactionModal(false);
-                  reset();
-                }}
-                type="button"
-                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+              <div className="flex w-full justify-center items-center gap-2 mt-4">
+                <button
+                  onClick={() => {
+                    setOpenAddTransactionModal(false);
+                    reset();
+                  }}
+                  type="button"
+                  className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
                 >
-                {isLoading ? <Loader /> : "Add"}
-              </button>
-            </div>
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200 active:scale-95"
+                >
+                  {isLoading ? <Loader /> : "Add"}
+                </button>
+              </div>
+            </form>
           </DialogPanel>
         </div>
       </Dialog>

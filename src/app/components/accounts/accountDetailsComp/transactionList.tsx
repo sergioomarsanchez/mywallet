@@ -87,7 +87,8 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
             <span className="text-[10px] lg:text-xs font-thin mr-1">
               {currency}{" "}
             </span>
-            {transaction.type === "Debit" ? "- " : "+ "} {transaction.amount}
+            {transaction.type === "Debit" ? "- " : "+ "}{" "}
+            {transaction.amount.toFixed(2)}
           </span>
         </td>
         <td>

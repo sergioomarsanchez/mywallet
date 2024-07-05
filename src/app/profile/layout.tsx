@@ -14,10 +14,13 @@ export default async function ProfilePageLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOption);
+  const session = await getServerSession(authOption); 
   const role = session?.user?.role;
+  if (!session || !session.user || !role) {
+    return <div>Please log in to view your profile.</div>;
+  }
   return (
-    <div className="relative md:flex md:container md:m-auto pt-20">
+    <div className="relative md:flex md:container md:m-auto mt-20">
       {/* Sidebar for larger screens */}
       <div className="hidden md:flex">
         <ProfileSidebar role={role} />
