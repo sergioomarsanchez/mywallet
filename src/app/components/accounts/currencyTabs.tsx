@@ -2,7 +2,7 @@
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from "@headlessui/react";
 import React, { useState } from "react";
 import AddAccount from "./addAccount";
-import { PlusIcon } from "@heroicons/react/24/outline";
+import { BanknotesIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Account } from "src/app/types/back";
 import AccountCard from "./accountCard";
 
@@ -74,8 +74,15 @@ const CurrencyTabs = ({
           ))}
           <button
             onClick={openModal}
-            className="md:absolute fixed bottom-14 right-5 md:bottom-0 md:right-2 rounded-full p-2 md:py-1 md:px-3 text-sm/6 font-semibold focus:outline-none bg-blue-300/80 md:bg-blue-300/30 hover:bg-blue-300/70 dark:bg-blue-500/80 dark:md:bg-blue-500/30 dark:hover:bg-blue-500/70 transition-colors duration-200 flex items-center justify-center gap-2 z-10"
+            className="md:hidden fixed bottom-14 right-5 rounded-full p-4 md:py-1 text-sm/6 font-semibold bg-blue-300/80 md:bg-blue-300/30 active:bg-blue-300/70 dark:bg-blue-500/80 dark:md:bg-blue-500/30 dark:active:bg-blue-500/70 transition-colors duration-200 flex items-center justify-center z-10"
           >
+            <BanknotesIcon className="size-5" />
+            <PlusIcon className="size-4 absolute top-1 right-2 font-extrabold" />
+          </button>
+          <button
+            onClick={openModal}
+            className="md:absolute hidden right-0 -top-5 rounded-md p-2 py-1 px-3 text-sm/6 font-semibold bg-blue-300/80 md:bg-blue-300/30 hover:bg-blue-300/70 dark:bg-blue-500/80 dark:md:bg-blue-500/30 dark:hover:bg-blue-500/70 transition-colors duration-200 md:flex items-center justify-center gap-2 z-10"
+            >
             <PlusIcon className="size-8 md:size-4" />
             <span className="hidden md:flex mr-3">Add account</span>
           </button>

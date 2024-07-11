@@ -4,6 +4,7 @@ import { Account, Transaction } from "src/app/types/back";
 import TransactionList from "./accountDetailsComp/transactionList";
 import AddTransaction from "./accountDetailsComp/addTransaction";
 import PlusIcon from "@heroicons/react/20/solid/PlusIcon";
+import { ArrowsRightLeftIcon } from "@heroicons/react/24/solid";
 
 interface AccountDetailsProps {
   account: Account;
@@ -58,9 +59,10 @@ const AccountDetails = ({ account, transactions }: AccountDetailsProps) => {
         </div>
         <button
           onClick={openModal}
-          className="md:hidden fixed bottom-14 right-5 rounded-full p-2 md:py-1 text-sm/6 font-semibold bg-blue-300/80 md:bg-blue-300/30 active:bg-blue-300/70 dark:bg-blue-500/80 dark:md:bg-blue-500/30 dark:active:bg-blue-500/70 transition-colors duration-200 flex items-center justify-center z-10"
+          className="md:hidden fixed bottom-14 right-5 rounded-full p-4 md:py-1 text-sm/6 font-semibold bg-blue-300/80 md:bg-blue-300/30 active:bg-blue-300/70 dark:bg-blue-500/80 dark:md:bg-blue-500/30 dark:active:bg-blue-500/70 transition-colors duration-200 flex items-center justify-center z-10"
         >
-          <PlusIcon className="size-8 md:size-4" />
+          <ArrowsRightLeftIcon className="size-5" />
+          <PlusIcon className="size-4 absolute top-1 right-2 font-extrabold" />
         </button>
         <button
           onClick={openModal}

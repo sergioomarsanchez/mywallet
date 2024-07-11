@@ -166,9 +166,9 @@ export async function updateAccount(data: AccountData & { id: string }) {
 }
 
 //Fetch accounts
-export async function fetchAccounts(userId: string) {
+export async function fetchAccounts(userId: string): Promise<Account[] | []> {
   try {
-    const accounts = await prisma.account.findMany({
+    const accounts: Account[] = await prisma.account.findMany({
       where: {
         userId: userId,
       },
@@ -178,6 +178,8 @@ export async function fetchAccounts(userId: string) {
     });
     if (accounts) {
       return accounts;
+    } else {
+      return [];
     }
   } catch (error) {
     console.error("Failed to fetch accounts", error);
@@ -406,6 +408,8 @@ export async function deleteTransaction(
     throw new Error("Failed to delete transaction");
   }
 }
+
+// ------- Overview --------
 
 //Get user overviwe by credit, debit, grouped by currency
 

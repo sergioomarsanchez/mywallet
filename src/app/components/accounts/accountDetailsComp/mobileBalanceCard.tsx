@@ -5,15 +5,18 @@ import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 import { Account } from "src/app/types/back";
 import EditAccount from "./editAccountModal";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import { AccDrawer } from "./otherAccountSlider/accDrawer";
 
 function MobileBalanceCard({
   account,
   integerPart,
   decimalPart,
+  accounts,
 }: {
   account: Account;
   integerPart: string;
   decimalPart: string;
+  accounts: Account[];
 }) {
   const [openEditAccount, setOpenEditAccount] = useState<boolean>(false);
   return (
@@ -61,10 +64,16 @@ function MobileBalanceCard({
         className="absolute right-3 top-[5rem] hover:scale-105 w-fit h-fit z-20"
         onClick={() => setOpenEditAccount(true)}
       >
-        <PencilIcon className="font-bold size-5 text-white hover:text-blue-400" style={{
-                      filter: "drop-shadow(2px 2px 4px #ffffff)",
-                    }}/>
+        <PencilIcon
+          className="font-bold size-5 text-white hover:text-blue-400"
+          style={{
+            filter: "drop-shadow(2px 2px 4px #ffffff)",
+          }}
+        />
       </button>
+      <div className="absolute lg:hidden right-12 top-[5rem] hover:scale-105 w-fit h-fit z-20">
+        <AccDrawer accounts={accounts} />
+      </div>
       {openEditAccount && (
         <EditAccount
           account={account}

@@ -33,6 +33,8 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
     setOpenEditTransactionModal(true);
   };
 
+  const formattedDate = new Date(transaction.date).toLocaleDateString("en-GB");
+
   return (
     <>
       <tr key={transaction.id} className="w-full space-y-1 relative">
@@ -54,21 +56,11 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
             {transaction.entityName}
           </span>
           <span className="text-[10px] lg:text-xs font-thin lg:hidden">
-            {transaction.date.getDate() +
-              "/" +
-              transaction.date.getMonth() +
-              "/" +
-              transaction.date.getFullYear()}
+            {formattedDate}
           </span>
         </td>
         <td className="text-left hidden lg:table-cell">
-          <span className="">
-            {transaction.date.getDate() +
-              "/" +
-              transaction.date.getMonth() +
-              "/" +
-              transaction.date.getFullYear()}
-          </span>
+          <span className="">{formattedDate}</span>
         </td>
         <td className="text-center hidden lg:table-cell">
           <span className="">{transaction.method}</span>
