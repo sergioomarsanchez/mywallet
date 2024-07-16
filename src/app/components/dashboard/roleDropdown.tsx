@@ -32,14 +32,14 @@ export default function RoleDropdown({
     <div className="min-w-fit text-right">
       <Menu>
         <MenuButton
-          className={`inline-flex items-center min-w-20 rounded-md bg-gray-800 py-0.5 px-3 text-sm/6 font-medium shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white ${
+          className={`inline-flex items-center min-w-20 rounded-md bg-gray-300 dark:bg-gray-800 py-0.5 px-3 text-sm/6 font-medium shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-700 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white ${
             optimisticRole === "Admin"
               ? "italic font-thin text-red-800 dark:text-red-200"
               : "text-slate-800 dark:text-slate-100"
           }`}
         >
           {optimisticRole}
-          <ChevronDownIcon className="size-4 fill-white/60" />
+          <ChevronDownIcon className="size-4 fill-gray-800 dark:fill-white/60" />
         </MenuButton>
 
         <MenuItems

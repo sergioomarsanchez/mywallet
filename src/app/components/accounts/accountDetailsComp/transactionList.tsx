@@ -5,6 +5,7 @@ import { Transaction } from "src/app/types/back";
 import TransActionDropdown from "./transactionRow/transActionsDropdown";
 import DeleteTransactionWarningModal from "./transactionRow/deleteTransWarningModal";
 import EditTransaction from "./transactionRow/editTransaction";
+import useFormattedNumber from "src/app/hooks/useFormatedNumber";
 
 interface TransactionRowProps {
   transaction: Transaction;
@@ -34,6 +35,8 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
   };
 
   const formattedDate = new Date(transaction.date).toLocaleDateString("en-GB");
+
+  const { integerPart, decimalPart } = useFormattedNumber(transaction.amount);
 
   return (
     <>
@@ -79,8 +82,8 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
             <span className="text-[10px] lg:text-xs font-thin mr-1">
               {currency}{" "}
             </span>
-            {transaction.type === "Debit" ? "- " : "+ "}{" "}
-            {transaction.amount.toFixed(2)}
+            {transaction.type === "Debit" ? "- " : "+ "} {integerPart}.
+            {decimalPart}
           </span>
         </td>
         <td>

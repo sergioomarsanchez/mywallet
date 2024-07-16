@@ -41,6 +41,7 @@ const AccountDetails = ({ account, transactions }: AccountDetailsProps) => {
               {transactions?.length ? (
                 transactions.map((transaction) => (
                   <TransactionList
+                    key={transaction.id}
                     transaction={transaction}
                     currency={account.currency}
                   />

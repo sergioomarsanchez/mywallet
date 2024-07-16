@@ -4,19 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ComputerDesktopIcon,
-  CreditCardIcon,
   ListBulletIcon,
   Cog6ToothIcon,
   BanknotesIcon,
   UserIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import {
   ComputerDesktopIcon as ComputerDesktopIconFilled,
-  CreditCardIcon as CreditCardIconFilled,
   ListBulletIcon as ListBulletIconFilled,
   Cog6ToothIcon as Cog6ToothIconFilled,
   BanknotesIcon as BanknotesIconFilled,
   UserIcon as UserIconFilled,
+  ClipboardDocumentListIcon as ClipboardDocumentListFilled,
 } from "@heroicons/react/24/solid";
 import { UserRole } from "@prisma/client";
 
@@ -24,7 +24,7 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-fit h-fit ml-2 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-24">
+    <aside className="w-fit h-fit ml-5 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-24">
       <ul className="space-y-4">
         {[
           {
@@ -32,6 +32,12 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
             icon: UserIcon,
             iconFilled: UserIconFilled,
             label: "Profile",
+          },
+          {
+            href: "/profile/overview",
+            icon: ClipboardDocumentListIcon,
+            iconFilled: ClipboardDocumentListFilled,
+            label: "Overview",
           },
           {
             href: "/profile/accounts",
@@ -44,12 +50,6 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
             icon: ListBulletIcon,
             iconFilled: ListBulletIconFilled,
             label: "Categories",
-          },
-          {
-            href: "/profile/methods",
-            icon: CreditCardIcon,
-            iconFilled: CreditCardIconFilled,
-            label: "Payment Methods",
           },
           {
             href: "/profile/settings",

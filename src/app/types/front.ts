@@ -80,4 +80,5 @@ export interface OverviewData {
   lastMonthExpense: number;
   accountName: string;
   accountLogo?: string | null;
+  accountId?: string;
 }

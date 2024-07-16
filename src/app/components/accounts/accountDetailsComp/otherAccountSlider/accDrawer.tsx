@@ -35,7 +35,7 @@ export function AccDrawer({ accounts }: { accounts: Account[] }) {
           />
         </button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent className="flex justify-center items-center bg-opacity-85 bg-gray-200 dark:bg-black">
         <div className="w-full">
           <DrawerHeader className="flex flex-col justify-center items-center gap-2">
             <DrawerTitle>Your other Accounts</DrawerTitle>

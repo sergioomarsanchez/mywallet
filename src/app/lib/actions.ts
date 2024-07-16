@@ -479,6 +479,7 @@ export async function getUserOverview(userId: string) {
       lastMonthExpense,
       accountName: account.entityName,
       accountLogo: account.logo,
+      accountId: account.id,
     };
   });
 
@@ -511,4 +512,88 @@ export async function getUserBalanceByCurrency(userId: string) {
     console.error("Error al obtener los balances por currency:", error);
     throw new Error("Error al obtener los balances por currency");
   }
+}
+
+//get currency list and total balance per currency
+export async function getTotalBalanceByCurrency(userId: string) {
+  try {
+    const accounts = await prisma.account.findMany({
+      where: { userId },
+      include: { transactions: true },
+    });
+
+    const balanceByCurrency = accounts.reduce((acc, account) => {
+      const { currency, balance } = account;
+      if (!acc[currency]) {
+        acc[currency] = { balance: 0, accountsCount: 0, transactions: [] };
+      }
+      acc[currency].balance += balance;
+      acc[currency].accountsCount += 1;
+      acc[currency].transactions.push(...account.transactions);
+      return acc;
+    }, {} as Record<string, { balance: number; accountsCount: number; transactions: any[] }>);
+
+    return { accounts, balanceByCurrency };
+  } catch (error) {
+    console.error("Error al obtener los balances por currency:", error);
+    throw new Error("Error al obtener los balances por currency");
+  }
+}
+
+//currency exchange
+export async function getExchangeRates() {
+  const response = await fetch(
+    "https://api.exchangerate-api.com/v4/latest/USD"
+  );
+  const data = await response.json();
+  return data.rates;
+}
+
+// get data to show chart
+export async function getMonthlyMovements(accountId: string) {
+  const now = new Date();
+  const lastYear = new Date(now.getFullYear() - 1, now.getMonth() + 1, 1); // Set to the start of the month last year
+
+  // Get last year transactions
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      accountId: accountId,
+      date: {
+        gte: lastYear,
+      },
+    },
+  });
+
+  // structure data
+  const data = new Array(12).fill(0).map((_, index) => {
+    const date = new Date(
+      lastYear.getFullYear(),
+      lastYear.getMonth() + index,
+      1
+    );
+    return {
+      month: date.toLocaleString("default", {
+        month: "short",
+        year: "numeric",
+      }),
+      income: 0,
+      expense: 0,
+    };
+  });
+
+  transactions.forEach((transaction) => {
+    const monthIndex =
+      transaction.date.getMonth() -
+      lastYear.getMonth() +
+      (transaction.date.getFullYear() - lastYear.getFullYear()) * 12;
+    const type = transaction.type;
+
+    if (type === "Credit") {
+      data[monthIndex].income += transaction.amount;
+    } else {
+      data[monthIndex].expense += transaction.amount;
+    }
+  });
+
+  return data;
 }

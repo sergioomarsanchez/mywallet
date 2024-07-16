@@ -40,20 +40,6 @@ const AccountPage = async ({ params }: AccountPageProps) => {
       </main>
     );
   }
-  const formatBalance = (balance: number) => {
-    // Format the balance with thousand separators
-    const formatter = new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    const formattedBalance = formatter.format(balance);
-    const [integerPart, decimalPart] = formattedBalance.split(".");
-
-    return { integerPart, decimalPart };
-  };
-
-  const { integerPart, decimalPart } = formatBalance(account.balance);
 
   return (
     <main className="flex flex-col items-center justify-center md:items-start md:p-5 lg:ml-10">
@@ -65,12 +51,7 @@ const AccountPage = async ({ params }: AccountPageProps) => {
               : "md:place-self-start"
           } w-full`}
         >
-          <MobileBalanceCard
-            account={account}
-            integerPart={integerPart}
-            decimalPart={decimalPart}
-            accounts={otherAccounts}
-          />
+          <MobileBalanceCard account={account} accounts={otherAccounts} />
         </div>
         {otherAccounts.length && (
           <div className="hidden w-full lg:grid justify-center items-center">

@@ -6,19 +6,19 @@ import { Account } from "src/app/types/back";
 import EditAccount from "./editAccountModal";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { AccDrawer } from "./otherAccountSlider/accDrawer";
+import { AccChartDrawer } from "./chart/accChartDrawer";
+import useFormattedNumber from "src/app/hooks/useFormatedNumber";
 
 function MobileBalanceCard({
   account,
-  integerPart,
-  decimalPart,
   accounts,
 }: {
   account: Account;
-  integerPart: string;
-  decimalPart: string;
   accounts: Account[];
 }) {
   const [openEditAccount, setOpenEditAccount] = useState<boolean>(false);
+  const { integerPart, decimalPart } = useFormattedNumber(account.balance);
+
   return (
     <div className={styles.card}>
       <svg
@@ -71,8 +71,11 @@ function MobileBalanceCard({
           }}
         />
       </button>
-      <div className="absolute lg:hidden right-12 top-[5rem] hover:scale-105 w-fit h-fit z-20">
+      <div className="absolute lg:hidden right-[5.3rem] top-[5rem] hover:scale-105 w-fit h-fit z-20">
         <AccDrawer accounts={accounts} />
+      </div>
+      <div className="absolute right-12 top-[5rem] hover:scale-105 w-fit h-fit z-20">
+        <AccChartDrawer accountId={account.id} />
       </div>
       {openEditAccount && (
         <EditAccount

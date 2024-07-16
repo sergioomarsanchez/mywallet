@@ -37,24 +37,24 @@ const DashboardPage = async () => {
         <div className="w-full">
           <TabGroup>
             <TabList className="flex gap-4">
-              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
+              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold focus:outline-none data-[selected]:bg-black/10 data-[hover]:bg-black/5 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-black dark:data-[selected]:bg-white/10 dark:data-[hover]:bg-white/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 dark:data-[focus]:outline-white">
                 Users
               </Tab>
-              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
+              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold focus:outline-none data-[selected]:bg-black/10 data-[hover]:bg-black/5 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-black dark:data-[selected]:bg-white/10 dark:data-[hover]:bg-white/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 dark:data-[focus]:outline-white">
                 Tab 2
               </Tab>
-              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold text-white focus:outline-none data-[selected]:bg-white/10 data-[hover]:bg-white/5 data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 data-[focus]:outline-white">
+              <Tab className="rounded-full py-1 px-3 text-sm/6 font-semibold focus:outline-none data-[selected]:bg-black/10 data-[hover]:bg-black/5 data-[selected]:data-[hover]:bg-black/10 data-[focus]:outline-black dark:data-[selected]:bg-white/10 dark:data-[hover]:bg-white/5 dark:data-[selected]:data-[hover]:bg-white/10 data-[focus]:outline-1 dark:data-[focus]:outline-white">
                 Tab 3
               </Tab>
             </TabList>
             <TabPanels className="mt-3 w-full">
-              <TabPanel className="rounded-xl bg-white/5 p-3 w-full">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
                 <UsersDashboard users={users} />
               </TabPanel>
-              <TabPanel className="rounded-xl bg-white/5 p-3">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
                 Content 2
               </TabPanel>
-              <TabPanel className="rounded-xl bg-white/5 p-3">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
                 Content 3
               </TabPanel>
             </TabPanels>

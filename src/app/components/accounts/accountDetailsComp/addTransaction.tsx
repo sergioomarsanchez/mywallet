@@ -53,7 +53,6 @@ export default function AddTransaction({
       setIsLoading(false);
     }
   };
-  console.log(errors, "errors");
 
   return (
     <>

@@ -4,24 +4,12 @@ import { Account } from "src/app/types/back";
 import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
 import DeleteAccountWarningModal from "./deleteAccountWarningModal";
 import Link from "next/link";
+import useFormattedNumber from "src/app/hooks/useFormatedNumber";
 
 function AccountCard({ account }: { account: Account }) {
   const [openWarningModal, setOpenWarningModal] = useState<boolean>(false);
 
-  const formatBalance = (balance: number) => {
-    // Format the balance with thousand separators
-    const formatter = new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    });
-
-    const formattedBalance = formatter.format(balance);
-    const [integerPart, decimalPart] = formattedBalance.split(".");
-
-    return { integerPart, decimalPart };
-  };
-
-  const { integerPart, decimalPart } = formatBalance(account.balance);
+  const { integerPart, decimalPart } = useFormattedNumber(account.balance);
 
   return (
     <div className="card text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] hover:brightness-90 transition-all cursor-pointer group bg-gradient-to-tl from-gray-400 to-gray-300 hover:from-gray-500 hover:to-gray-300 border-gray-300 dark:from-gray-900 dark:to-gray-950 dark:hover:from-gray-800 dark:hover:to-gray-950 border-r-2 border-t-2 dark:border-gray-900 m-4 rounded-lg overflow-hidden relative">

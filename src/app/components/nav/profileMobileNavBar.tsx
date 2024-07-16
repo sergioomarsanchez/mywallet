@@ -4,19 +4,19 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ComputerDesktopIcon,
-  CreditCardIcon,
   ListBulletIcon,
   Cog6ToothIcon,
   BanknotesIcon,
   UserIcon,
+  ClipboardDocumentListIcon,
 } from "@heroicons/react/24/outline";
 import {
   ComputerDesktopIcon as ComputerDesktopIconFilled,
-  CreditCardIcon as CreditCardIconFilled,
   ListBulletIcon as ListBulletIconFilled,
   Cog6ToothIcon as Cog6ToothIconFilled,
   BanknotesIcon as BanknotesIconFilled,
   UserIcon as UserIconFilled,
+  ClipboardDocumentListIcon as ClipboardDocumentListFilled,
 } from "@heroicons/react/24/solid";
 import { UserRole } from "@prisma/client";
 
@@ -33,6 +33,12 @@ const ProfileMobileNavbar = ({ role }: { role: UserRole }) => {
           label: "Profile",
         },
         {
+          href: "/profile/overview",
+          icon: ClipboardDocumentListIcon,
+          iconFilled: ClipboardDocumentListFilled,
+          label: "Overview",
+        },
+        {
           href: "/profile/accounts",
           icon: BanknotesIcon,
           iconFilled: BanknotesIconFilled,
@@ -43,12 +49,6 @@ const ProfileMobileNavbar = ({ role }: { role: UserRole }) => {
           icon: ListBulletIcon,
           iconFilled: ListBulletIconFilled,
           label: "Categories",
-        },
-        {
-          href: "/profile/methods",
-          icon: CreditCardIcon,
-          iconFilled: CreditCardIconFilled,
-          label: "Payment Methods",
         },
         {
           href: "/profile/settings",
