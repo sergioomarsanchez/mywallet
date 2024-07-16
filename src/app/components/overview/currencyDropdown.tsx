@@ -75,7 +75,7 @@ const CurrencyDropdown = ({ userId }: { userId: string }) => {
         <span className="uppercase tracking-widest">{decimalPart}</span>
       </div>
       <select
-        className="bg-transparent text-inherit"
+        className="bg-transparent text-inherit outline-none active:outline-none cursor-pointer"
         value={selectedCurrency}
         onChange={handleCurrencyChange}
       >
