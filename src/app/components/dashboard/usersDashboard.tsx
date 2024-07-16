@@ -13,7 +13,7 @@ function UsersDashboard({ users }: { users: User[] }) {
           </span>
         </h2>
         <div className="flex justify-center items-center gap-2">
-          {/* 
+{/* 
           <div className="m-1.5">
             <button
               className="flex justify-center items-center border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:from-inherit text-sm lg:text-base rounded-sm border bg-gray-200 dark:bg-[#3C754F]/30 hover:dark:bg-[#3C754F]/90 hover:scale-[101%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 p-1 lg:pr-3"
@@ -35,6 +35,7 @@ function UsersDashboard({ users }: { users: User[] }) {
               <AddProjectForm setAddProject={setAddProject} />
             </ModalBasic>
           </div> */}
+
         </div>
       </header>
       <div>

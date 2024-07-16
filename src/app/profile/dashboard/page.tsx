@@ -48,13 +48,13 @@ const DashboardPage = async () => {
               </Tab>
             </TabList>
             <TabPanels className="mt-3 w-full">
-              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full justify-center">
                 <UsersDashboard users={users} />
               </TabPanel>
-              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full ustify-center">
                 Content 2
               </TabPanel>
-              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 justify-center">
+              <TabPanel className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full justify-center">
                 Content 3
               </TabPanel>
             </TabPanels>
