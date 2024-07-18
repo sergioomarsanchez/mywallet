@@ -162,7 +162,6 @@ export default function SignIn({
                 type="button"
                 onClick={() => {
                   signIn("google", { callbackUrl: "/profile" });
-                  addToast("Welcome back, nice to see you again.", "success");
                 }}
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >
@@ -173,7 +172,6 @@ export default function SignIn({
                 type="button"
                 onClick={() => {
                   signIn("github", { callbackUrl: "/profile" });
-                  addToast("Welcome back, nice to see you again.", "success");
                 }}
                 className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
               >

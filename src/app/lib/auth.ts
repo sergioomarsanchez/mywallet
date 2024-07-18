@@ -82,9 +82,6 @@ export const authOption: NextAuthOptions = {
             password: "",
           },
           update: {
-            firstName: profile.given_name || profile.name.split(" ")[0] || "",
-            lastName:
-              profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
             avatar: avatarUrl,
           },
         });
@@ -128,7 +125,7 @@ export const authOption: NextAuthOptions = {
     },
   },
   pages: {
-    signIn:"/profile",
+    signIn: "/profile/overview",
     error: "/auth/error",
     newUser: "/welcome",
   },

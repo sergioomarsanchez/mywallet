@@ -9,7 +9,7 @@ interface BalanceOverviewProps {
 const BalanceOverview = async ({ userId }: BalanceOverviewProps) => {
   const overview = await getUserBalanceByCurrency(userId);
   return (
-    <div className="flex flex-wrap gap-1 md:gap-4 lg:mb-8 items-center justify-start">
+    <div className="flex flex-wrap gap-1 md:gap-4 lg:mb-4 items-center justify-start">
       {Object.entries(overview.balanceByCurrency).map(
         ([currency, { balance, accountsCount, transactions }]) => (
           <BalanceCard

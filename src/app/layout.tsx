@@ -13,6 +13,10 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "My Wallet",
   description: "A way to get your finances controlled",
+  icons: {
+    icon: "public/wallet-svgrepo-com.svg",
+    apple: "public/wallet-svgrepo-com.svg",
+  },
 };
 
 export default function RootLayout({

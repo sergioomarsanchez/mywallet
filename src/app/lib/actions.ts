@@ -5,6 +5,9 @@ import bcrypt from "bcryptjs";
 import { Type, UserRole, Currency } from "@prisma/client";
 import { AccountData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
+import { getServerSession } from "next-auth";
+import { signOut } from "next-auth/react";
+import { authOption } from "@/lib/auth";
 
 //---------- Users Actions ----------
 //Get users
@@ -45,10 +48,24 @@ export async function updateUserRole(id: string, roleType: UserRole) {
   }
 }
 
-//Delete user with their accounts and transactions
+//Delete user with their accounts and transactions by Admin or user owner
 
 export async function deleteUser(userId: string) {
   try {
+    const session = await getServerSession(authOption);
+
+    if (!session) {
+      throw new Error("Not authorized");
+    }
+
+    // Verificar si el usuario tiene permiso para eliminar el usuario
+    const isAuthorized =
+      session.user.role === "Admin" || session.user.id === userId;
+
+    if (!isAuthorized) {
+      throw new Error("Not authorized to delete this user");
+    }
+
     // Delete transactions
     await prisma.transaction.deleteMany({
       where: {
@@ -57,21 +74,37 @@ export async function deleteUser(userId: string) {
         },
       },
     });
+
     // Delete accounts
     await prisma.account.deleteMany({
       where: {
         userId: userId,
       },
     });
+
     // Delete user
-    const deleteUser = await prisma.user.delete({
+    const deletedUser = await prisma.user.delete({
       where: {
         id: userId,
       },
     });
-    // Reload users list
-    if (deleteUser) {
-      revalidatePath("/profile/dashboard");
+
+    if (deletedUser) {
+      if (session.user.id === userId) {
+        // Sign out the user if they are deleting their own account
+        await signOut({ redirect: false });
+      }
+
+      // Revalidate the path
+      revalidatePath("/");
+
+      // Redirect to home page after deletion
+      return {
+        redirect: {
+          destination: "/",
+          permanent: false,
+        },
+      };
     }
   } catch (error) {
     console.error("Failed to delete user", error);
