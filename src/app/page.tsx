@@ -12,7 +12,7 @@ export default async function Home() {
     <main className="bg-transparent md:bg-gray-300 md:dark:bg-black">
       <div className="relative md:flex">
         {/* Content */}
-        <div className="md:w-1/2">
+        <div className="md:w-1/2 z-10">
           <div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
             <AuthHeader />
             <div className="max-w-sm mx-auto w-full px-4 py-8 pb-52 flex flex-col justify-center items-center md:justify-start md:items-start gap-2">
