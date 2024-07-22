@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { authOption } from "../lib/auth";
 import prisma from "../lib/prisma";
 import { PencilIcon } from "@heroicons/react/24/outline";
+import DeleteUserContainer from "./deleteUserContainer";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOption);
@@ -23,14 +24,11 @@ export default async function ProfilePage() {
 
   return (
     <main className="flex flex-col justify-center p-2 md:p-5 lg:ml-10">
-      <h1 className="text-lg font-bold lg:text-2xl place-self-center lg:place-self-start my-5">
+      <h1 className="text-lg font-bold lg:text-2xl place-self-center lg:place-self-start mt-5">
         Welcome back{" "}
         <span className="italic text-pretty ">{session.user.name}</span>!
       </h1>
-      <h2 className="text-base lg:text-2xl place-self-center lg:place-self-start my-5">
-        Profile:
-      </h2>
-      <div className="flex h-screen w-full justify-center pt-2 md:pt-5 px-4">
+      <div className="flex h-screen w-full justify-center pt-2 px-4">
         <div className="w-full p-6 space-y-6">
           <section>
             <div className="flex items-center">
@@ -108,8 +106,9 @@ export default async function ProfilePage() {
                   <span className="sr-only">Enable smart sync</span>
                 </label>
               </div>
-              <div className="text-sm text-slate-400 dark:text-slate-500 italic ml-2">
-                Off
+              <div className="flex justify-center items-center text-sm text-slate-400 dark:text-slate-500 italic ml-2">
+                Delete my account:{" "}
+                <DeleteUserContainer userId={session.user.id} />
               </div>
             </div>
           </section>

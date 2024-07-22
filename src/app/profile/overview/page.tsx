@@ -24,7 +24,7 @@ const ProfilePage = async () => {
         }}
         className="rounded-lg md:mt-10 text-gray-300 py-2 lg:w-fit lg:px-5"
       >
-        <section className="flex justify-between px-2">
+        <section className="flex justify-between px-2 gap-2 lg:gap-5">
           <h1 className="text-lg font-bold lg:text-2xl lg:place-self-start lg:ml-0 lg:my-5 mb-4">
             Overview
           </h1>
@@ -36,7 +36,11 @@ const ProfilePage = async () => {
       <div className="flex h-screen w-full justify-center md:pt-5 px-4">
         <div className="w-full">
           <h4 className="text-xs font-thin my-2  lg:my-5">Accounts</h4>
-          <UserOverview overviewData={overviewData} />
+          {overviewData.length ? (
+            <UserOverview overviewData={overviewData} />
+          ) : (
+            <div className="italic font-thin">No accounts created yet</div>
+          )}
         </div>
       </div>
     </main>

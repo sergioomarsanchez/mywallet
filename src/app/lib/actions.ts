@@ -48,8 +48,6 @@ export async function updateUserRole(id: string, roleType: UserRole) {
   }
 }
 
-//Delete user with their accounts and transactions by Admin or user owner
-
 export async function deleteUser(userId: string) {
   try {
     const session = await getServerSession(authOption);
@@ -83,29 +81,16 @@ export async function deleteUser(userId: string) {
     });
 
     // Delete user
-    const deletedUser = await prisma.user.delete({
+    await prisma.user.delete({
       where: {
         id: userId,
       },
     });
 
-    if (deletedUser) {
-      if (session.user.id === userId) {
-        // Sign out the user if they are deleting their own account
-        await signOut({ redirect: false });
-      }
+    // Revalidate the path
+    revalidatePath("/");
 
-      // Revalidate the path
-      revalidatePath("/");
-
-      // Redirect to home page after deletion
-      return {
-        redirect: {
-          destination: "/",
-          permanent: false,
-        },
-      };
-    }
+    return { success: true };
   } catch (error) {
     console.error("Failed to delete user", error);
     throw new Error("Failed to delete user");

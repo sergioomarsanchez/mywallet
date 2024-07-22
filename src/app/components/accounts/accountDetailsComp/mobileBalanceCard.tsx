@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import styles from "./MobileBalanceCard.module.css";
 import { CurrencyDollarIcon } from "@heroicons/react/24/solid";
-import { Account } from "src/app/types/back";
+import { Account, Transaction } from "src/app/types/back";
 import EditAccount from "./editAccountModal";
 import { PencilIcon } from "@heroicons/react/24/outline";
 import { AccDrawer } from "./otherAccountSlider/accDrawer";
@@ -12,9 +12,11 @@ import useFormattedNumber from "src/app/hooks/useFormatedNumber";
 function MobileBalanceCard({
   account,
   accounts,
+  transactions,
 }: {
   account: Account;
   accounts: Account[];
+  transactions: Transaction[] | [];
 }) {
   const [openEditAccount, setOpenEditAccount] = useState<boolean>(false);
   const { integerPart, decimalPart } = useFormattedNumber(account.balance);
@@ -75,7 +77,7 @@ function MobileBalanceCard({
         <AccDrawer accounts={accounts} />
       </div>
       <div className="absolute right-12 top-[5rem] hover:scale-105 w-fit h-fit z-20">
-        <AccChartDrawer accountId={account.id} />
+        <AccChartDrawer accountId={account.id} transactions={transactions} />
       </div>
       {openEditAccount && (
         <EditAccount

@@ -59,7 +59,7 @@ export const authOption: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async signIn({ user, account, profile }: any) {
+    async signIn({ user, account, profile, email, credentials }: any) {
       if (account.provider === "credentials") {
         return true;
       }
@@ -69,24 +69,34 @@ export const authOption: NextAuthOptions = {
       }
 
       try {
-        const avatarUrl = profile.picture || profile.avatar_url;
-
-        await prisma.user.upsert({
+        const existingUser = await prisma.user.findUnique({
           where: { email: profile.email },
-          create: {
-            email: profile.email,
-            firstName: profile.given_name || profile.name.split(" ")[0] || "",
-            lastName:
-              profile.family_name || profile.name.split(" ").slice(-1)[0] || "",
-            avatar: avatarUrl,
-            password: "",
-          },
-          update: {
-            avatar: avatarUrl,
-          },
         });
+
+        if (!existingUser) {
+          // Crear un nuevo usuario si no existe
+          await prisma.user.create({
+            data: {
+              email: profile.email,
+              firstName: profile.name.split(" ")[0] || "",
+              lastName:
+                profile.name.split(" ")[profile.name.split(" ").length - 1] ||
+                "",
+              password: "",
+              avatar: profile.picture || profile.avatar_url || "",
+            },
+          });
+        } else {
+          const avatarUrl = profile.picture || profile.avatar_url;
+
+          // Solo actualizar el avatar si el usuario ya existe
+          await prisma.user.update({
+            where: { email: profile.email },
+            data: { avatar: avatarUrl },
+          });
+        }
       } catch (error) {
-        console.error("Error creating/updating user:", error);
+        console.error("Error updating or creating user:", error);
         return false;
       }
       return true;

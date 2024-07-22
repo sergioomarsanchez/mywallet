@@ -157,23 +157,25 @@ export default function SignIn({
               </span>
               <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
             </div>
-            <div className="mt-2 flex gap-2 justify-center items-center mb-5">
+            <div className="mt-4">
               <button
                 type="button"
                 onClick={() => {
                   signIn("google", { callbackUrl: "/profile" });
                 }}
-                className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                className="flex justify-center items-center w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800"
               >
                 <GoogleIcon className="size-4" />
                 Google
               </button>
+            </div>
+            <div className="mt-4">
               <button
                 type="button"
                 onClick={() => {
                   signIn("github", { callbackUrl: "/profile" });
                 }}
-                className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                className="flex justify-center items-center w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-900"
               >
                 <GitHubIcon className="size-5" />
                 GitHub

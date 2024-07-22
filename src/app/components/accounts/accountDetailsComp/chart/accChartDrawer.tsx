@@ -14,12 +14,14 @@ import {
 import { ChartBarIcon } from "@heroicons/react/24/outline";
 import { getMonthlyMovements } from "@/lib/actions";
 import AccChart from "./accChart";
+import { Transaction } from "src/app/types/back";
 
 interface AccDrawerProps {
   accountId: string;
+  transactions: Transaction[] | [];
 }
 
-export const AccChartDrawer: React.FC<AccDrawerProps> = ({ accountId }) => {
+export const AccChartDrawer: React.FC<AccDrawerProps> = ({ accountId, transactions }) => {
   const [monthlyData, setMonthlyData] = React.useState<
     { month: string; income: number; expense: number }[]
   >([]);
@@ -31,7 +33,7 @@ export const AccChartDrawer: React.FC<AccDrawerProps> = ({ accountId }) => {
     }
 
     fetchData();
-  }, [accountId]);
+  }, [accountId, transactions]);
 
   return (
     <Drawer>

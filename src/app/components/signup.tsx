@@ -77,6 +77,14 @@ export default function Signup({
     }
   };
 
+  const handleProviderSignUp = (provider: string) => {
+    // Puedes usar un callback URL específico para sign up si es necesario
+    signIn(provider, {
+      callbackUrl: "/welcome",
+      isSignUp: true, // Indicador para el flujo de registro
+    });
+  };
+
   return (
     <>
       <button
@@ -208,46 +216,22 @@ export default function Signup({
                 {isLoading ? <Loader /> : "Sign Up"}
               </button>
             </form>
-            <div className="flex justify-center items-center gap-2 my-5">
-              <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
-              <span className="text-sm/6 text-gray-600 dark:text-white/50">
-                Or sing up with
-              </span>
-              <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
-            </div>
-            <div className="mt-2 flex gap-2 justify-center items-center mb-5">
+            <div className="mt-4">
               <button
-                type="button"
-                onClick={() => {
-                  signIn("google", { callbackUrl: "/profile" });
-                  addToast("Welcome back, nice to see you again.", "success");
-                }}
-                className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                onClick={() => handleProviderSignUp("google")}
+                className="flex justify-center items-center w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-700 hover:bg-blue-800"
               >
-                <GoogleIcon className="size-4" />
+                <GoogleIcon className="mr-2 h-5 w-5" />
                 Google
               </button>
-              <button
-                type="button"
-                onClick={() => {
-                  signIn("github", { callbackUrl: "/profile" });
-                  addToast("Welcome back, nice to see you again.", "success");
-                }}
-                className="rounded-md flex items-center justify-center gap-2 bg-black/20 hover:bg-gray-600/40 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
-              >
-                <GitHubIcon className="size-5" />
-                GitHub
-              </button>
             </div>
-            <div className="flex gap-4 justify-end">
+            <div className="mt-4">
               <button
-                onClick={() => {
-                  setOpenSignupModal(false);
-                  reset();
-                }}
-                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                onClick={() => handleProviderSignUp("github")}
+                className="flex justify-center items-center w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gray-800 hover:bg-gray-900"
               >
-                Cancel
+                <GitHubIcon className="mr-2 h-5 w-5" />
+                GitHub
               </button>
             </div>
           </DialogPanel>

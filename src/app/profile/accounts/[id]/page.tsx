@@ -51,7 +51,11 @@ const AccountPage = async ({ params }: AccountPageProps) => {
               : "md:place-self-start"
           } w-full`}
         >
-          <MobileBalanceCard account={account} accounts={otherAccounts} />
+          <MobileBalanceCard
+            account={account}
+            accounts={otherAccounts}
+            transactions={transactions ?? []}
+          />
         </div>
         {otherAccounts.length && (
           <div className="hidden w-full lg:grid justify-center items-center">

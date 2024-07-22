@@ -6,6 +6,8 @@ import Loader from "../loader";
 import React from "react";
 import { useToast } from "src/app/context/ToastContext";
 import { deleteUser } from "@/lib/actions";
+import { useRouter } from "next/navigation";
+import { signOut } from "next-auth/react";
 
 export default function DeleteUserWarningModal({
   userId,
@@ -18,20 +20,28 @@ export default function DeleteUserWarningModal({
 }) {
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const onConfirmDelete = async () => {
     setIsLoading(true);
     try {
-      await deleteUser(userId);
-      addToast("User deleted successfully,", "success");
-      setOpenWarningModal(false);
+      const result = await deleteUser(userId);
+      if (result.success) {
+        addToast("User deleted successfully", "success");
+
+        // Ejecutar signOut en el cliente
+        await signOut({ redirect: false });
+        router.push("/");
+        setOpenWarningModal(false);
+      }
     } catch (err) {
-      addToast("Failed delete user. Please try again.", "error");
+      addToast("Failed to delete user. Please try again.", "error");
     } finally {
       setIsLoading(false);
     }
   };
-  const handelClose = () => {
+
+  const handleClose = () => {
     setOpenWarningModal(false);
   };
 
@@ -68,7 +78,7 @@ export default function DeleteUserWarningModal({
             <div className="mt-5 flex gap-10 justify-center items-center mb-5">
               <div className="flex gap-4 justify-end">
                 <button
-                  onClick={handelClose}
+                  onClick={handleClose}
                   className="rounded-md bg-gray-500/30 hover:bg-gray-500/70 py-1 px-2 text-sm font-sm text-white/70 hover:text-white transition-colors duration-200"
                 >
                   Cancel

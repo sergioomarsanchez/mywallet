@@ -8,7 +8,7 @@ const SignInUp = () => {
   const [openSignupModal, setOpenSignupModal] = useState(false);
 
   return (
-    <div className="flex justify-end items-center gap-5 my-5">
+    <div className="flex justify-end items-center gap-5 my-5 z-10">
       <SignIn
         setOpenSigninModal={setOpenSigninModal}
         openSigninModal={openSigninModal}
