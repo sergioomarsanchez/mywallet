@@ -11,7 +11,7 @@ export default function AuthImage() {
         layout="fill"
         priority
         alt="Authentication"
-        style={{ filter: "blur(10px) brightness(40%)" }}
+        style={{ filter: "blur(5px) brightness(60%)" }}
       />
       <div
         className="hidden md:block absolute top-0 bottom-0 right-0 md:w-1/2"

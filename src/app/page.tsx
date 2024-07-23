@@ -15,13 +15,17 @@ export default async function Home() {
         <div className="md:w-1/2 z-10">
           <div className="min-h-[100dvh] h-full flex flex-col after:flex-1">
             <AuthHeader />
-            <div className="max-w-sm mx-auto w-full px-4 py-8 pb-52 flex flex-col justify-center items-center md:justify-start md:items-start gap-2">
-              <h1 className="text-center md:text-left text-lg md:text-2xl text-slate-800 dark:text-slate-100 font-bold mb-6">
-                Welcome to My Wallet! ✨
+            <div className="max-w-sm lg:max-w-lg mx-auto w-full px-4 py-8 pb-52 flex flex-col justify-center items-center md:justify-start md:items-start gap-2">
+              <h1 className="text-center md:text-left text-2xl lg:text-3xl xl:text-5xl font-bold mb-6 text-white md:text-black dark:md:text-white">
+                Welcome to{" "}
+                <span className="whitespace-nowrap md:text-[#4b39c1] dark:md:text-[#c3abff] text-[#c3abff]">
+                  My Wallet! ✨
+                </span>
               </h1>
-              <p className="text-sm font-thin text-center md:text-left mb-5">
-                If you already have an account, please sign in. If not, we
-                invite you to join us by signing up.
+              <p className="text-sm lg:text-base font-extralight text-white md:text-black dark:md:text-white text-center md:text-left mb-8">
+                Effortlessly manage your finances with our comprehensive app.
+                Track income, monitor spending, and gain insights into your
+                financial health.
               </p>
 
               <SignInUp />

@@ -22,7 +22,7 @@ export default async function ProfilePageLayout({
   return (
     <div className="relative md:flex md:container md:m-auto mt-8 md:mt-20">
       {/* Sidebar for larger screens */}
-      <div className="hidden md:flex">
+      <div className="hidden md:flex z-10">
         <ProfileSidebar role={role} />
       </div>
       <div className="w-full">{children}</div>

@@ -69,7 +69,7 @@ export default function SignIn({
     <>
       <button
         onClick={() => setOpenSigninModal(true)}
-        className="flex justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:from-inherit static w-auto text-sm lg:text-base rounded-xl border bg-gray-200 p-1 dark:bg-[#3C754F]/30 hover:dark:bg-[#3C754F]/70 hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100"
+        className="flex justify-center border text-xl rounded-lg py-2 px-4 border-gray-300 md:border-black dark:md:border-gray-300 bg-transparent hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 md:text-[#4b39c1] dark:md:text-[#c3abff] text-[#c3abff] font-bold"
       >
         Sign in
       </button>
@@ -181,7 +181,7 @@ export default function SignIn({
                 GitHub
               </button>
             </div>
-            <div className="flex gap-4 justify-end">
+            <div className="flex gap-4 justify-end mt-5">
               <button
                 onClick={() => {
                   setOpenSigninModal(false);

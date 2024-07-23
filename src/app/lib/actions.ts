@@ -6,7 +6,6 @@ import { Type, UserRole, Currency } from "@prisma/client";
 import { AccountData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
 import { getServerSession } from "next-auth";
-import { signOut } from "next-auth/react";
 import { authOption } from "@/lib/auth";
 
 //---------- Users Actions ----------

@@ -89,7 +89,7 @@ export default function Signup({
     <>
       <button
         onClick={() => setOpenSignupModal(true)}
-        className="flex justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 backdrop-blur-2xl dark:border-neutral-800 dark:from-inherit static w-auto text-sm lg:text-base rounded-xl border bg-gray-200 p-1 dark:bg-[#B9D1A7]/30 hover:dark:bg-[#B9D1A7]/70 hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100"
+        className="flex justify-center border text-xl border-gray-300 md:border-black dark:md:border-gray-300 py-2 px-4 text-black md:text-white dark:md:text-black hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 md:bg-[#4b39c1] dark:md:bg-[#976dff] bg-[#c3abff] font-bold"
       >
         Sign up
       </button>
@@ -232,6 +232,17 @@ export default function Signup({
               >
                 <GitHubIcon className="mr-2 h-5 w-5" />
                 GitHub
+              </button>
+            </div>
+            <div className="flex gap-4 justify-end mt-5">
+              <button
+                onClick={() => {
+                  setOpenSignupModal(false);
+                  reset();
+                }}
+                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+              >
+                Cancel
               </button>
             </div>
           </DialogPanel>
