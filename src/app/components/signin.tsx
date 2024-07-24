@@ -69,7 +69,7 @@ export default function SignIn({
     <>
       <button
         onClick={() => setOpenSigninModal(true)}
-        className="flex justify-center border text-xl rounded-lg py-2 px-4 border-gray-300 md:border-black dark:md:border-gray-300 bg-transparent hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 md:text-[#4b39c1] dark:md:text-[#c3abff] text-[#c3abff] font-bold"
+        className="flex justify-center border text-xl rounded-lg py-2 px-4 border-black dark:border-gray-300 bg-transparent hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 md:text-[#4b39c1] dark:md:text-[#c3abff] text-[#c3abff] font-bold"
       >
         Sign in
       </button>
@@ -79,24 +79,24 @@ export default function SignIn({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/10">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/40 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
-              className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
+              className="text-base/7 font-medium text-gray-200 justify-center flex"
             >
               Sign in
             </DialogTitle>
-            <Description className="mt-2 text-sm/6 text-gray-600 dark:text-white/50">
+            <Description className="mt-2 text-sm/6 text-white">
               Welcome back, please sign in to your account
             </Description>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
-              <div className="py-2 md:py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-2 w-[90%]">
+              <div className="py-2 md:py-5 border-y-[1px] border-y-[#976dff] grid grid-cols-1 w-[95%] gap-2">
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
+                    <Label className="text-sm/6 font-medium text-white">
                       Email:
                     </Label>
                     <Input
@@ -105,7 +105,7 @@ export default function SignIn({
                       placeholder="Email"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
+                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 ",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -120,7 +120,7 @@ export default function SignIn({
                 </div>
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
+                    <Label className="text-sm/6 font-medium text-white">
                       Password:
                     </Label>
                     <Input
@@ -129,7 +129,7 @@ export default function SignIn({
                       placeholder="Password"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
+                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 ",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -145,17 +145,15 @@ export default function SignIn({
               </div>
               <button
                 type="submit"
-                className="rounded-md flex justify-center items-center hover:bg-blue-500/70 bg-blue-500/20 py-2 px-4 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-24 transition-colors duration-200"
+                className="flex justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#4b39c1] font-bold"
               >
                 {isLoading ? <Loader /> : "Sign In"}
               </button>
             </form>
             <div className="flex justify-center items-center gap-2 my-5">
-              <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
-              <span className="text-sm/6 text-gray-600 dark:text-white/50">
-                Or sing in with
-              </span>
-              <div className="w-1/4 h-[1px] bg-gray-700/50 dark:bg-white/50" />
+              <div className="w-1/4 h-[1px] bg-white/50" />
+              <span className="text-sm/6 text-white">Or sing in with</span>
+              <div className="w-1/4 h-[1px] bg-white/50" />
             </div>
             <div className="mt-4">
               <button
@@ -187,7 +185,7 @@ export default function SignIn({
                   setOpenSigninModal(false);
                   reset();
                 }}
-                className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                className="flex justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#c13939] font-bold"
               >
                 Cancel
               </button>
