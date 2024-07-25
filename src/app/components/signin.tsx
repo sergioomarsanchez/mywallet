@@ -19,6 +19,7 @@ import GitHubIcon from "../assets/icons/github-icon";
 import Loader from "./loader";
 import React from "react";
 import { useToast } from "../context/ToastContext";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
 
 type SignInProps = {
   openSigninModal: boolean;
@@ -40,6 +41,7 @@ export default function SignIn({
   });
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showPass, setShowPass] = useState(false);
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);
@@ -93,7 +95,7 @@ export default function SignIn({
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
-              <div className="py-2 md:py-5 border-y-[1px] border-y-[#976dff] grid grid-cols-1 w-[95%] gap-2">
+              <div className="py-2 md:py-5 border-y-[1px] border-y-white/50 grid grid-cols-1 w-[95%] gap-2">
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium text-white">
@@ -105,7 +107,7 @@ export default function SignIn({
                       placeholder="Email"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 ",
+                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -119,20 +121,31 @@ export default function SignIn({
                   </div>
                 </div>
                 <div className="flex flex-col">
-                  <Field className={"text-left"}>
+                  <Field className={"text-left relative"}>
                     <Label className="text-sm/6 font-medium text-white">
                       Password:
                     </Label>
                     <Input
                       {...register("password")}
-                      type="password"
+                      type={showPass ? "text" : "password"}
                       placeholder="Password"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 ",
+                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
+                    <button
+                      onClick={() => setShowPass(!showPass)}
+                      className="absolute right-3 top-8"
+                      type="button"
+                    >
+                      {showPass ? (
+                        <EyeIcon className="size-6 text-black/60" />
+                      ) : (
+                        <EyeSlashIcon className="size-6 text-black/60" />
+                      )}
+                    </button>
                   </Field>
                   <div className="h-4 mb-2">
                     {errors.password && (
@@ -142,20 +155,20 @@ export default function SignIn({
                     )}
                   </div>
                 </div>
+                <button
+                  type="submit"
+                  className="flex justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#4b39c1] font-bold mt-5"
+                >
+                  {isLoading ? <Loader /> : "Sign In"}
+                </button>
               </div>
-              <button
-                type="submit"
-                className="flex justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#4b39c1] font-bold"
-              >
-                {isLoading ? <Loader /> : "Sign In"}
-              </button>
             </form>
             <div className="flex justify-center items-center gap-2 my-5">
               <div className="w-1/4 h-[1px] bg-white/50" />
               <span className="text-sm/6 text-white">Or sing in with</span>
               <div className="w-1/4 h-[1px] bg-white/50" />
             </div>
-            <div className="mt-4">
+            <div className="mt-4 px-3">
               <button
                 type="button"
                 onClick={() => {
@@ -167,7 +180,7 @@ export default function SignIn({
                 Google
               </button>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 px-3">
               <button
                 type="button"
                 onClick={() => {
