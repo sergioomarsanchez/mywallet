@@ -8,18 +8,22 @@ datasource db {
 }
 
 model User {
-  id           String        @id @default(dbgenerated("concat('usr_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
-  firstName    String
-  lastName     String
-  email        String        @unique
-  password     String
-  avatar       String?
-  role         UserRole      @default(User)
-  accounts     Account[]
-  transactions Transaction[]
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  sessions     Session[]
+  id                     String        @id @default(dbgenerated("concat('usr_', replace((gen_random_uuid())::text, '-'::text, ''::text))"))
+  firstName              String
+  lastName               String
+  email                  String        @unique
+  password               String
+  avatar                 String?
+  role                   UserRole      @default(User)
+  accounts               Account[]
+  transactions           Transaction[]
+  createdAt              DateTime      @default(now())
+  updatedAt              DateTime      @updatedAt
+  sessions               Session[]
+  resetPasswordToken     String?       @unique
+  resetPasswordExpires   DateTime?
+  isEmailVerified        Boolean       @default(false)
+  emailVerificationToken String?       @unique
 }
 
 model Account {

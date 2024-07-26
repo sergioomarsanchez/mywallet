@@ -41,7 +41,6 @@ export const accountSchema = z.object({
 
 export type AccountData = z.infer<typeof accountSchema>;
 
-
 export const transactionSchema = z.object({
   amount: z.number().positive("Amount must be positive"),
   entityName: z.string().min(1, "Entity name is required"),
@@ -82,3 +81,17 @@ export interface OverviewData {
   accountLogo?: string | null;
   accountId?: string;
 }
+
+export const resetPasswordRequestSchema = z.object({
+  email: z.string().email("Invalid email address"),
+});
+
+export type ResetPasswordRequestData = z.infer<
+  typeof resetPasswordRequestSchema
+>;
+
+export const resetPasswordSchema = z.object({
+  password: z.string().min(8, "Password must be at least 8 characters long"),
+});
+
+export type ResetPasswordData = z.infer<typeof resetPasswordSchema>;

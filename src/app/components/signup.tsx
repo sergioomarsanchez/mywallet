@@ -16,7 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema, SignUpData } from "../types/front";
 import GoogleIcon from "../assets/icons/google-icon";
 import GitHubIcon from "../assets/icons/github-icon";
-import { signUpUser } from "../lib/actions";
 import Loader from "./loader";
 import React from "react";
 import { useToast } from "../context/ToastContext";
@@ -47,32 +46,21 @@ export default function Signup({
   const onSubmit = async (data: SignUpData) => {
     setIsLoading(true);
     try {
-      const user = await signUpUser(
-        data.email,
-        data.password,
-        data.firstName,
-        data.lastName
-      );
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        isSignUp: true, // Indicador para el flujo de registro
+      });
 
-      if (!user) {
-        addToast("Failed to sign up. Please try again.", "error");
-      } else {
-        const res = await signIn("credentials", {
-          redirect: false,
-          email: data.email,
-          password: data.password,
-        });
-
-        if (res?.error) {
-          addToast("Invalid email or password", "warning");
-        } else {
-          addToast("Signed up successfully, Welcome to My Wallet!", "success");
-          router.push("/welcome");
-          setOpenSignupModal(false);
-          reset();
-        }
-      }
+      addToast("Signed up successfully, Welcome to My Wallet!", "success");
+      setOpenSignupModal(false);
+      reset();
+      router.push("/auth/verify-request");
     } catch (err) {
+      console.log(err, "err en el catch de signUp");
       addToast("Failed to sign up. Please try again.", "error");
     } finally {
       setIsLoading(false);
@@ -80,9 +68,8 @@ export default function Signup({
   };
 
   const handleProviderSignUp = (provider: string) => {
-    // Puedes usar un callback URL específico para sign up si es necesario
     signIn(provider, {
-      callbackUrl: "/welcome",
+      callbackUrl: "/auth/verify-request",
       isSignUp: true, // Indicador para el flujo de registro
     });
   };
@@ -104,7 +91,7 @@ export default function Signup({
           <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/40 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
-              className="text-base/7 font-medium text-gray-200 justify-center flex"
+              className="text-lg font-semibold text-gray-200 justify-center flex"
             >
               Sign Up
             </DialogTitle>
@@ -115,7 +102,7 @@ export default function Signup({
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
-              <div className="py-2 md:py-5 border-y-[1px] border-y-white/50 grid grid-cols-1 gap-1 w-[95%] md:grid-cols-2 md:gap-2">
+              <div className="py-2 md:py-5 border-y-[1px] border-y-white/50 grid grid-cols-1 gap-0.5 md:gap-1 w-[95%] md:grid-cols-2 lg:gap-2">
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
                     <Label className="text-sm/6 font-medium text-white">
@@ -223,7 +210,7 @@ export default function Signup({
                 </div>
                 <button
                   type="submit"
-                  className="grid col-span-2 mt-5 justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#4b39c1] font-bold"
+                  className="grid md:col-span-2 mt-5 justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#4b39c1] font-bold"
                 >
                   {isLoading ? <Loader /> : "Sign Up"}
                 </button>

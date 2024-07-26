@@ -12,6 +12,14 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 
+  if (
+    token &&
+    !token.isEmailVerified &&
+    request.nextUrl.pathname !== "/auth/verify-request"
+  ) {
+    return NextResponse.redirect(new URL("/auth/verify-request", request.url));
+  }
+
   return NextResponse.next();
 }
 

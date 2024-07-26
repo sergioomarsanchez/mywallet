@@ -4,6 +4,9 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcryptjs";
+import nodemailer from "nodemailer";
+import crypto from "crypto";
+import { redirect } from "next/navigation";
 
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID!;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET!;
@@ -24,6 +27,8 @@ export const authOption: NextAuthOptions = {
       credentials: {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
+        firstName: { label: "First Name", type: "text" },
+        lastName: { label: "Last Name", type: "text" },
       },
       async authorize(credentials, req) {
         if (!credentials) {
@@ -35,18 +40,56 @@ export const authOption: NextAuthOptions = {
         });
 
         if (!user) {
-          throw new Error("User not found");
+          // Register new user
+          const hashedPassword = await bcrypt.hash(credentials.password, 10);
+          const verificationToken = crypto.randomBytes(20).toString("hex");
+
+          const newUser = await prisma.user.create({
+            data: {
+              email: credentials.email,
+              password: hashedPassword,
+              firstName: credentials.firstName,
+              lastName: credentials.lastName,
+              emailVerificationToken: verificationToken,
+            },
+          });
+
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS,
+            },
+          });
+
+          const mailOptions = {
+            to: credentials.email,
+            from: process.env.EMAIL_USER,
+            subject: "Email Verification",
+            text: `Welcome to My Wallet!\n\nPlease verify your email by clicking the link below:\n\n
+                   http://localhost:3000/verify/${verificationToken}\n\n
+                   If you did not create an account, please ignore this email.\n`,
+          };
+
+          await transporter.sendMail(mailOptions);
+
+          return newUser;
         }
 
         const isValidPassword = bcrypt.compareSync(
           credentials.password,
           user.password
         );
-        if (user && isValidPassword) {
-          return user;
-        } else {
+
+        if (!isValidPassword) {
           throw new Error("Invalid email or password");
         }
+
+        if (!user.isEmailVerified) {
+          throw new Error("Email not verified");
+        }
+
+        return user;
       },
     }),
     GitHubProvider({
@@ -60,12 +103,18 @@ export const authOption: NextAuthOptions = {
   ],
   callbacks: {
     async signIn({ user, account, profile, email, credentials }: any) {
+      if (account.provider === "credentials" && !user.isEmailVerified) {
+        // Redirigir a la página de verificación
+        return redirect("/auth/verify-request");
+      }
       if (account.provider === "credentials") {
         return true;
       }
+      console.log(profile, "profile in auth");
+      console.log(user, "user in auth");
 
       if (!profile?.email) {
-        throw new Error("No profile");
+        throw new Error("No profile email");
       }
 
       try {
@@ -74,7 +123,8 @@ export const authOption: NextAuthOptions = {
         });
 
         if (!existingUser) {
-          // Crear un nuevo usuario si no existe
+          const verificationToken = crypto.randomBytes(20).toString("hex");
+
           await prisma.user.create({
             data: {
               email: profile.email,
@@ -84,12 +134,32 @@ export const authOption: NextAuthOptions = {
                 "",
               password: "",
               avatar: profile.picture || profile.avatar_url || "",
+              emailVerificationToken: verificationToken,
             },
           });
+
+          // Send email verification
+          const transporter = nodemailer.createTransport({
+            service: "gmail",
+            auth: {
+              user: process.env.EMAIL_USER,
+              pass: process.env.EMAIL_PASS,
+            },
+          });
+
+          const mailOptions = {
+            to: profile.email,
+            from: process.env.EMAIL_USER,
+            subject: "Email Verification",
+            text: `Welcome to My Wallet!\n\nPlease verify your email by clicking the link below:\n\n
+                   http://localhost:3000/verify/${verificationToken}\n\n
+                   If you did not create an account, please ignore this email.\n`,
+          };
+
+          await transporter.sendMail(mailOptions);
         } else {
           const avatarUrl = profile.picture || profile.avatar_url;
 
-          // Solo actualizar el avatar si el usuario ya existe
           await prisma.user.update({
             where: { email: profile.email },
             data: { avatar: avatarUrl },
@@ -104,9 +174,7 @@ export const authOption: NextAuthOptions = {
     async jwt({ token, user, profile }: any) {
       if (profile) {
         const dbUser = await prisma.user.findUnique({
-          where: {
-            email: profile.email,
-          },
+          where: { email: profile.email },
         });
         if (dbUser) {
           token.id = dbUser.id;
@@ -114,6 +182,7 @@ export const authOption: NextAuthOptions = {
           token.avatar = dbUser.avatar;
           token.lastName = dbUser.lastName;
           token.firstName = dbUser.firstName;
+          token.isEmailVerified = dbUser.isEmailVerified;
         }
       } else if (user) {
         token.id = user.id;
@@ -121,6 +190,7 @@ export const authOption: NextAuthOptions = {
         token.avatar = user.avatar;
         token.lastName = user.lastName;
         token.firstName = user.firstName;
+        token.isEmailVerified = user.isEmailVerified;
       }
       return token;
     },
@@ -129,7 +199,8 @@ export const authOption: NextAuthOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.image = token.avatar;
-        session.user.name = token.firstName + " " + token.lastName;
+        session.user.name = `${token.firstName} ${token.lastName}`;
+        session.user.isEmailVerified = token.isEmailVerified;
       }
       return session;
     },
@@ -137,6 +208,6 @@ export const authOption: NextAuthOptions = {
   pages: {
     signIn: "/profile/overview",
     error: "/auth/error",
-    newUser: "/welcome",
+    newUser: "/auth/verify-request",
   },
 };

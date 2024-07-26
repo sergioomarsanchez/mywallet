@@ -20,6 +20,7 @@ import Loader from "./loader";
 import React from "react";
 import { useToast } from "../context/ToastContext";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/react/24/solid";
+import ResetPasswordRequestModal from "./requestPasswordRequestModal";
 
 type SignInProps = {
   openSigninModal: boolean;
@@ -42,6 +43,7 @@ export default function SignIn({
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const [showPass, setShowPass] = useState(false);
+  const [openResetPasswordModal, setOpenResetPasswordModal] = useState(false);
 
   const onSubmit = async (data: SignInData) => {
     setIsLoading(true);
@@ -84,7 +86,7 @@ export default function SignIn({
           <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/40 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
-              className="text-base/7 font-medium text-gray-200 justify-center flex"
+              className="text-lg font-semibold text-gray-200 justify-center flex"
             >
               Sign in
             </DialogTitle>
@@ -161,6 +163,10 @@ export default function SignIn({
                 >
                   {isLoading ? <Loader /> : "Sign In"}
                 </button>
+                <ResetPasswordRequestModal
+                  open={openResetPasswordModal}
+                  setOpen={setOpenResetPasswordModal}
+                />
               </div>
             </form>
             <div className="flex justify-center items-center gap-2 my-5">

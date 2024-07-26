@@ -8,6 +8,7 @@ import { useToast } from "src/app/context/ToastContext";
 import { deleteUser } from "@/lib/actions";
 import { useRouter } from "next/navigation";
 import { signOut } from "next-auth/react";
+import { useSessionContext } from "src/app/context/SessionContext";
 
 export default function DeleteUserWarningModal({
   userId,
@@ -21,6 +22,7 @@ export default function DeleteUserWarningModal({
   const { addToast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { session } = useSessionContext();
 
   const onConfirmDelete = async () => {
     setIsLoading(true);
@@ -30,8 +32,10 @@ export default function DeleteUserWarningModal({
         addToast("User deleted successfully", "success");
 
         // Ejecutar signOut en el cliente
-        await signOut({ redirect: false });
-        router.push("/");
+        if (userId === session?.user.id) {
+          await signOut({ redirect: false });
+          router.push("/");
+        }
         setOpenWarningModal(false);
       }
     } catch (err) {

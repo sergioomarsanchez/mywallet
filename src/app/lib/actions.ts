@@ -7,6 +7,9 @@ import { AccountData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
 import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth";
+import crypto from "crypto";
+import nodemailer from "nodemailer";
+import { redirect } from "next/navigation";
 
 //---------- Users Actions ----------
 //Get users
@@ -106,7 +109,7 @@ export async function getProvidersForServer() {
   return providers;
 }
 
-//Sign up a new user
+// Sign up a new user
 export async function signUpUser(
   email: string,
   password: string,
@@ -114,8 +117,19 @@ export async function signUpUser(
   lastName: string
 ) {
   try {
+    // Check if user already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    if (existingUser) {
+      throw new Error("User already exists");
+    }
+
+    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
+    // Create the new user
     const user = await prisma.user.create({
       data: {
         email,
@@ -128,9 +142,117 @@ export async function signUpUser(
     return user;
   } catch (error) {
     console.error("Failed to create user", error);
-    return {};
+    throw new Error("Failed to create user");
   }
 }
+
+//reste password request
+
+export async function requestPasswordReset(email: string) {
+  try {
+    const user = await prisma.user.findUnique({ where: { email } });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    const token = crypto.randomBytes(20).toString("hex");
+    const expiration = new Date(Date.now() + 3600000); // 1 hour
+
+    await prisma.user.update({
+      where: { email },
+      data: {
+        resetPasswordToken: token,
+        resetPasswordExpires: expiration,
+      },
+    });
+
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      to: email,
+      from: process.env.EMAIL_USER,
+      subject: "Password Reset",
+      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
+             Please click on the following link, or paste this into your browser to complete the process:\n\n
+             http://localhost:3000/reset/${token}\n\n
+             If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error requesting password reset:", error);
+    throw new Error("An error occurred while requesting password reset.");
+  }
+}
+
+//reste password action
+
+export async function resetPassword({
+  token,
+  newPassword,
+}: {
+  token: string;
+  newPassword: string;
+}) {
+  try {
+    const user = await prisma.user.findFirst({
+      where: {
+        resetPasswordToken: token,
+        resetPasswordExpires: {
+          gt: new Date(),
+        },
+      },
+    });
+
+    if (!user) {
+      throw new Error("Password reset token is invalid or has expired");
+    }
+
+    const hashedPassword = bcrypt.hashSync(newPassword, 10);
+
+    await prisma.user.update({
+      where: { email: user.email },
+      data: {
+        password: hashedPassword,
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+      },
+    });
+
+    return { message: "Password has been reset" };
+  } catch (error) {
+    console.error("Error resetting password:", error);
+    throw new Error("An error occurred while resetting the password.");
+  }
+}
+
+//Verify Email
+export const verifyEmail = async (token: string) => {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { emailVerificationToken: token },
+    });
+    
+    if (!user) {
+      throw new Error("Invalid or expired token");
+    }
+
+    await prisma.user.update({
+      where: { id: user.id },
+      data: { isEmailVerified: true },
+    });
+  } catch (error) {
+    console.error("Error verifying email:", error);
+    throw new Error("An error occurred while verifying the email.");
+  }
+};
 
 //----------- Account Actions --------
 
