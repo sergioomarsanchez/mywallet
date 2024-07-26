@@ -1,7 +1,6 @@
 import { getServerSession } from "next-auth";
 import { authOption } from "../lib/auth";
 import prisma from "../lib/prisma";
-import { PencilIcon } from "@heroicons/react/24/outline";
 import DeleteUserContainer from "./deleteUserContainer";
 
 export default async function ProfilePage() {
@@ -35,7 +34,9 @@ export default async function ProfilePage() {
               <div className="mr-4">
                 <img
                   className="w-20 h-20 rounded-full"
-                  src={user?.avatar || "/default-avatar.png"}
+                  src={
+                    session.user.image || user?.avatar || "/images/auth-image.jpg"
+                  }
                   width={80}
                   height={80}
                   alt="User avatar"

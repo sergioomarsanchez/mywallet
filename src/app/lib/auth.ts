@@ -110,12 +110,11 @@ export const authOption: NextAuthOptions = {
       if (account.provider === "credentials") {
         return true;
       }
-      console.log(profile, "profile in auth");
-      console.log(user, "user in auth");
 
       if (!profile?.email) {
         throw new Error("No profile email");
       }
+
 
       try {
         const existingUser = await prisma.user.findUnique({
