@@ -239,7 +239,7 @@ export const verifyEmail = async (token: string) => {
     const user = await prisma.user.findFirst({
       where: { emailVerificationToken: token },
     });
-    
+
     if (!user) {
       throw new Error("Invalid or expired token");
     }
@@ -470,16 +470,21 @@ export async function updateTransaction(
 
     // Calcular el cambio en el balance
     let balanceUpdate = 0;
-    if (newData.type === "Debit") {
-      balanceUpdate =
-        oldType === "Credit"
-          ? -oldAmount - newData.amount
-          : -oldAmount + newData.amount;
-    } else if (newData.type === "Credit") {
-      balanceUpdate =
-        oldType === "Debit"
-          ? oldAmount - newData.amount
-          : newData.amount - oldAmount;
+
+    if (oldType === newData.type) {
+      // Si el tipo no ha cambiado, solo ajustar por la diferencia en el monto
+      if (newData.type === "Debit") {
+        balanceUpdate = oldAmount - newData.amount; // restar la diferencia
+      } else if (newData.type === "Credit") {
+        balanceUpdate = newData.amount - oldAmount; // sumar la diferencia
+      }
+    } else {
+      // Si el tipo ha cambiado, ajustar por el monto antiguo y el nuevo monto
+      if (newData.type === "Debit") {
+        balanceUpdate = -oldAmount - newData.amount; // el viejo era Credit, restar ambos montos
+      } else if (newData.type === "Credit") {
+        balanceUpdate = oldAmount + newData.amount; // el viejo era Debit, sumar ambos montos
+      }
     }
 
     // Usar una transacción para asegurar atomicidad
