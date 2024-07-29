@@ -7,7 +7,7 @@ const WebNavBar = () => {
   const { data: session } = useSession();
 
   return (
-    <nav className="fixed  p-4 flex justify-end items-center z-10 top-0 right-0">
+    <nav className="fixed pr-6 pt-2 md:p-4 flex justify-end items-center z-10 top-0 right-0">
       <ul className="flex justify-end items-center gap-5">
         {session && (
           <>

@@ -29,10 +29,10 @@ const AccountPage = async () => {
 
   return (
     <main className="flex flex-col justify-center p-2 md:p-5 lg:ml-10">
-      <h1 className="text-lg lg:text-2xl place-self-center lg:place-self-start my-5">
+      <h1 className="text-lg lg:text-2xl place-self-center lg:place-self-start md:my-5">
         Your accounts
       </h1>
-      <div className="flex h-screen w-full justify-center pt-2 md:pt-5 px-4">
+      <div className="flex min-h-screen w-full justify-center pt-2 md:pt-5 px-4 mb-5">
         <div className="w-full">
           <CurrencyTabs userId={session?.user?.id} accounts={accounts} />
         </div>

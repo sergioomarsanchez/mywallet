@@ -23,11 +23,13 @@ import { useToast } from "../context/ToastContext";
 
 type ResetPasswordRequestModalProps = {
   open: boolean;
+  profile?: boolean;
   setOpen: (open: boolean) => void;
 };
 
 export default function ResetPasswordRequestModal({
   open,
+  profile,
   setOpen,
 }: ResetPasswordRequestModalProps) {
   const {
@@ -64,7 +66,7 @@ export default function ResetPasswordRequestModal({
         onClick={() => setOpen(true)}
         className="cursor-pointer text-blue-500"
       >
-        Forgot your password?
+        {profile ? "Change Password" : "Forgot your password"}
       </span>
       <Dialog
         open={open}
@@ -72,7 +74,7 @@ export default function ResetPasswordRequestModal({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/60 dark:bg-black/40 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/60 dark:bg-white/10 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium text-gray-200 justify-center flex"

@@ -17,7 +17,7 @@ const AccountDetails = ({ account, transactions }: AccountDetailsProps) => {
   const openModal = () => setOpenAddTransactionModal(true);
 
   return (
-    <div className="p-1 lg:p-4">
+    <div className="pt-1 lg:pt-4">
       <div className="mt-4 md:relative">
         <h2 className="text-sm md-text-lg font-thin dark:text-gray-400 text-gray-800">
           Transactions

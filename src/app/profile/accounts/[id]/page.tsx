@@ -43,7 +43,7 @@ const AccountPage = async ({ params }: AccountPageProps) => {
 
   return (
     <main className="flex flex-col items-center justify-center md:items-start md:p-5 lg:ml-10">
-      <header className="flex  md:grid-cols-2 w-full">
+      <header className="flex  md:grid-cols-2 w-full md:bg-black/5 md:dark:bg-white/5  md:p-5 rounded-lg">
         <div
           className={`flex ${
             otherAccounts.length
@@ -63,7 +63,7 @@ const AccountPage = async ({ params }: AccountPageProps) => {
           </div>
         )}
       </header>
-      <div className="flex h-screen w-full justify-center pt-2 md:pt-5 px-4">
+      <div className="flex h-screen w-full justify-center">
         <div className="w-full">
           <AccountDetails account={account} transactions={transactions} />
         </div>

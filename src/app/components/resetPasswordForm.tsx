@@ -55,24 +55,61 @@ export default function ResetPasswordForm({ token }: resetPasswordForm) {
         className="flex flex-col gap-4 w-full"
       >
         <div className="w-full relative">
-          <label className="block text-sm font-medium text-gray-700 md:text-gray-300 dark:text-gray-300">
+          <label className="block text-sm font-medium text-gray-300 md:text-inherit">
             New Password
           </label>
           <input
             {...register("password")}
             type={showPass ? "text" : "password"}
             required
+            autoComplete="new-password"
             className={clsx(
               "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
               "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
-              errors.password && "border-red-500"
+              errors.password && "border-[1px] border-red-500"
             )}
           />
-          {errors.password && (
-            <p className="mt-2 text-sm text-red-600">
-              {errors.password.message}
-            </p>
-          )}
+          <div className="h-4 mb-2">
+            {errors?.password && (
+              <p className="text-red-500 text-xs">
+                {errors?.password?.message}
+              </p>
+            )}
+          </div>
+          <button
+            onClick={() => setShowPass(!showPass)}
+            className="absolute right-2 top-[26px]"
+            type="button"
+          >
+            {showPass ? (
+              <EyeIcon className="size-6 text-black/60" />
+            ) : (
+              <EyeSlashIcon className="size-6 text-black/60" />
+            )}
+          </button>
+        </div>
+        <div className="w-full relative">
+          <label className="block text-sm font-medium text-gray-300 md:text-inherit">
+            Confirm Password
+          </label>
+          <input
+            {...register("confirmPassword")}
+            type={showPass ? "text" : "password"}
+            required
+            autoComplete="new-password"
+            className={clsx(
+              "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+              "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
+              errors.confirmPassword && "border-red-500"
+            )}
+          />
+          <div className="h-4 mb-2">
+            {errors?.confirmPassword && (
+              <p className="text-red-500 text-xs">
+                {errors?.confirmPassword?.message}
+              </p>
+            )}
+          </div>
           <button
             onClick={() => setShowPass(!showPass)}
             className="absolute right-2 top-[26px]"

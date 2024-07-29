@@ -1,11 +1,11 @@
-"use client";
+"use client"
 import React from "react";
 import AuthHeader from "src/app/(auth)/auth-header";
 import AuthImage from "src/app/(auth)/auth-image";
 import { useParams } from "next/navigation";
 import ResetPasswordForm from "@/components/resetPasswordForm";
 
-export default async function Reset() {
+export default function Reset() {
   const params = useParams();
   const token = params.token as string;
 
@@ -19,8 +19,13 @@ export default async function Reset() {
               <h1 className="text-center md:text-left text-2xl lg:text-3xl xl:text-5xl font-bold mb-6 text-white md:text-black dark:md:text-white">
                 Reset Password
               </h1>
-              <p className="text-sm lg:text-base font-extralight text-white md:text-black dark:md:text-white text-center md:text-left mb-8">
+              <p className="text-sm lg:text-base font-extralight text-white md:text-black dark:md:text-white text-center md:text-left">
                 Please, change your password by inputing it below:
+              </p>
+              <p className="text-sm lg:text-base font-extralight text-white md:text-black dark:md:text-white text-center md:text-left mb-8">
+                Your new password must be at least 8 characters long and contain
+                both upper and lower case letters, numbers, and special
+                characters.
               </p>
               <ResetPasswordForm token={token} />
             </div>

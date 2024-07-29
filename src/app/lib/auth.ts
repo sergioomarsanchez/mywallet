@@ -170,7 +170,7 @@ export const authOption: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user, profile }: any) {
+    async jwt({ token, user, profile, account }: any) {
       if (profile) {
         const dbUser = await prisma.user.findUnique({
           where: { email: profile.email },
@@ -182,6 +182,7 @@ export const authOption: NextAuthOptions = {
           token.lastName = dbUser.lastName;
           token.firstName = dbUser.firstName;
           token.isEmailVerified = dbUser.isEmailVerified;
+          token.provider = account.provider;
         }
       } else if (user) {
         token.id = user.id;
@@ -190,6 +191,7 @@ export const authOption: NextAuthOptions = {
         token.lastName = user.lastName;
         token.firstName = user.firstName;
         token.isEmailVerified = user.isEmailVerified;
+        token.provider = account.provider;
       }
       return token;
     },
@@ -200,6 +202,7 @@ export const authOption: NextAuthOptions = {
         session.user.image = token.avatar;
         session.user.name = `${token.firstName} ${token.lastName}`;
         session.user.isEmailVerified = token.isEmailVerified;
+        session.user.provider = token.provider;
       }
       return session;
     },
