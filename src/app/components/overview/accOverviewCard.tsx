@@ -57,7 +57,7 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
     data.lastMonthExpense === 0;
 
   return (
-    <div className="p-4 text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] bg-gradient-to-tl from-gray-400 to-gray-300 border-gray-300 dark:from-gray-900 dark:to-gray-950 border-r-2 border-t-2 dark:border-gray-900 rounded-lg">
+    <div className="p-4 text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] bg-gradient-to-tl from-gray-300/90 to-gray-50 border-gray-300 dark:from-gray-800 dark:to-gray-600 border-r-2 border-t-2 dark:border-gray-500 rounded-lg">
       <Link href={`/profile/accounts/${data.accountId}`}>
         <div className="flex justify-start items-center gap-2 h-fit">
           {data.accountLogo ? (

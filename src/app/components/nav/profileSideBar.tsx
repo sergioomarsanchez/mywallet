@@ -24,7 +24,7 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-fit h-fit ml-5 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-24">
+    <aside className="w-fit h-fit ml-5 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-10">
       <ul className="space-y-4">
         {[
           {
@@ -95,6 +95,11 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
                       }`}
                     >
                       {label}
+                      <div
+                        className={`h-[1px] transition-all delay-75 duration-300 ease-in-out bg-[#074237] dark:via-[#4ae4c5] place-self-center bg-gradient-to-r from-white/60 via-transparent to-white/60 dark:from-gray-900 dark:to-gray-900 ${
+                          pathname === href ? "w-full" : "w-0"
+                        }`}
+                      ></div>
                     </span>
                   </div>
                 </Link>

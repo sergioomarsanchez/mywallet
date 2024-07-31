@@ -9,7 +9,6 @@ import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import { redirect } from "next/navigation";
 
 //---------- Users Actions ----------
 //Get users
@@ -740,4 +739,113 @@ export async function getMonthlyMovements(accountId: string) {
   });
 
   return data;
+}
+
+// get data for category charts
+
+type CategoryKeys =
+  | "Salary"
+  | "FreelanceContractWork"
+  | "RentalIncome"
+  | "Gifts"
+  | "Investments"
+  | "Housing"
+  | "Transportation"
+  | "Food"
+  | "Entertainment"
+  | "Utilities"
+  | "Insurance"
+  | "Healthcare"
+  | "DebtRepayment"
+  | "Savings"
+  | "Taxes"
+  | "Other";
+
+type Categories = {
+  income: Record<CategoryKeys, number>;
+  spending: Record<CategoryKeys, number>;
+};
+
+export async function getCategoryMovements(
+  userId: string,
+  month: Date,
+  currency: string
+) {
+  const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
+  const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+
+  const transactions = await prisma.transaction.findMany({
+    where: {
+      userId,
+      date: {
+        gte: startOfMonth,
+        lte: endOfMonth,
+      },
+      account: {
+        currency: currency as Currency, 
+      },
+    },
+    include: {
+      account: true, 
+    },
+  });
+
+  const categories: Categories = {
+    income: {
+      Salary: 0,
+      FreelanceContractWork: 0,
+      RentalIncome: 0,
+      Gifts: 0,
+      Investments: 0,
+      Housing: 0,
+      Transportation: 0,
+      Food: 0,
+      Entertainment: 0,
+      Utilities: 0,
+      Insurance: 0,
+      Healthcare: 0,
+      DebtRepayment: 0,
+      Savings: 0,
+      Taxes: 0,
+      Other: 0,
+    },
+    spending: {
+      Salary: 0,
+      FreelanceContractWork: 0,
+      RentalIncome: 0,
+      Gifts: 0,
+      Investments: 0,
+      Housing: 0,
+      Transportation: 0,
+      Food: 0,
+      Entertainment: 0,
+      Utilities: 0,
+      Insurance: 0,
+      Healthcare: 0,
+      DebtRepayment: 0,
+      Savings: 0,
+      Taxes: 0,
+      Other: 0,
+    },
+  };
+
+  transactions.forEach((transaction) => {
+    const categoryKey = transaction.category as CategoryKeys;
+
+    if (transaction.type === "Credit") {
+      if (categoryKey in categories.income) {
+        categories.income[categoryKey] += transaction.amount;
+      } else {
+        categories.income.Other += transaction.amount;
+      }
+    } else {
+      if (categoryKey in categories.spending) {
+        categories.spending[categoryKey] += transaction.amount;
+      } else {
+        categories.spending.Other += transaction.amount;
+      }
+    }
+  });
+
+  return categories;
 }

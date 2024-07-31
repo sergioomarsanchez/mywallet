@@ -20,6 +20,31 @@ type AddTransactionProps = {
   accountId: string;
 };
 
+const debitCategories = [
+  "Housing",
+  "Transportation",
+  "Food",
+  "Entertainment",
+  "Utilities",
+  "Insurance",
+  "Healthcare",
+  "DebtRepayment",
+  "Savings",
+  "Investments",
+  "Taxes",
+  "Gifts",
+  "Other",
+];
+
+const creditCategories = [
+  "Salary",
+  "FreelanceContractWork",
+  "RentalIncome",
+  "Gifts",
+  "Investments",
+  "Other",
+];
+
 export default function AddTransaction({
   openAddTransactionModal,
   setOpenAddTransactionModal,
@@ -39,6 +64,8 @@ export default function AddTransaction({
   });
 
   const [isLoading, setIsLoading] = useState(false);
+  const transactionType = watch("type", "Debit");
+
   const onSubmit = async (data: TransactionData) => {
     setIsLoading(true);
     try {
@@ -184,11 +211,17 @@ export default function AddTransaction({
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     >
-                      {Object.keys(Category).map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
+                      {transactionType === "Debit"
+                        ? debitCategories.map((cat) => (
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
+                          ))
+                        : creditCategories.map((cat) => (
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
+                          ))}
                     </select>
                   </Field>
                   <div className="h-4 mb-2">
