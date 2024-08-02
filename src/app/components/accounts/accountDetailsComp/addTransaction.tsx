@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Field, Input, Label } from "@headlessui/react";
 import { useForm } from "react-hook-form";
@@ -11,7 +11,6 @@ import { addTransaction } from "@/lib/actions";
 import clsx from "clsx";
 import Loader from "@/components/loader";
 import EntityDropdown from "../entityDropdown";
-import { Category } from "@prisma/client";
 
 type AddTransactionProps = {
   openAddTransactionModal: boolean;
@@ -186,9 +185,17 @@ export default function AddTransaction({
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     >
-                      <option value="Debit">Debit</option>
-                      <option value="Credit">Credit</option>
-                      <option value="Cash">Cash</option>
+                      {transactionType === "Debit" ? (
+                        <>
+                          <option value="Debit">Debit</option>
+                          <option value="Cash">Cash</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="Credit">Credit</option>
+                          <option value="Cash">Cash</option>
+                        </>
+                      )}
                     </select>
                   </Field>
                   <div className="h-4 mb-2">

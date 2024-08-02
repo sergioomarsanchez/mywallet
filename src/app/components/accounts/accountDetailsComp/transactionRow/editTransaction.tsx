@@ -12,7 +12,6 @@ import clsx from "clsx";
 import Loader from "@/components/loader";
 import EntityDropdown from "../../entityDropdown";
 import { Transaction } from "src/app/types/back";
-import { Category } from "@prisma/client";
 
 type EditTransactionProps = {
   openEditTransactionModal: boolean;
@@ -20,6 +19,31 @@ type EditTransactionProps = {
   transaction: Transaction;
   accountId: string;
 };
+
+const debitCategories = [
+  "Housing",
+  "Transportation",
+  "Food",
+  "Entertainment",
+  "Utilities",
+  "Insurance",
+  "Healthcare",
+  "DebtRepayment",
+  "Savings",
+  "Investments",
+  "Taxes",
+  "Gifts",
+  "Other",
+];
+
+const creditCategories = [
+  "Salary",
+  "FreelanceContractWork",
+  "RentalIncome",
+  "Gifts",
+  "Investments",
+  "Other",
+];
 
 export default function EditTransaction({
   openEditTransactionModal,
@@ -34,6 +58,7 @@ export default function EditTransaction({
     formState: { errors },
     reset,
     setValue,
+    watch,
   } = useForm<TransactionData>({
     resolver: zodResolver(transactionSchema),
   });
@@ -46,6 +71,7 @@ export default function EditTransaction({
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const transactionType = watch("type", transaction.type);
 
   const onSubmit = async (data: TransactionData) => {
     setIsLoading(true);
@@ -178,9 +204,17 @@ export default function EditTransaction({
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     >
-                      <option value="Debit">Debit</option>
-                      <option value="Credit">Credit</option>
-                      <option value="Cash">Cash</option>
+                      {transactionType === "Debit" ? (
+                        <>
+                          <option value="Debit">Debit</option>
+                          <option value="Cash">Cash</option>
+                        </>
+                      ) : (
+                        <>
+                          <option value="Credit">Credit</option>
+                          <option value="Cash">Cash</option>
+                        </>
+                      )}
                     </select>
                   </Field>
                   <div className="h-4 mb-2">
@@ -204,11 +238,17 @@ export default function EditTransaction({
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     >
-                      {Object.keys(Category).map((cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      ))}
+                      {transactionType === "Debit"
+                        ? debitCategories.map((cat) => (
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
+                          ))
+                        : creditCategories.map((cat) => (
+                            <option key={cat} value={cat}>
+                              {cat}
+                            </option>
+                          ))}
                     </select>
                   </Field>
                   <div className="h-4 mb-2">
@@ -226,12 +266,12 @@ export default function EditTransaction({
                     </Label>
                     <Input
                       type="date"
-                      defaultValue={formatDate(transaction.date)}
-                      {...register("date", {
-                        required: "Date is required",
-                      })}
+                      defaultValue={formatDate(new Date(transaction.date))}
+                      {...register("date")}
+                      placeholder="Date"
+                      required
                       className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1 px-3 text-sm/6 dark:text-gray-200",
+                        "block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -245,19 +285,23 @@ export default function EditTransaction({
                   </div>
                 </div>
               </div>
-              <div className="flex w-full justify-center items-center gap-2 mt-4">
+              <div className="mt-4 flex items-center justify-center gap-3">
                 <button
                   type="button"
-                  className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
-                  onClick={() => setOpenEditTransactionModal(false)}
+                  className="w-full rounded-lg bg-red-600 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"
+                  onClick={() => {
+                    setOpenEditTransactionModal(false);
+                    reset();
+                  }}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+                  disabled={isLoading}
+                  className="w-full rounded-lg bg-blue-600 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
                 >
-                  {isLoading ? <Loader /> : "Edit"}
+                  {isLoading ? <Loader /> : "Save"}
                 </button>
               </div>
             </form>

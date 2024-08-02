@@ -743,15 +743,19 @@ export async function getMonthlyMovements(accountId: string) {
 
 // get data for category charts
 
-type CategoryKeys =
+type CreditCategoryKeys =
   | "Salary"
   | "FreelanceContractWork"
   | "RentalIncome"
   | "Gifts"
   | "Investments"
+  | "Other";
+
+type DebitCategoryKeys =
   | "Housing"
   | "Transportation"
   | "Food"
+  | "Gifts"
   | "Entertainment"
   | "Utilities"
   | "Insurance"
@@ -762,8 +766,8 @@ type CategoryKeys =
   | "Other";
 
 type Categories = {
-  income: Record<CategoryKeys, number>;
-  spending: Record<CategoryKeys, number>;
+  income: Record<CreditCategoryKeys, number>;
+  spending: Record<DebitCategoryKeys, number>;
 };
 
 export async function getCategoryMovements(
@@ -782,11 +786,11 @@ export async function getCategoryMovements(
         lte: endOfMonth,
       },
       account: {
-        currency: currency as Currency, 
+        currency: currency as Currency,
       },
     },
     include: {
-      account: true, 
+      account: true,
     },
   });
 
@@ -797,24 +801,10 @@ export async function getCategoryMovements(
       RentalIncome: 0,
       Gifts: 0,
       Investments: 0,
-      Housing: 0,
-      Transportation: 0,
-      Food: 0,
-      Entertainment: 0,
-      Utilities: 0,
-      Insurance: 0,
-      Healthcare: 0,
-      DebtRepayment: 0,
-      Savings: 0,
-      Taxes: 0,
       Other: 0,
     },
     spending: {
-      Salary: 0,
-      FreelanceContractWork: 0,
-      RentalIncome: 0,
       Gifts: 0,
-      Investments: 0,
       Housing: 0,
       Transportation: 0,
       Food: 0,
@@ -830,17 +820,18 @@ export async function getCategoryMovements(
   };
 
   transactions.forEach((transaction) => {
-    const categoryKey = transaction.category as CategoryKeys;
+    const creditCategoryKey = transaction.category as CreditCategoryKeys;
+    const debitCategoryKey = transaction.category as DebitCategoryKeys;
 
     if (transaction.type === "Credit") {
-      if (categoryKey in categories.income) {
-        categories.income[categoryKey] += transaction.amount;
+      if (creditCategoryKey in categories.income) {
+        categories.income[creditCategoryKey] += transaction.amount;
       } else {
         categories.income.Other += transaction.amount;
       }
     } else {
-      if (categoryKey in categories.spending) {
-        categories.spending[categoryKey] += transaction.amount;
+      if (debitCategoryKey in categories.spending) {
+        categories.spending[debitCategoryKey] += transaction.amount;
       } else {
         categories.spending.Other += transaction.amount;
       }
