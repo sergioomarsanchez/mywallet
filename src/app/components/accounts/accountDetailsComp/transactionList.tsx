@@ -6,6 +6,7 @@ import TransActionDropdown from "./transactionRow/transActionsDropdown";
 import DeleteTransactionWarningModal from "./transactionRow/deleteTransWarningModal";
 import EditTransaction from "./transactionRow/editTransaction";
 import useFormattedNumber from "src/app/hooks/useFormatedNumber";
+import { format, addDays } from "date-fns"; 
 
 interface TransactionRowProps {
   transaction: Transaction;
@@ -19,7 +20,6 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
     useState<boolean>(false);
 
   useEffect(() => {
-    // Inicializar el estado de modalidad basado en la existencia de la transacción
     if (transaction.id === undefined) {
       setOpenDeleteWarningModal(false);
       setOpenEditTransactionModal(false);
@@ -34,7 +34,7 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
     setOpenEditTransactionModal(true);
   };
 
-  const formattedDate = new Date(transaction.date).toLocaleDateString("en-GB");
+  const formattedDate = format(addDays(new Date(transaction.date), 1), "dd/MM/yyyy"); 
 
   const { integerPart, decimalPart } = useFormattedNumber(transaction.amount);
 

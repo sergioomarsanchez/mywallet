@@ -3,6 +3,7 @@ import { authOption } from "../../lib/auth";
 import React from "react";
 import CategoriesContainer from "@/components/categories/categoriesContainer";
 import { getCategoryMovements } from "@/lib/actions";
+import { addDays } from "date-fns"; 
 
 type CategoryKeys =
   | "Salary"
@@ -29,14 +30,10 @@ const CategoriesPage = async () => {
   }
 
   const userId = session.user.id;
-  const initialMonth = new Date();
+  const initialMonth = addDays(new Date(), 1);
   const initialCurrency = "USD";
 
-  const data = await getCategoryMovements(
-    userId,
-    initialMonth,
-    initialCurrency
-  );
+  const data = await getCategoryMovements(userId, initialMonth, initialCurrency);
 
   const incomeData = Object.entries(data.income).map(([category, amount]) => ({
     category: category as CategoryKeys,

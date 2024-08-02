@@ -765,6 +765,13 @@ type DebitCategoryKeys =
   | "Taxes"
   | "Other";
 
+const getFirstDayOfMonth = (year: number, month: number) => {
+  return new Date(year, month, 0);
+};
+const getLastDayOfMonth = (year: number, month: number) => {
+  return new Date(year, month + 1, 0);
+};
+
 type Categories = {
   income: Record<CreditCategoryKeys, number>;
   spending: Record<DebitCategoryKeys, number>;
@@ -775,15 +782,17 @@ export async function getCategoryMovements(
   month: Date,
   currency: string
 ) {
-  const startOfMonth = new Date(month.getFullYear(), month.getMonth(), 1);
-  const endOfMonth = new Date(month.getFullYear(), month.getMonth() + 1, 0);
+  const start = getFirstDayOfMonth(month.getUTCFullYear(), month.getUTCMonth());
+  const end = getLastDayOfMonth(month.getUTCFullYear(), month.getUTCMonth());
+
+  console.log(start, end, "start and end");
 
   const transactions = await prisma.transaction.findMany({
     where: {
       userId,
       date: {
-        gte: startOfMonth,
-        lte: endOfMonth,
+        gte: start,
+        lte: end,
       },
       account: {
         currency: currency as Currency,
@@ -837,6 +846,7 @@ export async function getCategoryMovements(
       }
     }
   });
+
 
   return categories;
 }

@@ -4,6 +4,7 @@ import MonthPicker from "./monthPicker";
 import CurrencySelector from "./currencySelector";
 import CategoryChart from "./categoryChart";
 import { getCategoryMovements } from "@/lib/actions";
+import { addDays } from "date-fns"; 
 
 type CreditCategoryKeys =
   | "Salary"
@@ -47,7 +48,9 @@ export default function CategoriesContainer({
   initialMonth,
   initialCurrency,
 }: CategoriesContainerProps) {
-  const [selectedMonth, setSelectedMonth] = useState<Date>(initialMonth);
+  const [selectedMonth, setSelectedMonth] = useState<Date>(
+    addDays(initialMonth, 1) 
+  );
   const [selectedCurrency, setSelectedCurrency] =
     useState<string>(initialCurrency);
   const [incomeData, setIncomeData] =
@@ -59,7 +62,7 @@ export default function CategoriesContainer({
     const fetchData = async () => {
       const data = await getCategoryMovements(
         userId,
-        selectedMonth,
+        addDays(selectedMonth, 1), 
         selectedCurrency
       );
       setIncomeData(
@@ -77,11 +80,11 @@ export default function CategoriesContainer({
     };
 
     fetchData();
-  }, [selectedMonth, selectedCurrency]);
+  }, [selectedMonth, selectedCurrency, userId]);
 
   const handleMonthChange = (date: Date | null, event?: SyntheticEvent) => {
     if (date) {
-      setSelectedMonth(date);
+      setSelectedMonth(addDays(date, 1)); 
     }
   };
 
