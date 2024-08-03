@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { addDays } from "date-fns";
 
 //---------- Users Actions ----------
 //Get users
@@ -707,7 +708,7 @@ export async function getMonthlyMovements(accountId: string) {
     },
   });
 
-  // structure data
+  // Structure data
   const data = new Array(12).fill(0).map((_, index) => {
     const date = new Date(
       lastYear.getFullYear(),
@@ -725,13 +726,13 @@ export async function getMonthlyMovements(accountId: string) {
   });
 
   transactions.forEach((transaction) => {
+    const transactionDate = new Date(addDays(transaction.date, 1));
     const monthIndex =
-      transaction.date.getMonth() -
-      lastYear.getMonth() +
-      (transaction.date.getFullYear() - lastYear.getFullYear()) * 12;
-    const type = transaction.type;
+      (transactionDate.getFullYear() - lastYear.getFullYear()) * 12 +
+      transactionDate.getMonth() -
+      lastYear.getMonth();
 
-    if (type === "Credit") {
+    if (transaction.type === "Credit") {
       data[monthIndex].income += transaction.amount;
     } else {
       data[monthIndex].expense += transaction.amount;
@@ -742,6 +743,13 @@ export async function getMonthlyMovements(accountId: string) {
 }
 
 // get data for category charts
+const getFirstDayOfMonth = (year: number, month: number) => {
+  return new Date(Date.UTC(year, month, 1));
+};
+
+const getLastDayOfMonth = (year: number, month: number) => {
+  return new Date(Date.UTC(year, month + 1, 0, 23, 59, 59, 999));
+};
 
 type CreditCategoryKeys =
   | "Salary"
@@ -765,13 +773,6 @@ type DebitCategoryKeys =
   | "Taxes"
   | "Other";
 
-const getFirstDayOfMonth = (year: number, month: number) => {
-  return new Date(year, month, 0);
-};
-const getLastDayOfMonth = (year: number, month: number) => {
-  return new Date(year, month + 1, 0);
-};
-
 type Categories = {
   income: Record<CreditCategoryKeys, number>;
   spending: Record<DebitCategoryKeys, number>;
@@ -784,8 +785,6 @@ export async function getCategoryMovements(
 ) {
   const start = getFirstDayOfMonth(month.getUTCFullYear(), month.getUTCMonth());
   const end = getLastDayOfMonth(month.getUTCFullYear(), month.getUTCMonth());
-
-  console.log(start, end, "start and end");
 
   const transactions = await prisma.transaction.findMany({
     where: {
@@ -846,7 +845,6 @@ export async function getCategoryMovements(
       }
     }
   });
-
 
   return categories;
 }

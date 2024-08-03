@@ -12,6 +12,7 @@ import clsx from "clsx";
 import Loader from "@/components/loader";
 import EntityDropdown from "../../entityDropdown";
 import { Transaction } from "src/app/types/back";
+import { format, addDays } from "date-fns";
 
 type EditTransactionProps = {
   openEditTransactionModal: boolean;
@@ -64,10 +65,8 @@ export default function EditTransaction({
   });
 
   const formatDate = (date: Date) => {
-    const year = date.getFullYear();
-    const month = (date.getMonth() + 1).toString().padStart(2, "0");
-    const day = date.getDate().toString().padStart(2, "0");
-    return `${year}-${month}-${day}`;
+    const correctedDate = addDays(date, 1)
+    return format(correctedDate, "yyyy-MM-dd");
   };
 
   const [isLoading, setIsLoading] = useState(false);
