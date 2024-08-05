@@ -2,8 +2,15 @@ import { getServerSession } from "next-auth";
 import { authOption } from "../../lib/auth";
 import React from "react";
 import CategoriesContainer from "@/components/categories/categoriesContainer";
-import { getCategoryMovements } from "@/lib/actions";
-import { addDays } from "date-fns"; 
+import {
+  fetchLatestCreditTransactionsByUserId,
+  fetchLatestDebitTransactionsByUserId,
+  getCategoryMovements,
+} from "@/lib/actions";
+import { addDays } from "date-fns";
+import { Currency } from "@prisma/client";
+import type { LatestTransaction } from "@/lib/actions";
+import TransactionsContainer from "@/components/categories/latestTransactionsContainer";
 
 type CategoryKeys =
   | "Salary"
@@ -33,7 +40,16 @@ const CategoriesPage = async () => {
   const initialMonth = addDays(new Date(), 1);
   const initialCurrency = "USD";
 
-  const data = await getCategoryMovements(userId, initialMonth, initialCurrency);
+  const data = await getCategoryMovements(
+    userId,
+    initialMonth,
+    initialCurrency
+  );
+
+  const creditTransactions: LatestTransaction[] =
+    await fetchLatestCreditTransactionsByUserId(userId);
+  const debitTransactions: LatestTransaction[] =
+    await fetchLatestDebitTransactionsByUserId(userId);
 
   const incomeData = Object.entries(data.income).map(([category, amount]) => ({
     category: category as CategoryKeys,
@@ -57,6 +73,20 @@ const CategoriesPage = async () => {
             initialSpendingData={spendingData}
             initialMonth={initialMonth}
             initialCurrency={initialCurrency}
+          />
+        </div>
+      </div>
+      <div className="flex gap-10 w-full justify-center md:pt-5">
+        <div className="w-1/2 pb-12 lg:pb-4">
+          <TransactionsContainer
+            title="Latest Credit Transactions"
+            transactions={creditTransactions}
+          />
+        </div>
+        <div className="w-1/2 pb-12 lg:pb-4">
+          <TransactionsContainer
+            title="Latest Debit Transactions"
+            transactions={debitTransactions}
           />
         </div>
       </div>

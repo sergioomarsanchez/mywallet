@@ -10,6 +10,7 @@ import { authOption } from "@/lib/auth";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
 import { addDays } from "date-fns";
+import { LatestTransactionRowProps } from "@/components/categories/latestTransactionRow";
 
 //---------- Users Actions ----------
 //Get users
@@ -405,6 +406,79 @@ export async function fetchTransactionsByAccountId(
   }
 }
 
+//fetch last 5 debit transactions
+export interface LatestTransaction {
+  id: string;
+  amount: number;
+  entityName: string;
+  logo: string | null;
+  type: string;
+  method: string;
+  category: string;
+  date: Date;
+  account: {
+    currency: Currency;
+    entityName: string;
+    logo: string | null;
+  };
+}
+
+export async function fetchLatestDebitTransactionsByUserId(
+  userId: string
+): Promise<LatestTransaction[]> {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: { userId, type: "Debit" },
+      orderBy: {
+        date: "desc",
+      },
+      take: 5,
+      include: {
+        account: {
+          select: {
+            entityName: true,
+            logo: true,
+            currency: true,
+          },
+        },
+      },
+    });
+    return transactions;
+  } catch (error) {
+    console.error("Failed to fetch debit transactions", error);
+    return [];
+  }
+}
+
+//fetch last 5 credit transactions
+
+export async function fetchLatestCreditTransactionsByUserId(
+  userId: string
+): Promise<LatestTransaction[]> {
+  try {
+    const transactions = await prisma.transaction.findMany({
+      where: { userId, type: "Credit" },
+      orderBy: {
+        date: "desc",
+      },
+      take: 5,
+      include: {
+        account: {
+          select: {
+            entityName: true,
+            logo: true,
+            currency: true,
+          },
+        },
+      },
+    });
+    return transactions;
+  } catch (error) {
+    console.error("Failed to fetch credit transactions", error);
+    return [];
+  }
+}
+
 //Add transaction
 export async function addTransaction(
   data: TransactionData,
@@ -567,14 +641,20 @@ export async function getUserOverview(userId: string) {
   });
 
   const now = new Date();
-  const startOfCurrentMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-  const startOfLastMonth = new Date(
-    now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear(),
-    now.getMonth() === 0 ? 11 : now.getMonth() - 1,
-    1
+  const startOfCurrentMonth = addDays(
+    new Date(now.getFullYear(), now.getMonth(), 1),
+    -1
+  );
+  const startOfLastMonth = addDays(
+    new Date(
+      now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear(),
+      now.getMonth() === 0 ? 11 : now.getMonth() - 1,
+      1
+    ),
+    -1
   );
   const endOfLastMonth = new Date(startOfCurrentMonth);
-  endOfLastMonth.setDate(0); // Último día del mes anterior
+  endOfLastMonth.setDate(-1); // Último día del mes anterior
 
   // Estructurar los datos del overview
   const overview = accounts.map((account) => {
