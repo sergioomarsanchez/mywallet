@@ -11,6 +11,8 @@ import { addDays } from "date-fns";
 import { Currency } from "@prisma/client";
 import type { LatestTransaction } from "@/lib/actions";
 import TransactionsContainer from "@/components/categories/latestTransactionsContainer";
+import LatestTransactionRow from "@/components/categories/latestTransactionRow";
+import { LastTransactionsDrawer } from "@/components/categories/lastTransactionsDrawer";
 
 type CategoryKeys =
   | "Salary"
@@ -76,14 +78,15 @@ const CategoriesPage = async () => {
           />
         </div>
       </div>
-      <div className="flex gap-10 w-full justify-center md:pt-5">
-        <div className="w-1/2 pb-12 lg:pb-4">
+      <div className="fixed flex justify-center items-center bottom-14 right-5 p-1 rounded-full z-10 md:hidden bg-black/80 dark:bg-blue-500/90"><LastTransactionsDrawer creditTransactions={creditTransactions} debitTransactions={debitTransactions} /> </div>
+      <div className="md:flex md:flex-row gap-10 w-full justify-center md:pt-5 hidden">
+        <div className="md:w-1/2 pb-12 lg:pb-4">
           <TransactionsContainer
             title="Latest Credit Transactions"
             transactions={creditTransactions}
           />
         </div>
-        <div className="w-1/2 pb-12 lg:pb-4">
+        <div className="md:w-1/2 pb-12 lg:pb-4">
           <TransactionsContainer
             title="Latest Debit Transactions"
             transactions={debitTransactions}

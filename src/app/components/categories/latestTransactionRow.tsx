@@ -38,7 +38,7 @@ const LatestTransactionRow = ({ transaction }: LatestTransactionRowProps) => {
           </span>
         </div>
       </div>
-      <div className="flex pb-2 pl-5 items-center w-[80%] justify-between">
+      <div className="flex pb-2 pl-5 items-center pr-5 md:mr-0 md:w-[95%] lg:w-[85%] xl:w-[80%] justify-between">
         <div className="flex items-center space-x-4">
           {transaction.logo ? (
             <img
