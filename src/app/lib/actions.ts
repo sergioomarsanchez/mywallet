@@ -9,7 +9,7 @@ import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
-import { addDays } from "date-fns";
+import { addDays, endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { LatestTransactionRowProps } from "@/components/categories/latestTransactionRow";
 
 //---------- Users Actions ----------
@@ -641,20 +641,14 @@ export async function getUserOverview(userId: string) {
   });
 
   const now = new Date();
-  const startOfCurrentMonth = addDays(
-    new Date(now.getFullYear(), now.getMonth(), 1),
-    -1
-  );
-  const startOfLastMonth = addDays(
-    new Date(
-      now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear(),
-      now.getMonth() === 0 ? 11 : now.getMonth() - 1,
-      1
-    ),
-    -1
-  );
-  const endOfLastMonth = new Date(startOfCurrentMonth);
-  endOfLastMonth.setDate(-1); // Último día del mes anterior
+
+  // Fechas para el mes pasado
+  const startOfLastMonth = addDays(startOfMonth(subMonths(now, 1)), -1);
+  const endOfLastMonth = addDays(endOfMonth(subMonths(now, 1)), -1);
+
+  // Fechas para el mes actual
+  const startOfCurrentMonth = addDays(startOfMonth(now), -1);
+  const endOfCurrentMonth = addDays(endOfMonth(now), -1);
 
   // Estructurar los datos del overview
   const overview = accounts.map((account) => {
@@ -662,7 +656,8 @@ export async function getUserOverview(userId: string) {
       .filter(
         (transaction) =>
           transaction.type === "Credit" &&
-          transaction.date >= startOfCurrentMonth
+          transaction.date >= startOfCurrentMonth &&
+          transaction.date <= endOfCurrentMonth
       )
       .reduce((sum, transaction) => sum + transaction.amount, 0);
 
@@ -670,7 +665,8 @@ export async function getUserOverview(userId: string) {
       .filter(
         (transaction) =>
           transaction.type === "Debit" &&
-          transaction.date >= startOfCurrentMonth
+          transaction.date >= startOfCurrentMonth &&
+          transaction.date <= endOfCurrentMonth
       )
       .reduce((sum, transaction) => sum + transaction.amount, 0);
 
