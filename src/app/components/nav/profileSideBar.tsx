@@ -24,7 +24,7 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
 
   return (
-    <aside className="w-fit h-fit ml-5 rounded-2xl bg-black/20 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-10">
+    <aside className="w-fit h-fit ml-5 rounded-2xl bg-white/80 dark:bg-white/5 backdrop-blur-2xl flex flex-col justify-center overflow-clip py-2 border border-slate-200 dark:border-slate-700 mt-10">
       <ul className="space-y-4">
         {[
           {
@@ -63,7 +63,11 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
             (!adminOnly || role === "Admin") && (
               <li
                 key={href}
-                className="hover:bg-gray-400 dark:hover:bg-gray-700 px-2 py-1 flex items-center"
+                className={`${
+                  pathname !== href
+                    ? "hover:bg-gray-200 dark:hover:bg-gray-700"
+                    : ""
+                } px-2 py-1 flex items-center`}
               >
                 <Link href={href}>
                   <div className={`flex items-center`}>
