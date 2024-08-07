@@ -53,7 +53,7 @@ export default function ContactModal({ open, setOpen }: ContactModalProps) {
     <>
       <span
         onClick={() => setOpen(true)}
-        className="cursor-pointer hover:text-[#4b39c1] dark:hover:text-[#a095e4] transition-colors duration-200"
+        className="cursor-pointer"
       >
         Contact Us
       </span>

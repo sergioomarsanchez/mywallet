@@ -7,13 +7,25 @@ interface TransactionsContainerProps {
   transactions: LatestTransaction[];
 }
 
-const TransactionsContainer = ({ title, transactions }: TransactionsContainerProps) => {
+const TransactionsContainer = ({
+  title,
+  transactions,
+}: TransactionsContainerProps) => {
   return (
     <div>
       <h2 className="text-lg font-bold">{title}</h2>
-      {transactions.map((transaction) => (
-        <LatestTransactionRow key={transaction.id} transaction={transaction} />
-      ))}
+      {transactions.length ? (
+        transactions.map((transaction) => (
+          <LatestTransactionRow
+            key={transaction.id}
+            transaction={transaction}
+          />
+        ))
+      ) : (
+        <div className="p-5 font-thin text-inherit/80">
+          No transactions added yet
+        </div>
+      )}
     </div>
   );
 };
