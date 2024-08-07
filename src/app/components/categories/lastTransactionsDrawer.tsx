@@ -28,13 +28,13 @@ export const LastTransactionsDrawer: React.FC<AccDrawerProps> = ({
       <DrawerTrigger asChild>
         <button className="relative">
           <ClockIcon
-            className="font-bold size-10 text-white hover:text-blue-400"
+            className="font-bold size-10 text-white"
             style={{
               filter: "drop-shadow(2px 2px 4px #ffffff)",
             }}
           />
           <ArrowsRightLeftIcon
-            className="absolute -bottom-1 -left-1 size-6 z-10 p-1 text-white bg-black/95 dark:bg-blue-500/90 rounded-full hover:text-blue-400"
+            className="absolute -bottom-1 -left-1 size-6 z-10 p-1 text-white bg-black/95 dark:bg-blue-500/90 rounded-full"
           />
         </button>
       </DrawerTrigger>

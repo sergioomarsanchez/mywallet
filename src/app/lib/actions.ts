@@ -3,7 +3,7 @@ import { revalidatePath } from "next/cache";
 import prisma from "./prisma";
 import bcrypt from "bcryptjs";
 import { Type, UserRole, Currency } from "@prisma/client";
-import { AccountData, TransactionData } from "../types/front";
+import { AccountData, ContactData, TransactionData } from "../types/front";
 import { Account, Transaction } from "../types/back";
 import { getServerSession } from "next-auth";
 import { authOption } from "@/lib/auth";
@@ -923,4 +923,32 @@ export async function getCategoryMovements(
   });
 
   return categories;
+}
+
+//-------- Contact form ---------
+export async function sendContactMessage(data: ContactData) {
+  try {
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS,
+      },
+    });
+
+    const mailOptions = {
+      to: process.env.EMAIL_USER,
+      from: process.env.EMAIL_USER,
+      subject: "Contact Form Message",
+      text: `You have received a new message from the contact form on your website.\n\n
+             Name: ${data.name}\n
+             Email: ${data.email}\n
+             Message:\n${data.message}\n`,
+    };
+
+    await transporter.sendMail(mailOptions);
+  } catch (error) {
+    console.error("Error sending contact message:", error);
+    throw new Error("An error occurred while sending the contact message.");
+  }
 }

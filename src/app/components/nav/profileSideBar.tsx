@@ -52,12 +52,6 @@ const ProfileSidebar = ({ role }: { role: UserRole }) => {
             label: "Categories",
           },
           {
-            href: "/profile/settings",
-            icon: Cog6ToothIcon,
-            iconFilled: Cog6ToothIconFilled,
-            label: "Settings",
-          },
-          {
             href: "/profile/dashboard",
             icon: ComputerDesktopIcon,
             iconFilled: ComputerDesktopIconFilled,

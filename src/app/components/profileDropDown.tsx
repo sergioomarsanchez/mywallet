@@ -34,7 +34,7 @@ export default function ProfileDropdown({
 
   return (
     <Menu as="div" className="relative inline-flex">
-      <MenuButton className="inline-flex justify-center items-center group">
+      <MenuButton className="inline-flex justify-center items-center group mt-2">
         {image ? (
           <img
             className="w-8 h-8 rounded-full"
