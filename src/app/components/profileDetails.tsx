@@ -40,15 +40,8 @@ function ProfileDetails({
             <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">
               Email
             </h2>
-            <div className="text-sm">
-              Excepteur sint occaecat cupidatat non proident sunt in culpa qui
-              officia.
-            </div>
             <div className="flex flex-wrap mt-5">
               <div className="mr-2">
-                <label className="sr-only" htmlFor="email">
-                  Business email
-                </label>
                 <span>{userEmail}</span>
               </div>
             </div>
@@ -58,9 +51,7 @@ function ProfileDetails({
               <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">
                 Password
               </h2>
-              <div className="text-sm">
-                You can change your password here.
-              </div>
+              <div className="text-sm">You can change your password here.</div>
               <div className="mt-5">
                 <ResetPasswordRequestModal
                   open={openResetPasswordModal}
@@ -72,11 +63,12 @@ function ProfileDetails({
           )}
           <section>
             <h2 className="text-xl leading-snug text-slate-800 dark:text-slate-100 font-bold mb-1">
-              Smart Sync update for Mac
+              Disclaimer
             </h2>
-            <div className="text-sm">
-              With this update, online-only files will no longer appear to take
-              up hard drive space.
+            <div className="text-sm lg:w-[80%] xl:w-[70%]">
+              If you delete your account, all your data will be deleted from our
+              data base, we will not be able to recover it, so in case you want
+              to open it again, you will need to imput all information again.
             </div>
             <div className="flex items-center mt-5">
               <div className="form-switch">

@@ -19,8 +19,8 @@ const FAQPage = async () => {
           <AuthHeader />
         </div>
       )}
-      <div className="w-full text-left relative flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:z-[-1] after:h-[180px] after:w-full after:translate-x-1/6 after:bg-gradient-conic after:from-green-200 after:via-teal-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-teal-900 after:dark:via-[#1601ff] after:dark:opacity-40 sm:before:w-[280px] sm:after:w-[240px] before:lg:h-[360px]">
-        <div className="flex gap-2 flex-col w-full text-left mt-10 lg:mt-0">
+       <div className="w-full text-left relative flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:z-[-1] after:h-[180px] after:w-full after:translate-x-1/6 after:bg-gradient-conic after:from-green-400 after:via-teal-500 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-teal-900 after:dark:via-[#1601ff] after:dark:opacity-40 sm:before:w-[280px] sm:after:w-[240px] before:lg:h-[360px]">
+        <div className="flex gap-2 flex-col w-full text-left mt-10 lg:mt-0 z-10">
           <h1 className="text-2xl font-bold mb-4">
             Frequently Asked Questions
           </h1>
@@ -34,7 +34,7 @@ const FAQPage = async () => {
                 <AccordionTrigger className="font-mono font-bold">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="font-sans text-gray-700 dark:text-gray-300/80 leading-loose">
+                <AccordionContent className="font-sans text-gray-700 dark:text-gray-400 leading-loose">
                   {faq.response}
                 </AccordionContent>
               </AccordionItem>
