@@ -34,7 +34,7 @@ export default function ProfileDropdown({
 
   return (
     <Menu as="div" className="relative inline-flex">
-      <MenuButton className="inline-flex justify-center items-center group mt-2">
+      <MenuButton className="inline-flex justify-center items-center group mt-2 z-20">
         {image ? (
           <img
             className="w-8 h-8 rounded-full"
@@ -68,7 +68,7 @@ export default function ProfileDropdown({
       >
         <TransitionChild
           as="div"
-          className={`origin-top-right z-10 absolute top-full min-w-[11rem] bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
+          className={`origin-top-right z-20 absolute top-full min-w-[11rem] bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >

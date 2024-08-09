@@ -13,7 +13,7 @@ const WebNavBar = () => {
 
   const isHome = pathName === "/"
   return (
-    <nav className="fixed pr-4 md:pr-6 pt-2 md:p-4 flex justify-end items-center z-10 top-0 right-0 scale-90 md:scale-100">
+    <nav className="fixed pr-4 md:pr-6 pt-2 md:p-4 flex justify-end items-center top-0 right-0 scale-90 md:scale-100 z-50">
       <ul className="flex justify-end items-center gap-5">
         <li className={`cursor-pointer hover:text-[#4b39c1] dark:hover:text-[#a095e4] transition-colors duration-200 ${isHome?"text-gray-100 hover:text-[#a095e4]":""}`}>
           <ContactModal open={contactOpen} setOpen={setContactOpen} />
