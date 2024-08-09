@@ -49,9 +49,9 @@ const AccountDetails = ({ account, transactions }: AccountDetailsProps) => {
               ) : (
                 <tr className="flex italic px-2 lg:px-10 py-2 lg:py-5 font-thin justify-center items-center col-span-4 lg:col-span-7 gap-2">
                   <span>Add a transaction by clicking the</span>
-                  <span className="md:hidden font-bold text-lg">"+"</span>
+                  <span className="md:hidden font-bold text-lg">+</span>
                   <span className="hidden md:flex font-bold">
-                    "+Add transaction" button
+                    +Add transaction button
                   </span>
                 </tr>
               )}

@@ -127,7 +127,7 @@ export default function EntityDropdown({
               {({ active }) => (
                 <div className="flex items-center gap-2">
                   <span className="block truncate font-normal">
-                    Use "{query.charAt(0).toUpperCase() + query.slice(1)}"
+                    Use {query.charAt(0).toUpperCase() + query.slice(1)}
                   </span>
                 </div>
               )}

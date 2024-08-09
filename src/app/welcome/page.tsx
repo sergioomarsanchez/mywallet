@@ -56,7 +56,7 @@ const WelcomePage = async () => {
           account and in general, in any currency (USD, ARS, NZD, or EUR).
         </p>
         <p className="text-xs lg:text-sm font-thin text-center lg:text-left mt-4">
-          In each account card, you can check each account's monthly movement
+          In each account card, you can check each account`s monthly movement
           compared to the last month, discriminated by income and spendings.
         </p>
         <h3 className="text-base my-4 lg:my-8 text-center lg:text-left tracking-widest">

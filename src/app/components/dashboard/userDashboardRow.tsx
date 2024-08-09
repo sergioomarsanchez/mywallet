@@ -22,13 +22,6 @@ const months = [
 ];
 
 export default function UserDashboardRow({ user }: { user: User }) {
-  if (!user)
-    return (
-      <div>
-        <Loader />
-      </div>
-    );
-
   const [openWarningModal, setOpenWarningModal] = useState<boolean>(false);
 
   const createdAt = user?.createdAt;
@@ -37,6 +30,12 @@ export default function UserDashboardRow({ user }: { user: User }) {
   const updatedAt = user?.updatedAt;
   const updatedMonth = updatedAt ? months[updatedAt.getMonth()] : null;
   const updatedDay = updatedAt ? updatedAt.getDate() : null;
+  if (!user)
+    return (
+      <div>
+        <Loader />
+      </div>
+    );
   return (
     <>
       <tbody className="text-xs lg:text-base">
