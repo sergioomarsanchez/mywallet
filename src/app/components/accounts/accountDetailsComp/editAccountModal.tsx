@@ -59,7 +59,7 @@ export default function EditAccount({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-opacity-20 bg-black dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
@@ -183,13 +183,13 @@ export default function EditAccount({
                     reset();
                   }}
                   type="button"
-                  className="rounded-md bg-red-500/30 hover:bg-red-500/70 py-1 px-2 text-sm font-sm text-white/70 active:text-white focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white transition-colors duration-200"
+                  className="w-full rounded-lg bg-red-600 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="rounded-md flex justify-center items-center bg-blue-500/20 hover:bg-blue-500/70 py-1 px-2 text-sm font-medium dark:text-gray-200 focus:outline-none data-[hover]:bg-black/30 data-[focus]:outline-1 data-[focus]:outline-white min-w-20 transition-colors duration-200"
+                  className="w-full rounded-lg bg-blue-600 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
                 >
                   {isLoading ? <Loader /> : "Edit"}
                 </button>

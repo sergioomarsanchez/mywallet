@@ -47,7 +47,7 @@ export const AccChartDrawer: React.FC<AccDrawerProps> = ({ accountId, transactio
           />
         </button>
       </DrawerTrigger>
-      <DrawerContent className="flex justify-center items-center bg-opacity-85 bg-gray-200 dark:bg-black">
+      <DrawerContent className="flex justify-center items-center bg-opacity-85 bg-gray-200 dark:bg-black h-[80vh]">
         <div className="w-full md:w-[80%] lg:w-[60%] xl:w-[50%]">
           <DrawerHeader className="flex flex-col justify-center items-center gap-2">
             <DrawerTitle>Monthly Movements</DrawerTitle>

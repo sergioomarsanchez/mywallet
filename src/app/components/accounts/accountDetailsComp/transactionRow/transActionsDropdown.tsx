@@ -13,7 +13,7 @@ export default function TransActionDropdown({
   setOpenEditTransactionModal: (prev: boolean) => void;
 }) {
   return (
-    <div className="min-w-fit text-right -right-6 top-3.5 absolute">
+    <>
       <Menu>
         <MenuButton className="inline-flex items-center rounded-md py-0.5 px-1 text-sm/6 font-medium shadow-inner focus:outline-none text-gray-700 hover:text-black dark:text-gray-400 dark:hover:text-white">
           <EllipsisVerticalIcon className="size-4 fill-white/60" />
@@ -43,6 +43,6 @@ export default function TransActionDropdown({
           </MenuItem>
         </MenuItems>
       </Menu>
-    </div>
+    </>
   );
 }

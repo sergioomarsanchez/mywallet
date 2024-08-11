@@ -86,7 +86,7 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
             {decimalPart}
           </span>
         </td>
-        <td>
+        <td className="min-w-fit text-right -right-6 top-2 absolute">
           <TransActionDropdown
             setOpenDeleteWarningModal={handleOpenDeleteModal}
             setOpenEditTransactionModal={handleOpenEditModal}

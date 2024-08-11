@@ -64,7 +64,7 @@ export default function ResetPasswordForm({ token }: resetPasswordForm) {
             required
             autoComplete="new-password"
             className={clsx(
-              "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+              "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white bg-opacity-60 py-1.5 px-3 text-sm/6 text-black",
               "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
               errors.password && "border-[1px] border-red-500"
             )}

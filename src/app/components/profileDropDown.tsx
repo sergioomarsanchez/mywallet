@@ -68,7 +68,7 @@ export default function ProfileDropdown({
       >
         <TransitionChild
           as="div"
-          className={`origin-top-right z-20 absolute top-full min-w-[11rem] bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
+          className={`origin-top-right z-20 absolute top-full min-w-[11rem] bg-black bg-opacity-20 dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >

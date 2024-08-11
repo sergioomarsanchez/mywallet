@@ -63,7 +63,7 @@ export default function DeleteUserWarningModal({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/10">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black bg-opacity-20 dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"

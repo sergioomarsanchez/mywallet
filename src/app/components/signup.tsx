@@ -88,7 +88,7 @@ export default function Signup({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/40 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black bg-opacity-40 dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-lg font-semibold text-gray-200 justify-center flex"

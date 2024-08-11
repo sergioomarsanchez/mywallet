@@ -101,7 +101,7 @@ export default function EditTransaction({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+        <DialogPanel className="w-full max-w-md text-center rounded-xl bg-opacity-20 bg-black dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
@@ -284,7 +284,7 @@ export default function EditTransaction({
                   </div>
                 </div>
               </div>
-              <div className="mt-4 flex items-center justify-center gap-3">
+              <div className="flex w-full justify-center items-center gap-2 mt-4">
                 <button
                   type="button"
                   className="w-full rounded-lg bg-red-600 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"

@@ -74,7 +74,7 @@ export default function ResetPasswordRequestModal({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/60 dark:bg-white/10 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black bg-opacity-60 dark:bg-opacity-10 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium text-gray-200 justify-center flex"
