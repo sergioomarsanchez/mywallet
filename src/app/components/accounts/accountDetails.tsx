@@ -22,7 +22,7 @@ const AccountDetails = ({ account, transactions }: AccountDetailsProps) => {
         <h2 className="text-sm md-text-lg font-thin dark:text-gray-400 text-gray-800">
           Transactions
         </h2>
-        <div className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full justify-center pr-8">
+        <div className="rounded-xl bg-black/5 dark:bg-white/5 p-3 w-full h-full justify-center">
           <table className="w-full">
             <thead className="w-full bg-white/10 dark:bg-black/10 font-thin uppercase py-2">
               <tr className="w-full hidden lg:table-row text-opacity-60 text-sm">
