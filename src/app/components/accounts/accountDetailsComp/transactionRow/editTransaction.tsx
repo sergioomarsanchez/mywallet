@@ -101,7 +101,7 @@ export default function EditTransaction({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-        <DialogPanel className="w-full max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+        <DialogPanel className="w-full scale-[90%] md:scale-100 max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"

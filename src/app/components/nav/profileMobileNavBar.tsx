@@ -24,7 +24,7 @@ const ProfileMobileNavbar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
 
   return (
-    <nav className="fixed bottom-0 w-screen bg-black bg-opacity-20 dark:bg-opacity-5 dark:bg-white backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around rounded-t-3xl">
+    <nav className="fixed bottom-0 w-screen bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around rounded-t-3xl">
       {[
         {
           href: "/profile",
