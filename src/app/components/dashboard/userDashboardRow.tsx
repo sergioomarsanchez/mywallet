@@ -75,7 +75,7 @@ export default function UserDashboardRow({ user }: { user: User }) {
             </div>
           </td>
           <td className="px-1 first:pl-5 last:pr-5 py-0.5 flex items-center justify-center">
-            <div className="group-hover:flex hidden">
+            <div className="group-hover:flex md:hidden">
               <DeleteUserWarningModal
                 userId={user.id}
                 openWarningModal={openWarningModal}

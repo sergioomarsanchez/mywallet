@@ -68,7 +68,7 @@ export default function ProfileDropdown({
       >
         <TransitionChild
           as="div"
-          className={`origin-top-right z-20 absolute top-full min-w-[11rem] bg-black bg-opacity-20 dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded shadow-lg overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
+          className={`origin-top-right z-20 absolute top-full min-w-[11rem] bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 backdrop-blur-2xl duration-300 ease-out border border-slate-200 dark:border-slate-700 py-1.5 rounded overflow-hidden mt-1 data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 ${
             align === "right" ? "right-0" : "left-0"
           }`}
         >
@@ -85,7 +85,7 @@ export default function ProfileDropdown({
               <MenuItem as="li">
                 {({ close }) => (
                   <Link
-                    className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-[#B9D1A7]`}
+                    className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-slate-400`}
                     href="/profile"
                     onClick={() => close()}
                   >
@@ -101,7 +101,7 @@ export default function ProfileDropdown({
                       close();
                       signOut({ callbackUrl: "/" });
                     }}
-                    className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-[#B9D1A7]`}
+                    className={`font-medium text-sm flex items-center py-1 px-3 hover:text-inherit text-stone-600 dark:text-inherit hover:dark:text-slate-400`}
                   >
                     Sign Out
                   </Link>

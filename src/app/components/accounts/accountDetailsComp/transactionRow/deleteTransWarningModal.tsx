@@ -4,7 +4,7 @@ import { useState } from "react";
 import Loader from "@/components/loader";
 import React from "react";
 import { useToast } from "src/app/context/ToastContext";
-import { deleteAccount, deleteTransaction } from "@/lib/actions";
+import { deleteTransaction } from "@/lib/actions";
 import { Type } from "@prisma/client";
 
 export default function DeleteTransactionWarningModal({
@@ -17,8 +17,8 @@ export default function DeleteTransactionWarningModal({
 }: {
   transactionId: string;
   accountId: string;
-  amount:number;
-  type:Type;
+  amount: number;
+  type: Type;
   openWarningModal: boolean;
   setOpenWarningModal: (openSigninModal: boolean) => void;
 }) {
@@ -49,7 +49,7 @@ export default function DeleteTransactionWarningModal({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-black/10">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/20 dark:bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
               className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
@@ -59,8 +59,9 @@ export default function DeleteTransactionWarningModal({
             <main className="flex flex-col gap-1 justify-center items-center mt-5">
               <div className="py-2 md:py-5 border-y-[1px] border-y-red-500/60 dark:border-y-red-400/30 flex items-center justify-center w-[90%]">
                 <p className="text-xs lg:text-sm">
-                  Are you sure that you want to delete this transaction? This action
-                  is irreversible and will permanently change the balance of the account.
+                  Are you sure that you want to delete this transaction? This
+                  action is irreversible and will permanently change the balance
+                  of the account.
                 </p>
               </div>
             </main>

@@ -93,7 +93,7 @@ export default function EntityDropdown({
       <Combobox value={selectedEntity} onChange={handleSelect}>
         <div className="relative">
           <ComboboxInput
-            className="block w-full rounded-lg border-none bg-gray-300/50 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200 focus:outline-none"
+            className="block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200 focus:outline-none"
             {...register("entityName")}
             onChange={handleQueryChange}
             defaultValue={defaultEntityName}

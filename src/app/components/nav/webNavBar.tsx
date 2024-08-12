@@ -11,7 +11,7 @@ const WebNavBar = () => {
   const pathName = usePathname();
   const [contactOpen, setContactOpen] = useState(false);
 
-  const isHome = pathName === "/"
+  const isHome = pathName === "/" || pathName.includes("/reset/")
   return (
     <nav className="fixed pr-4 md:pr-6 pt-2 md:p-4 flex justify-end items-center top-0 right-0 scale-90 md:scale-100 z-50">
       <ul className="flex justify-end items-center gap-5">

@@ -74,14 +74,14 @@ export default function ResetPasswordRequestModal({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black bg-opacity-60 dark:bg-opacity-10 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+        <DialogPanel className="w-full scale-[85%] md:scale-100 max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0 border border-slate-800 dark:border-slate-300">
             <DialogTitle
               as="h3"
-              className="text-base/7 font-medium text-gray-200 justify-center flex"
+              className="text-base/7 font-medium justify-center flex"
             >
               Reset Password
             </DialogTitle>
-            <Description className="mt-2 text-sm/6 text-white">
+            <Description className="mt-2 text-sm/6 text-gray-600 dark:text-gray-300">
               Please enter your email to receive password reset instructions.
             </Description>
             <form
@@ -89,7 +89,7 @@ export default function ResetPasswordRequestModal({
               className="flex flex-col gap-1 justify-center items-center mt-5 w-full pb-10"
             >
               <Field className={"text-left w-full"}>
-                <Label className="text-sm/6 font-medium text-white">
+                <Label className="text-sm/6 font-medium">
                   Email:
                 </Label>
                 <Input
@@ -98,7 +98,7 @@ export default function ResetPasswordRequestModal({
                   placeholder="Email"
                   required
                   className={clsx(
-                    "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                    "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />

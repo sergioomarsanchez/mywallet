@@ -63,14 +63,14 @@ export default function ContactModal({ open, setOpen }: ContactModalProps) {
         className="relative z-50"
       >
         <div className="fixed inset-0 flex items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black/60 dark:bg-white/10 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+        <DialogPanel className="w-full max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
-              className="text-lg font-bold  text-gray-100 justify-center flex"
+              className="text-lg font-bold justify-center flex"
             >
               Contact Us
             </DialogTitle>
-            <Description className="mt-2 text-sm/6 text-white">
+            <Description className="mt-2 text-sm/6 text-gray-600 dark:text-gray-300">
               Please fill out the form below to send us a message.
             </Description>
             <form
@@ -78,14 +78,14 @@ export default function ContactModal({ open, setOpen }: ContactModalProps) {
               className="flex flex-col gap-1 justify-center items-center mt-5 w-full pb-10"
             >
               <Field className="text-left w-full">
-                <Label className="text-sm/6 font-medium text-white">Name:</Label>
+                <Label className="text-sm/6 font-medium">Name:</Label>
                 <Input
                   {...register("name")}
                   type="text"
                   placeholder="Your Name"
                   required
                   className={clsx(
-                    "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                    "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />
@@ -96,14 +96,14 @@ export default function ContactModal({ open, setOpen }: ContactModalProps) {
                 )}
               </div>
               <Field className="text-left w-full">
-                <Label className="text-sm/6 font-medium text-white">Email:</Label>
+                <Label className="text-sm/6 font-medium">Email:</Label>
                 <Input
                   {...register("email")}
                   type="email"
                   placeholder="Your Email"
                   required
                   className={clsx(
-                    "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                    "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />
@@ -114,28 +114,36 @@ export default function ContactModal({ open, setOpen }: ContactModalProps) {
                 )}
               </div>
               <Field className="text-left w-full">
-                <Label className="text-sm/6 font-medium text-white">Message:</Label>
+                <Label className="text-sm/6 font-medium">Message:</Label>
                 <textarea
                   {...register("message")}
                   placeholder="Your Message"
                   required
+                  rows={5}
                   className={clsx(
-                    "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black h-32",
+                    "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                     "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                   )}
                 />
               </Field>
-              <div className="h-4 mb-2">
-                {errors.message && (
-                  <p className="text-red-500 text-xs">{errors.message.message}</p>
-                )}
+              <div className="flex w-full justify-center items-center gap-2 mt-4">
+                <button
+                  onClick={() => {
+                    setOpen(false);
+                    reset();
+                  }}
+                  type="button"
+                  className="w-full rounded-lg bg-red-600 dark:bg-red-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="flex items-center justify-center w-full rounded-lg bg-blue-600 dark:bg-blue-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
+                >
+                  {isLoading ? <Loader /> : "Send"}
+                </button>
               </div>
-              <button
-                type="submit"
-                className="grid mt-5 justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-44 transition-all duration-100 bg-[#4b39c1] font-bold"
-              >
-                {isLoading ? <Loader /> : "Send Message"}
-              </button>
             </form>
           </DialogPanel>
         </div>

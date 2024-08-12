@@ -88,32 +88,30 @@ export default function Signup({
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-black bg-opacity-40 dark:bg-opacity-5 dark:bg-white p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
+          <DialogPanel className="w-full scale-[90%] md:scale-100 max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
             <DialogTitle
               as="h3"
-              className="text-lg font-semibold text-gray-200 justify-center flex"
+              className="text-lg font-semibold justify-center flex"
             >
               Sign Up
             </DialogTitle>
-            <Description className="mt-2 text-sm/6 text-white">
+            <Description className="mt-2 text-sm/6 text-gray-600 dark:text-gray-300">
               Welcome, please sign up to My Wallet
             </Description>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex flex-col gap-1 justify-center items-center mt-5"
             >
-              <div className="py-2 md:py-5 border-y-[1px] border-y-white/50 grid grid-cols-1 gap-0.5 md:gap-1 w-[95%] md:grid-cols-2 lg:gap-2">
+              <div className="py-2 md:py-5 border-y-[1px] border-y-gray-600 dark:border-y-white/50 grid grid-cols-1 gap-0.5 md:gap-1 w-[95%] md:grid-cols-2 lg:gap-2">
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium text-white">
-                      First Name:
-                    </Label>
+                    <Label className="text-sm/6 font-medium">First Name:</Label>
                     <Input
                       {...register("firstName")}
                       placeholder="First Name"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -128,15 +126,13 @@ export default function Signup({
                 </div>
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium text-white">
-                      Last Name:
-                    </Label>
+                    <Label className="text-sm/6 font-medium">Last Name:</Label>
                     <Input
                       {...register("lastName")}
                       placeholder="Last Name"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -151,16 +147,14 @@ export default function Signup({
                 </div>
                 <div className="flex flex-col">
                   <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium text-white">
-                      Email:
-                    </Label>
+                    <Label className="text-sm/6 font-medium ">Email:</Label>
                     <Input
                       {...register("email")}
                       type="email"
                       placeholder="Email"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -175,16 +169,14 @@ export default function Signup({
                 </div>
                 <div className="flex flex-col">
                   <Field className={"text-left relative"}>
-                    <Label className="text-sm/6 font-medium text-white">
-                      Password:
-                    </Label>
+                    <Label className="text-sm/6 font-medium">Password:</Label>
                     <Input
                       {...register("password")}
                       type={showPass ? "text" : "password"}
                       placeholder="Password"
                       required
                       className={clsx(
-                        "block w-full rounded-lg border-none placeholder:text-gray-500 bg-white/60 py-1.5 px-3 text-sm/6 text-black",
+                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
                         "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
                       )}
                     />
@@ -194,9 +186,9 @@ export default function Signup({
                       type="button"
                     >
                       {showPass ? (
-                        <EyeIcon className="size-6 text-black/60" />
+                        <EyeIcon className="size-6 text-black/60 dark:text-gray-300" />
                       ) : (
-                        <EyeSlashIcon className="size-6 text-black/60" />
+                        <EyeSlashIcon className="size-6 text-black/60 dark:text-gray-300" />
                       )}
                     </button>
                   </Field>
@@ -240,7 +232,7 @@ export default function Signup({
                   setOpenSignupModal(false);
                   reset();
                 }}
-                className="flex justify-center border rounded-lg text-sm border-black py-2 px-4 text-white hover:scale-[103%] active:scale-100 min-w-16 md:min-w-20 transition-all duration-100 bg-[#c13939] font-bold"
+                className="rounded-lg bg-red-600 dark:bg-red-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"
               >
                 Cancel
               </button>
