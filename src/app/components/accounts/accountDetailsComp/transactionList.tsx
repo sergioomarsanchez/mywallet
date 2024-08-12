@@ -40,7 +40,7 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
 
   return (
     <>
-      <tr key={transaction.id} className="w-full space-y-1 relative">
+      <tr key={transaction.id} className="w-full space-y-1">
         <td className="w-10 lg:w-16">
           {transaction.logo ? (
             <img
@@ -86,7 +86,7 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
             {decimalPart}
           </span>
         </td>
-        <td className="min-w-fit text-right -right-6 top-2 absolute">
+        <td className="min-w-fit text-right">
           <TransActionDropdown
             setOpenDeleteWarningModal={handleOpenDeleteModal}
             setOpenEditTransactionModal={handleOpenEditModal}
