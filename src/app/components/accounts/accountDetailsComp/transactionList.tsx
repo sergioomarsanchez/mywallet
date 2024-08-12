@@ -71,7 +71,7 @@ const TransactionRow = ({ transaction, currency }: TransactionRowProps) => {
         <td className="text-center hidden lg:table-cell">
           <span className="">{transaction.category}</span>
         </td>
-        <td className="text-right">
+        <td className="text-right whitespace-nowrap">
           <span
             className={`text-right text-sm lg:text-base ${
               transaction.type === "Credit"
