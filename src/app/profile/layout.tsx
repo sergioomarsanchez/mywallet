@@ -8,13 +8,14 @@ import ProfileSidebar from "../components/nav/profileSideBar";
 import ProfileMobileNavBar from "../components/nav/profileMobileNavBar";
 import { getServerSession } from "next-auth";
 import { authOption } from "../lib/auth";
+import ProfileImage from "@/components/profile-image";
 
 export default async function ProfilePageLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession(authOption); 
+  const session = await getServerSession(authOption);
   const role = session?.user?.role;
   if (!session || !session.user || !role) {
     return <div>Please log in to view your profile.</div>;
@@ -25,6 +26,7 @@ export default async function ProfilePageLayout({
       <div className="hidden md:flex">
         <ProfileSidebar role={role} />
       </div>
+      <ProfileImage />
       <div className="w-full">{children}</div>
       {/* Mobile navbar for smaller screens */}
       <div className="md:hidden w-full">
