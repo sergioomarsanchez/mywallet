@@ -277,7 +277,7 @@ export default function AddTransaction({
                 </button>
                 <button
                   type="submit"
-                  className="w-full rounded-lg bg-blue-600 dark:bg-blue-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
+                  className="flex items-center justify-center w-full rounded-lg bg-blue-600 dark:bg-blue-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
                 >
                   {isLoading ? <Loader /> : "Add"}
                 </button>
