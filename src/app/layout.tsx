@@ -20,11 +20,11 @@ export const metadata: Metadata = {
   openGraph: {
     title: "My Wallet",
     description: "A way to get your finances controlled",
-    url: "https://mywallet-sos.vercel.app/", // replace with your actual website URL
+    url: "https://mywallet-sos.vercel.app/", 
     type: "website",
     images: [
       {
-        url: "https://mywallet-sos.vercel.app/public/wallet-preview.png", // replace with the path to your preview image
+        url: "https://mywallet-sos.vercel.app/public/wallet-preview.png",
         width: 1200,
         height: 630,
         alt: "My Wallet Preview Image",
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "My Wallet",
     description: "A way to get your finances controlled",
-    images: ["https://mywallet-sos.vercel.app/public/wallet-preview.png"], // replace with the path to your preview image
+    images: ["https://mywallet-sos.vercel.app/public/wallet-preview.png"],
   },
 };
 
