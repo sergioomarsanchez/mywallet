@@ -67,7 +67,7 @@ export const authOption: NextAuthOptions = {
             from: process.env.EMAIL_USER,
             subject: "Email Verification",
             text: `Welcome to My Wallet!\n\nPlease verify your email by clicking the link below:\n\n
-                   http://localhost:3000/verify/${verificationToken}\n\n
+                   https://mywallet-sos.vercel.app/verify/${verificationToken}\n\n
                    If you did not create an account, please ignore this email.\n`,
           };
 
@@ -115,7 +115,6 @@ export const authOption: NextAuthOptions = {
         throw new Error("No profile email");
       }
 
-
       try {
         const existingUser = await prisma.user.findUnique({
           where: { email: profile.email },
@@ -151,7 +150,7 @@ export const authOption: NextAuthOptions = {
             from: process.env.EMAIL_USER,
             subject: "Email Verification",
             text: `Welcome to My Wallet!\n\nPlease verify your email by clicking the link below:\n\n
-                   http://localhost:3000/verify/${verificationToken}\n\n
+                   https://mywallet-sos.vercel.app/verify/${verificationToken}\n\n
                    If you did not create an account, please ignore this email.\n`,
           };
 
