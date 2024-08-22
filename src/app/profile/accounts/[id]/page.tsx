@@ -64,7 +64,7 @@ const AccountPage = async ({ params }: AccountPageProps) => {
         )}
       </header>
       <div className="flex h-screen w-full justify-center">
-        <div className="w-full">
+        <div className="w-full pb-16 md:pb-5 h-fit">
           <AccountDetails account={account} transactions={transactions} />
         </div>
       </div>

@@ -1,11 +1,10 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   ComputerDesktopIcon,
   ListBulletIcon,
-  Cog6ToothIcon,
   BanknotesIcon,
   UserIcon,
   ClipboardDocumentListIcon,
@@ -13,7 +12,6 @@ import {
 import {
   ComputerDesktopIcon as ComputerDesktopIconFilled,
   ListBulletIcon as ListBulletIconFilled,
-  Cog6ToothIcon as Cog6ToothIconFilled,
   BanknotesIcon as BanknotesIconFilled,
   UserIcon as UserIconFilled,
   ClipboardDocumentListIcon as ClipboardDocumentListFilled,
@@ -22,9 +20,28 @@ import { UserRole } from "@prisma/client";
 
 const ProfileMobileNavbar = ({ role }: { role: UserRole }) => {
   const pathname = usePathname();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 0) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   return (
-    <nav className="fixed bottom-0 w-screen bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around rounded-t-3xl">
+    <nav
+      className={`fixed bottom-0 w-screen shadow-lg backdrop-blur-2xl border border-slate-200 dark:border-slate-700 flex justify-around 
+      bg-gradient-to-br from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 transition-opacity duration-300 ${
+        isScrolled ? "opacity-70" : "opacity-100"
+      }`}
+    >
       {[
         {
           href: "/profile",
@@ -61,7 +78,7 @@ const ProfileMobileNavbar = ({ role }: { role: UserRole }) => {
         ({ href, icon: Icon, iconFilled: IconFilled, label, adminOnly }) =>
           (!adminOnly || role === "Admin") && (
             <Link href={href} key={href}>
-              <div className="flex flex-col items-center py-2 px-0.5 text-[8px]">
+              <div className="flex flex-col items-center py-3 px-0.5 text-[8px]">
                 {pathname === href ? (
                   <IconFilled
                     className="h-4 w-4 drop-shadow fill-current text-[#074237] dark:text-[#4ae4c5]"
