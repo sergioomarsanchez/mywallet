@@ -35,13 +35,13 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
   const getIncomePercentageColor = (percentage: number) => {
     if (percentage > 0) return "ml-2 text-green-500";
     if (percentage < 0) return "ml-2 text-red-500";
-    return "text-inherit";
+    return "ml-2 text-inherit";
   };
 
   const getSpendingPercentageColor = (percentage: number) => {
     if (percentage > 0) return "ml-2 text-red-500";
     if (percentage < 0) return "ml-2 text-green-500";
-    return "text-inherit";
+    return "ml-2 text-inherit";
   };
 
   const getArrowIcon = (percentage: number) => {
@@ -57,23 +57,28 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
     data.lastMonthExpense === 0;
 
   return (
-    <div className="p-4 text-gray-700 dark:text-gray-300 w-[90%] md:w-[clamp(260px,80%,300px)] bg-gradient-to-tl from-gray-300/90 to-gray-50 border-gray-300 dark:from-gray-800 dark:to-gray-600 border-r-2 border-t-2 dark:border-gray-500 rounded-lg">
+    <div className="relative p-4 text-gray-700 dark:text-gray-300/70 w-[90%] md:w-[clamp(260px,80%,300px)] overflow-hidden bg-gradient-to-tl from-gray-300/70 to-gray-50/70 dark:from-gray-800/70 dark:to-gray-600/70 dark:border-gray-500/70 rounded-lg">
       <Link href={`/profile/accounts/${data.accountId}`}>
-        <div className="flex justify-start items-center gap-2 h-fit">
+        <div className="flex flex-col justify-start items-center gap-2 h-fit">
           {data.accountLogo ? (
             <img
               src={data.accountLogo}
               alt={data.accountName}
-              className="w-8 h-8 rounded-full"
+              className="absolute -top-2 -left-2 size-14 rounded-full "
             />
           ) : (
             <CurrencyDollarIcon className="w-8 h-8 rounded-full" />
           )}
-          <h2 className="font-bold">{data.accountName}</h2>
-          <section className="flex justify-start items-baseline my-2 scale-[70%]">
+          <h2 className="font-bold text-gray-800 dark:text-gray-200 text-lg">
+            {data.accountName}
+          </h2>
+          <section className="flex justify-start items-baseline my-2">
             <span className="font-thin text-sm mr-2">{data.currency}</span>
-            <span className="font-bold text-lg">{balanceInt}</span>.
-            <span className="text-gray-700 dark:text-gray-300 tracking-widest">
+            <span className="font-bold text-lg text-gray-800 dark:text-gray-200">
+              {balanceInt}
+            </span>
+            .
+            <span className="text-gray-700 dark:text-gray-300 tracking-widest text-sm">
               {balanceDec}
             </span>
           </section>
@@ -81,7 +86,7 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
       </Link>
       <div className="card-body">
         {noMovements ? (
-          <div className="text-center text-gray-500 my-7">
+          <div className="text-center text-xs text-gray-500 my-7">
             No movements this month
           </div>
         ) : (
@@ -90,11 +95,13 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
             <div className="mb-2 flex gap-2">
               Income:
               <section className="flex items-baseline">
-                <span>{incomeInt}.</span>
-                <span className="text-gray-700 dark:text-gray-300 tracking-widest text-xs font-thin">
+                <span className="text-gray-800 dark:text-gray-200">
+                  {incomeInt}.
+                </span>
+                <span className="text-gray-700 dark:text-gray-300 tracking-widest text-[10px] font-thin">
                   {incomeDec}
                 </span>
-                {data.currency}
+
                 <span
                   className={getIncomePercentageColor(
                     calculatePercentageChange(
@@ -123,11 +130,13 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
             <div className="flex gap-2">
               Spending:
               <section className="flex items-baseline">
-                <span>{expenseInt}.</span>
-                <span className="text-gray-700 dark:text-gray-300 tracking-widest text-xs font-thin">
+                <span className="text-gray-800 dark:text-gray-200">
+                  {expenseInt}.
+                </span>
+                <span className="text-gray-700 dark:text-gray-300 tracking-widest text-[10px] font-thin">
                   {expenseDec}
                 </span>
-                {data.currency}
+
                 <span
                   className={getSpendingPercentageColor(
                     calculatePercentageChange(
