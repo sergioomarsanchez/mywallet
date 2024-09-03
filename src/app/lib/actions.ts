@@ -12,6 +12,92 @@ import nodemailer from "nodemailer";
 import { addDays, endOfMonth, startOfMonth, subMonths } from "date-fns";
 import { LatestTransactionRowProps } from "@/components/categories/latestTransactionRow";
 
+const getEmailHTML = (title: string, content: string) => `
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Wallet - ${title} Email</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    .header img {
+      max-width: 150px;
+    }
+
+    .content {
+      padding: 20px;
+      color: #333333;
+      line-height: 1.6;
+    }
+
+    .content h1 {
+      color: #4b39c1;
+    }
+
+    .content a {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4b39c1;
+      color: #ffffff;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 10px 0;
+      color: #777777;
+      font-size: 12px;
+    }
+
+    .footer a {
+      color: #4b39c1;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="https://mywallet-sos.vercel.app/src/app/assets/icons/logo-icon" alt="My Wallet Logo">
+    </div>
+    <div class="content">
+      ${content}
+    </div>
+    <div class="footer">
+      <p>© 2024 My Wallet. All rights reserved.</p>
+      <p>If you did not request this email, please contact us at <a href="mailto:support@mywallet.com">support@mywallet.com</a>.</p>
+    </div>
+  </div>
+</body>
+
+</html>
+
+`;
+
 //---------- Users Actions ----------
 //Get users
 export async function getUsers() {
@@ -175,15 +261,12 @@ export async function requestPasswordReset(email: string) {
         pass: process.env.EMAIL_PASS,
       },
     });
-
+    const content = `<div class="content">\n\n<h1>Password Reset Request</h1>\n\n<p>You are receiving this because you (or someone else) have requested the reset of the password for your account.</p>\n\n<p>Please click the link below to reset your password:</p>\n\n<p><a href="https://mywallet-sos.vercel.app/reset/${token}">Reset Password</a></p>\n\n<p>If you did not request this, please ignore this email and your password will remain unchanged.</p>\n\n</div>`;
     const mailOptions = {
       to: email,
       from: process.env.EMAIL_USER,
       subject: "Password Reset",
-      text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n
-             Please click on the following link, or paste this into your browser to complete the process:\n\n
-             https://mywallet-sos.vercel.app/reset/${token}\n\n
-             If you did not request this, please ignore this email and your password will remain unchanged.\n`,
+      html: getEmailHTML("Password reset Request", content),
     };
 
     await transporter.sendMail(mailOptions);
@@ -935,15 +1018,19 @@ export async function sendContactMessage(data: ContactData) {
         pass: process.env.EMAIL_PASS,
       },
     });
-
+    const content = `<div class="content">\n\n
+    <h1>New Message from My Wallet</h1>\n\n
+    <p>You have received a new message from the contact form on My Wallet website.</p>\n\n
+    <p><strong>Name:</strong> ${data.name}</p>\n\n
+    <p><strong>Email:</strong> ${data.email}</p>\n\n
+    <p><strong>Message:</strong></p>\n\n
+    <p>${data.message}</p>\n\n
+  </div>`;
     const mailOptions = {
       to: process.env.EMAIL_USER,
       from: process.env.EMAIL_USER,
       subject: "Contact Form Message",
-      text: `You have received a new message from the contact form on your website.\n\n
-             Name: ${data.name}\n
-             Email: ${data.email}\n
-             Message:\n${data.message}\n`,
+      html: getEmailHTML("Contact form From My Wallet", content),
     };
 
     await transporter.sendMail(mailOptions);
