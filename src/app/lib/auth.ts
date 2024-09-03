@@ -23,70 +23,21 @@ const getVerificationEmailHTML = (verificationToken: string) => `
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Email Verification</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 600px;
-      margin: 0 auto;
-      background-color: #ffffff;
-      padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    }
-    .header {
-      text-align: center;
-      padding: 10px 0;
-    }
-    .header img {
-      max-width: 150px;
-    }
-    .content {
-      padding: 20px;
-      color: #333333;
-      line-height: 1.6;
-    }
-    .content h1 {
-      color: #4b39c1;
-    }
-    .content a {
-      display: inline-block;
-      padding: 10px 20px;
-      background-color: #4b39c1;
-      color: #ffffff;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-    .footer {
-      text-align: center;
-      padding: 10px 0;
-      color: #777777;
-      font-size: 12px;
-    }
-    .footer a {
-      color: #4b39c1;
-      text-decoration: none;
-    }
-  </style>
 </head>
-<body>
-  <div class="container">
-    <div class="header">
-      <img src="https://mywallet-sos.vercel.app/src/app/assets/icons/logo-icon" alt="My Wallet Logo">
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; margin: 0; padding: 0;">
+  <div style="max-width: 600px; margin: 0 auto; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+    <div style="text-align: center; padding: 10px 0;">
+      <img src="https://mywallet-sos.vercel.app/path/to/logo-icon.png" alt="My Wallet Logo" style="max-width: 150px;">
     </div>
-    <div class="content">
-      <h1>Welcome to My Wallet!</h1>
+    <div style="padding: 20px; color: #333333; line-height: 1.6;">
+      <h1 style="color: #4b39c1;">Welcome to My Wallet!</h1>
       <p>Please verify your email by clicking the link below:</p>
-      <p><a href="https://mywallet-sos.vercel.app/verify/${verificationToken}">Verify Email</a></p>
+      <p><a href="https://mywallet-sos.vercel.app/verify/${verificationToken}" style="display: inline-block; padding: 10px 20px; background-color: #4b39c1; color: #ffffff; text-decoration: none; border-radius: 4px;">Verify Email</a></p>
       <p>If you did not create an account, please ignore this email.</p>
     </div>
-    <div class="footer">
+    <div style="text-align: center; padding: 10px 0; color: #777777; font-size: 12px;">
       <p>© 2024 My Wallet. All rights reserved.</p>
-      <p>If you did not request this email, please contact us at <a href="mailto:support@mywallet.com">support@mywallet.com</a>.</p>
+      <p>If you did not request this email, please contact us at <a href="mailto:support@mywallet.com" style="color: #4b39c1; text-decoration: none;">support@mywallet.com</a>.</p>
     </div>
   </div>
 </body>
