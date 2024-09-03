@@ -41,7 +41,6 @@ export default function AddAccount({
     setIsLoading(true);
     try {
       await createAccount({ ...data, userId });
-
       addToast("Account created successfully!", "success");
       handleAccountAdded(data.currency);
       setOpenAddAccountModal(false);

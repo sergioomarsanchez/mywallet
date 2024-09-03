@@ -57,14 +57,14 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
     data.lastMonthExpense === 0;
 
   return (
-    <div className="relative p-4 text-gray-700 dark:text-gray-300/70 w-[90%] md:w-[clamp(260px,80%,300px)] overflow-hidden bg-gradient-to-tl from-gray-300/70 to-gray-50/70 dark:from-gray-800/70 dark:to-gray-600/70 dark:border-gray-500/70 rounded-lg">
+    <div className="relative p-4 py-8 pl-2 text-gray-700 dark:text-gray-300/70 w-[90%] md:w-[clamp(260px,80%,300px)] overflow-hidden bg-gradient-to-tl from-gray-300/70 to-gray-50/70 dark:from-gray-800/70 dark:to-gray-600/70 dark:border-gray-500/70 rounded-lg">
       <Link href={`/profile/accounts/${data.accountId}`}>
         <div className="flex flex-col justify-start items-center gap-2 h-fit">
           {data.accountLogo ? (
             <img
               src={data.accountLogo}
               alt={data.accountName}
-              className="absolute -top-2 -left-2 size-14 rounded-full "
+              className="absolute -top-2 -left-2 size-14 rounded-full shadow-md dark:shadow-lg shadow-gray-900 "
             />
           ) : (
             <CurrencyDollarIcon className="w-8 h-8 rounded-full" />
@@ -90,7 +90,7 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
             No movements this month
           </div>
         ) : (
-          <div className="flex flex-col text-xs">
+          <div className="flex flex-col justify-center items-center text-xs">
             <h3 className="text-sm font-thin my-2">This month movements</h3>
             <div className="mb-2 flex gap-2">
               Income:
@@ -165,6 +165,7 @@ const AccOverviewCard: React.FC<AccOverviewCardProps> = ({ data }) => {
           </div>
         )}
       </div>
+      <div className="size-24 bg-gray-400/40 dark:bg-gray-500/40 shadow-md shadow-gray-900 absolute rotate-45 -bottom-[4.5rem] -right-8" />
     </div>
   );
 };

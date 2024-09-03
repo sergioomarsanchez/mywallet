@@ -1,7 +1,7 @@
-"use client"
-import React, { useEffect } from 'react';
-import { useToast } from '../context/ToastContext';
-import Toast from './toasts';
+"use client";
+import React, { useEffect } from "react";
+import { useToast } from "../context/ToastContext";
+import Toast from "./toasts";
 
 const ToastContainer = () => {
   const { toasts, removeToast } = useToast();
@@ -17,7 +17,7 @@ const ToastContainer = () => {
   }, [toasts, removeToast]);
 
   return (
-    <div className="fixed bottom-0 right-0 m-4 space-y-2">
+    <div className="fixed top-0 left-0 md:bottom-0 md:right-0 m-4 space-y-2 z-50">
       {toasts.map((toast) => (
         <Toast
           key={toast.id}
