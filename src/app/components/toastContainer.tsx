@@ -17,7 +17,7 @@ const ToastContainer = () => {
   }, [toasts, removeToast]);
 
   return (
-    <div className="fixed top-0 left-0 md:bottom-0 md:right-0 m-4 space-y-2 z-50">
+    <div className="fixed top-0 left-0 md:bottom-0 md:right-0 m-4 space-y-2 z-50 size-fit">
       {toasts.map((toast) => (
         <Toast
           key={toast.id}
