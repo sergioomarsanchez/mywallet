@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   title: "My Wallet",
   description: "A way to get your finances controlled",
   icons: {
-    icon: "public/wallet-svgrepo-com.svg",
-    apple: "public/wallet-svgrepo-com.svg",
+    icon: "/wallet-svgrepo-com.svg",
+    apple: "/wallet-svgrepo-com.svg",
   },
   openGraph: {
     title: "My Wallet",
