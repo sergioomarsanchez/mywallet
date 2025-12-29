@@ -454,21 +454,39 @@ export async function fetchAccountById(
 
 //Fetch entities data EntityDropdown to add entity and logo to an account or transaction
 export async function fetchEntitySuggestions(query: string) {
+  if (!query || query.length < 2) return [];
+
   try {
     const response = await fetch(
-      `https://autocomplete.clearbit.com/v1/companies/suggest?query=${query}`
+      `https://api.clearout.io/public/companies/autocomplete?query=${encodeURIComponent(query)}`
     );
 
     if (!response.ok) {
-      throw new Error("Error fetching companies");
+      throw new Error("Error fetching companies from Clearout");
     }
 
-    return await response.json();
+    const json = await response.json();
+
+    const companies = Array.isArray(json.data) ? json.data : [];
+
+    return companies.slice(0, 5).map((item: any) => {
+      const domain = item.domain ?? "";
+
+      return {
+        name: item.name,
+        logo: domain
+          ? `https://www.google.com/s2/favicons?domain=${domain}&sz=64`
+          : "",
+      };
+    });
   } catch (error) {
     console.error("Error fetching companies", error);
     return [];
   }
 }
+
+
+
 
 //---------- Transactions actions ---------
 

@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { Dialog, DialogPanel, DialogTitle } from "@headlessui/react";
 import { Field, Input, Label } from "@headlessui/react";
@@ -13,7 +14,7 @@ import Loader from "../loader";
 
 type AddAccountProps = {
   openAddAccountModal: boolean;
-  setOpenAddAccountModal: (openAddAccountModal: boolean) => void;
+  setOpenAddAccountModal: (open: boolean) => void;
   userId: string;
   handleAccountAdded: (currency: string) => void;
 };
@@ -25,6 +26,7 @@ export default function AddAccount({
   handleAccountAdded,
 }: AddAccountProps) {
   const { addToast } = useToast();
+
   const {
     register,
     handleSubmit,
@@ -33,6 +35,13 @@ export default function AddAccount({
     setValue,
   } = useForm<AccountData>({
     resolver: zodResolver(accountSchema),
+    defaultValues: {
+      entityName: "",
+      logo: "",
+      accountType: "Checking",
+      currency: "USD",
+      balance: 0,
+    },
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -53,148 +62,130 @@ export default function AddAccount({
   };
 
   return (
-    <>
-      <Dialog
-        open={openAddAccountModal}
-        onClose={() => setOpenAddAccountModal(false)}
-        className="relative z-50"
-      >
-        <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
-          <DialogPanel className="w-full max-w-md text-center rounded-xl bg-gradient-to-br shadow-lg from-slate-300 to-slate-400 dark:from-slate-800 dark:to-slate-950 p-6 duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0">
-            <DialogTitle
-              as="h3"
-              className="text-base/7 font-medium dark:text-gray-200 justify-center flex"
-            >
-              Add Account
-            </DialogTitle>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-1 justify-center items-center mt-5"
-            >
-              <div className="py-2 md:py-5 border-y-[1px] border-y-blue-500/60 dark:border-y-blue-400/30 grid grid-cols-1 gap-1 w-[95%] md:grid-cols-2 md:gap-2">
-                <div className="flex flex-col">
-                  <EntityDropdown
-                    register={register}
-                    setValue={setValue}
-                    errors={errors}
+    <Dialog
+      open={openAddAccountModal}
+      onClose={() => {
+        setOpenAddAccountModal(false);
+        reset();
+      }}
+      className="relative z-50"
+    >
+      <div className="fixed inset-0 flex w-screen items-center justify-center p-4">
+        <DialogPanel className="w-full max-w-md rounded-xl bg-gradient-to-br from-slate-300 to-slate-400 p-6 shadow-lg dark:from-slate-800 dark:to-slate-950">
+          <DialogTitle className="flex justify-center text-base font-medium dark:text-gray-200">
+            Add Account
+          </DialogTitle>
+
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="mt-5 flex flex-col items-center gap-4"
+          >
+            <div className="grid w-[95%] grid-cols-1 gap-2 border-y border-y-blue-500/60 py-4 dark:border-y-blue-400/30 md:grid-cols-2">
+              {/* ENTITY */}
+              <div className="flex flex-col">
+                <EntityDropdown setValue={setValue} errors={errors} />
+              </div>
+
+              {/* ACCOUNT TYPE */}
+              <div className="flex flex-col">
+                <Field>
+                  <Label className="text-sm font-medium dark:text-gray-200">
+                    Account Type
+                  </Label>
+                  <select
+                    {...register("accountType")}
+                    className={clsx(
+                      "w-full rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-white/5 dark:text-gray-200",
+                      "focus:outline-none"
+                    )}
+                  >
+                    <option value="Checking">Checking</option>
+                    <option value="Savings">Savings</option>
+                    <option value="CreditCard">Credit Card</option>
+                  </select>
+                </Field>
+                {errors.accountType && (
+                  <p className="text-xs text-red-500">
+                    {errors.accountType.message}
+                  </p>
+                )}
+              </div>
+
+              {/* CURRENCY */}
+              <div className="flex flex-col">
+                <Field>
+                  <Label className="text-sm font-medium dark:text-gray-200">
+                    Currency
+                  </Label>
+                  <select
+                    {...register("currency")}
+                    className={clsx(
+                      "w-full rounded-lg bg-gray-100 px-3 py-2 text-sm dark:bg-white/5 dark:text-gray-200",
+                      "focus:outline-none"
+                    )}
+                  >
+                    <option value="USD">USD</option>
+                    <option value="ARS">ARS</option>
+                    <option value="EUR">EUR</option>
+                    <option value="NZD">NZD</option>
+                  </select>
+                </Field>
+                {errors.currency && (
+                  <p className="text-xs text-red-500">
+                    {errors.currency.message}
+                  </p>
+                )}
+              </div>
+
+              {/* BALANCE */}
+              <div className="flex flex-col">
+                <Field>
+                  <Label className="text-sm font-medium dark:text-gray-200">
+                    Balance
+                  </Label>
+                  <Input
+                    type="number"
+                    step="any"
+                    {...register("balance", {
+                      valueAsNumber: true,
+                    })}
+                    className={clsx(
+                      "w-full rounded-lg bg-gray-100 px-3 py-1.5 text-sm dark:bg-white/5 dark:text-gray-200",
+                      "focus:outline-none"
+                    )}
                   />
-                  <div className="h-4 mb-2">
-                    {errors.entityName && (
-                      <p className="text-red-500 text-xs">
-                        {errors.entityName.message}
-                      </p>
-                    )}
-                    {errors.logo && (
-                      <p className="text-red-500 text-xs">
-                        {errors.logo?.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Account Type:
-                    </Label>
-                    <select
-                      {...register("accountType")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      <option value="Checking">Checking</option>
-                      <option value="Savings">Savings</option>
-                      <option value="CreditCard">Credit Card</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.accountType && (
-                      <p className="text-red-500 text-xs">
-                        {errors.accountType.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Currency:
-                    </Label>
-                    <select
-                      {...register("currency")}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-2 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    >
-                      <option value="USD">USD</option>
-                      <option value="ARS">ARS</option>
-                      <option value="EUR">EUR</option>
-                      <option value="NZD">NZD</option>
-                    </select>
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.currency && (
-                      <p className="text-red-500 text-xs">
-                        {errors.currency.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
-                <div className="flex flex-col">
-                  <Field className={"text-left"}>
-                    <Label className="text-sm/6 font-medium dark:text-gray-200">
-                      Balance:
-                    </Label>
-                    <Input
-                      step="any"
-                      {...register("balance", {
-                        required: "Balance is required",
-                        valueAsNumber: true,
-                        validate: (value) =>
-                          !isNaN(value) || "Must be a number",
-                      })}
-                      placeholder="Balance"
-                      required
-                      defaultValue={0}
-                      className={clsx(
-                        "block w-full rounded-lg border-none bg-gray-100 placeholder:text-gray-500 dark:bg-white/5 py-1.5 px-3 text-sm/6 dark:text-gray-200",
-                        "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25"
-                      )}
-                    />
-                  </Field>
-                  <div className="h-4 mb-2">
-                    {errors.balance && (
-                      <p className="text-red-500 text-xs">
-                        {errors.balance.message}
-                      </p>
-                    )}
-                  </div>
-                </div>
+                </Field>
+                {errors.balance && (
+                  <p className="text-xs text-red-500">
+                    {errors.balance.message}
+                  </p>
+                )}
               </div>
-              <div className="flex w-full justify-center items-center gap-2 mt-4">
-                <button
-                  onClick={() => {
-                    setOpenAddAccountModal(false);
-                    reset();
-                  }}
-                  type="button"
-                  className="w-full rounded-lg bg-red-600 dark:bg-red-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-red-700 sm:col-span-2 sm:text-sm"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="flex items-center justify-center w-full rounded-lg bg-blue-600 dark:bg-blue-800 px-3 py-1.5 text-sm/6 font-medium text-gray-200 shadow-sm hover:bg-blue-700 sm:col-span-2 sm:text-sm"
-                >
-                  {isLoading ? <Loader /> : "Add"}
-                </button>
-              </div>
-            </form>
-          </DialogPanel>
-        </div>
-      </Dialog>
-    </>
+            </div>
+
+            {/* ACTIONS */}
+            <div className="flex w-full gap-2">
+              <button
+                type="button"
+                onClick={() => {
+                  setOpenAddAccountModal(false);
+                  reset();
+                }}
+                className="w-full rounded-lg bg-red-600 px-3 py-1.5 text-sm font-medium text-gray-200 hover:bg-red-700 dark:bg-red-800"
+              >
+                Cancel
+              </button>
+
+              <button
+                type="submit"
+                className="flex w-full items-center justify-center rounded-lg bg-blue-600 px-3 py-1.5 text-sm font-medium text-gray-200 hover:bg-blue-700 dark:bg-blue-800"
+              >
+                {isLoading ? <Loader /> : "Add"}
+              </button>
+            </div>
+          </form>
+        </DialogPanel>
+      </div>
+    </Dialog>
   );
 }
